@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fdfcfb">
+  <meta name="description" content="고민을 나누고, 마음이 닿으면 알아가요. 사친사친 사용자 화면 미리보기.">
+  <meta name="robots" content="noindex, nofollow">
+  <title>사친사친 · 마음에서 시작되는 만남</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23f0ebfa%22%2F%3E%3Cpath%20d%3D%22M5%205h13a5%205%200%200%201%205%205v5a5%205%200%200%201-5%205h-6l-7%205V5Z%22%20stroke%3D%22%236c50ba%22%20stroke-width%3D%222%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M13%2012h10a4%204%200%200%201%204%204v11l-6-4h-4a4%204%200%200%201-4-4v-7Z%22%20fill%3D%22%236c50ba%22%2F%3E%3C%2Fsvg%3E%0A">
+  <style>/* Shared UI: warm white, ink text, violet accents. */
+:root { color-scheme: light; --bg:#fdfcfb; --surface:#f5f4f6; --raised:#fff; --line:#e7e5e9; --text:#242129; --text-sub:#696570; --text-mute:#77717e; --accent:#6c50ba; --accent-soft:#f0ebfa; --action:#29252f; --on-action:#fff; --danger:#b83948; --font:"Pretendard Variable",Pretendard,Inter,system-ui,-apple-system,"Segoe UI",sans-serif; --fs-body:16px; --lh-body:1.65; --content-max:880px; --tabbar-h:76px; }
+[data-theme="dark"],[data-theme="dimmer"] { color-scheme:dark; --bg:#1c1a20; --surface:#25222b; --raised:#2a2730; --line:#3b3742; --text:#f3eff6; --text-sub:#bdb5c6; --text-mute:#aaa1b5; --accent:#c5b2f3; --accent-soft:#353041; --action:#e5dcf4; --on-action:#292330; --danger:#ef9aa8; }
+[data-theme="dimmer"] { --bg:#111014; --surface:#19171e; --raised:#201d26; --line:#302b37; }
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; }
+html { font-size:var(--fs-body); -webkit-text-size-adjust:100%; }
+body { background:var(--bg); color:var(--text); font-family:var(--font); font-size:1rem; line-height:var(--lh-body); letter-spacing:-.015em; -webkit-font-smoothing:antialiased; }
+a { color:inherit; text-decoration:none; }
+button { font:inherit; color:inherit; background:none; border:0; cursor:pointer; padding:0; }
+input,textarea,select { font:inherit; color:inherit; }
+button,a,input,textarea { -webkit-tap-highlight-color:transparent; }
+svg { flex-shrink:0; }
+::selection { background:var(--accent-soft); color:var(--text); }
+:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+h1,h2,h3 { margin:0; font-weight:650; letter-spacing:-.035em; }
+p { margin:0; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* Frame and navigation */
+.app-frame { max-width:1260px; margin:0 auto; display:grid; grid-template-columns:248px minmax(0,1fr); }
+.shell { width:100%; max-width:var(--content-max); min-width:0; min-height:100dvh; margin:0 auto; border-left:1px solid var(--line); }
+.page { padding:0 56px 48px; }
+.topbar { position:sticky; top:0; z-index:10; height:88px; padding:0 56px; display:flex; justify-content:space-between; align-items:center; gap:12px; background:var(--bg); }
+.topbar h1 { font-size:.92rem; letter-spacing:-.02em; font-weight:600; }
+.topbar .back { min-width:30px; min-height:44px; color:var(--text-sub); font-size:1.8rem; line-height:1; }
+.topbar .coin { display:inline-flex; align-items:center; min-height:36px; color:var(--text-sub); font-size:.78rem; font-variant-numeric:tabular-nums; border:1px solid var(--line); border-radius:24px; padding:3px 12px; }
+.desktop-sidebar { height:100dvh; position:sticky; top:0; padding:30px 24px 28px; display:flex; flex-direction:column; }
+.wordmark { display:flex; gap:10px; align-items:center; font-size:1.15rem; font-weight:750; letter-spacing:-.06em; white-space:nowrap; }
+.wordmark sup { font-size:.5rem; color:var(--text-mute); font-weight:550; letter-spacing:.04em; align-self:flex-start; margin-top:7px; }
+.brand-symbol { width:34px; height:36px; display:inline-flex; align-items:center; justify-content:center; color:var(--accent); }
+.desktop-sidebar nav { display:flex; flex-direction:column; gap:7px; margin:54px 0 24px; }
+.desktop-sidebar nav a { display:flex; align-items:center; gap:13px; min-height:48px; padding:12px 14px; color:var(--text-sub); font-size:.88rem; font-weight:500; border-radius:11px; transition:background 140ms,color 140ms; }
+.desktop-sidebar nav a:hover { background:var(--surface); color:var(--text); }
+.desktop-sidebar nav a.active { background:var(--accent-soft); color:var(--accent); font-weight:650; }
+.desktop-sidebar > .btn { font-size:.83rem; }
+.sidebar-bottom { margin-top:auto; padding-top:36px; }
+.sidebar-note { display:flex; align-items:flex-start; gap:10px; color:var(--text-sub); font-size:.75rem; line-height:1.8; }
+.sidebar-note svg { width:17px; margin-top:3px; }
+.sidebar-bottom > .meta { display:block; margin-top:20px; font-size:.65rem; color:var(--text-mute); }
+.tabbar { display:none; }
+
+/* Shared type, buttons and forms */
+.eyebrow { display:block; font-size:.73rem; font-weight:600; letter-spacing:.025em; color:var(--accent); }
+.screen-title { font-size:1.5rem; padding:28px 0 12px; }
+.section-title { font-size:.86rem; color:var(--text-sub); font-weight:600; padding:28px 0 12px; }
+.meta { font-size:.8rem; color:var(--text-sub); }
+.mute { color:var(--text-mute); } .sub { color:var(--text-sub); } .accent { color:var(--accent); } .danger { color:var(--danger); } .small { font-size:.82rem; }
+.prose { white-space:pre-wrap; word-break:keep-all; overflow-wrap:anywhere; } .center { text-align:center; }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:48px; padding:0 19px; border-radius:11px; font-size:.88rem; font-weight:600; white-space:nowrap; flex-shrink:0; transition:background 150ms,transform 150ms; }
+.btn:disabled { opacity:.4; cursor:default; }
+.btn-primary { background:var(--action); color:var(--on-action); border:1px solid var(--action); }
+.btn-primary:hover:not(:disabled) { transform:translateY(-1px); }
+.btn-ghost { color:var(--text-sub); } .btn-ghost:hover { background:var(--surface); color:var(--text); }
+.btn-danger { color:var(--danger); border:1px solid var(--danger); }
+.btn-block { width:100%; } .btn-sm { min-height:40px; padding:0 12px; font-size:.8rem; }
+.link { color:var(--text-sub); font-size:.88rem; text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--line); }
+.row { display:flex; align-items:center; gap:12px; } .row.between { justify-content:space-between; } .row > .input { min-width:0; }
+.stack { display:flex; flex-direction:column; gap:12px; } .spacer { height:16px; }
+.field { display:flex; flex-direction:column; gap:8px; margin-bottom:24px; }
+.field > label { font-size:.86rem; font-weight:550; color:var(--text-sub); }
+.input,.textarea,.select { width:100%; background:var(--raised); border:1px solid var(--line); border-radius:11px; padding:13px 15px; font-size:1rem; line-height:var(--lh-body); color:var(--text); }
+.textarea { resize:vertical; min-height:150px; }
+.input:focus,.textarea:focus,.select:focus { outline:2px solid var(--accent); outline-offset:2px; }
+.input::placeholder,.textarea::placeholder { color:var(--text-mute); }
+.help { display:block; font-size:.78rem; color:var(--text-mute); }
+.notice { font-size:.83rem; color:var(--text-sub); background:var(--surface); border-radius:10px; padding:15px 18px; margin:16px 0; }
+.seg { display:flex; gap:8px; flex-wrap:wrap; }
+.seg button { min-height:44px; padding:8px 16px; border:1px solid var(--line); border-radius:9px; font-size:.9rem; color:var(--text-sub); }
+.seg button.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
+.chips { display:flex; gap:24px; overflow-x:auto; padding:12px 0 0; margin:20px 0 0; border-bottom:1px solid var(--line); scrollbar-width:none; }
+.chips::-webkit-scrollbar { display:none; }
+.chip { min-height:44px; white-space:nowrap; font-size:.86rem; color:var(--text-mute); padding:8px 0 14px; border-bottom:2px solid transparent; }
+.chip.active { color:var(--text); border-bottom-color:var(--text); font-weight:600; }
+
+/* Discovery: no concern content until a topic or tag is chosen. */
+.discovery-intro { padding:42px 0 30px; }
+.discovery-intro .eyebrow { font-size:.8rem; font-weight:500; }
+.discovery-intro h2 { margin:18px 0; font-size:clamp(2.2rem,3.4vw,3.1rem); font-weight:650; letter-spacing:-.065em; line-height:1.25; }
+.discovery-intro h2 em { font-style:normal; color:var(--accent); }
+.discovery-intro > p { font-size:.88rem; color:var(--text-sub); word-break:keep-all; }
+.discovery-search-field { display:flex; gap:12px; align-items:center; padding:8px 8px 8px 20px; background:var(--raised); border:1px solid var(--line); border-radius:14px; box-shadow:0 3px 10px #28203504; }
+.discovery-search-field:focus-within { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+.discovery-search-field > svg { color:var(--text-mute); width:20px; }
+.discovery-search-field .input { border:0; background:transparent; box-shadow:none; padding:8px 0; outline:none; min-width:0; font-size:.9rem; }
+.discovery-search-field .btn { min-height:44px; font-size:.83rem; padding:0 16px; border-radius:9px; }
+.discovery-search-field .btn svg { width:16px; }
+.discovery-field-note { font-size:.77rem; margin-top:10px; }
+.discovery-tags { display:flex; flex-wrap:wrap; gap:4px 8px; margin-top:12px; }
+.discovery-tags button { min-height:36px; padding:5px 9px; border-radius:7px; font-size:.76rem; color:var(--text-sub); transition:background 150ms,color 150ms; }
+.discovery-tags button:hover { background:var(--accent-soft); color:var(--accent); }
+.discovery-topics { margin-top:38px; }
+.discovery-section-heading { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:16px; }
+.discovery-section-heading h3 { font-size:1.02rem; letter-spacing:-.03em; font-weight:650; }
+.discovery-section-heading > span { font-size:.72rem; color:var(--text-mute); }
+.topic-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.topic-choice { display:flex; align-items:center; gap:16px; min-height:96px; text-align:left; padding:21px; background:var(--raised); border:1px solid var(--line); border-radius:13px; transition:border-color 150ms,background 150ms,transform 150ms; }
+.topic-choice:hover { background:var(--accent-soft); border-color:var(--accent); transform:translateY(-2px); }
+.topic-symbol { width:38px; height:38px; display:flex; align-items:center; justify-content:center; background:var(--surface); border-radius:11px; color:var(--text-sub); flex-shrink:0; }
+.topic-symbol svg { width:21px; }
+.topic-choice:hover .topic-symbol { color:var(--accent); background:var(--raised); }
+.topic-copy { min-width:0; flex:1; }
+.topic-copy strong { display:block; font-size:.93rem; font-weight:600; margin-bottom:3px; }
+.topic-copy > span { display:block; font-size:.75rem; color:var(--text-sub); word-break:keep-all; }
+.topic-choice > svg { width:14px; color:var(--text-mute); }
+.topic-write { display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--accent-soft); border-radius:13px; padding:21px; color:var(--accent); transition:transform 150ms; }
+.topic-write:hover { transform:translateY(-2px); }
+.topic-write strong { display:block; font-size:.85rem; font-weight:550; }
+.topic-write span > span { display:block; font-size:.74rem; margin-top:5px; }
+.discovery-note { display:flex; align-items:center; justify-content:center; gap:8px; padding-top:28px; color:var(--text-mute); font-size:.73rem; word-break:keep-all; }
+.discovery-note > svg { width:14px; height:17px; }
+.discovery-results-head { padding:24px 0; border-bottom:1px solid var(--line); }
+.discovery-results-head > .link { display:inline-flex; align-items:center; min-height:44px; font-size:.81rem; text-decoration:none; }
+.discovery-results-head .eyebrow { margin-top:32px; }
+.discovery-results-head h2 { font-size:2.3rem; margin:8px 0 12px; overflow-wrap:anywhere; }
+.discovery-results-head h2:focus { outline:none; }
+.discovery-results-head > p { color:var(--text-sub); font-size:.9rem; margin-bottom:24px; }
+.discovery-results-head .row { flex-wrap:wrap; gap:8px; }
+.discovery-results-head .meta { font-size:.76rem; }
+
+/* Purpose-led entry: receive help first, choose a connection afterwards. */
+.purpose-intro { padding:40px 0 32px; }
+.purpose-intro h2 { margin:18px 0; font-size:clamp(2rem,3.15vw,2.8rem); line-height:1.3; letter-spacing:-.055em; font-weight:650; word-break:keep-all; }
+.purpose-intro h2 em { font-style:normal; color:var(--accent); }
+.purpose-intro > p { color:var(--text-sub); font-size:.92rem; line-height:1.85; word-break:keep-all; }
+.intent-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.intent-card { display:flex; flex-direction:column; align-items:flex-start; padding:28px; border-radius:17px; border:1px solid var(--line); transition:transform 150ms,border-color 150ms; }
+.intent-card:hover { transform:translateY(-2px); border-color:var(--accent); }
+.intent-card > svg { width:25px; height:25px; margin-bottom:20px; }
+.intent-card h3 { font-size:1.1rem; letter-spacing:-.03em; }
+.intent-card p { margin:8px 0 26px; font-size:.81rem; line-height:1.8; word-break:keep-all; }
+.intent-share { background:var(--action); color:var(--on-action); border-color:var(--action); }
+.intent-share p { opacity:.85; }
+.intent-listen { background:var(--raised); }
+.intent-listen > svg,.intent-listen .intent-cta { color:var(--accent); }
+.intent-listen p { color:var(--text-sub); }
+.intent-cta { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; margin-top:auto; font-size:.8rem; font-weight:550; }
+.intent-cta svg { width:15px; height:15px; }
+.connection-story { margin-top:42px; }
+.connection-story > h3 { font-size:1rem; font-weight:600; word-break:keep-all; }
+.purpose-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); list-style:none; margin:24px 0 0; padding:0; gap:24px; }
+.purpose-step-number { display:flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; background:var(--accent-soft); color:var(--accent); font-size:.68rem; font-weight:600; margin-bottom:15px; }
+.purpose-steps h4 { margin:0 0 7px; font-size:.82rem; font-weight:600; letter-spacing:-.025em; word-break:keep-all; }
+.purpose-steps p { font-size:.76rem; color:var(--text-sub); line-height:1.8; word-break:keep-all; }
+.purpose-promise { display:flex; align-items:flex-start; gap:10px; padding-top:26px; margin-top:30px; border-top:1px solid var(--line); color:var(--text-sub); font-size:.77rem; line-height:1.8; }
+.purpose-promise > svg { width:17px; margin-top:3px; color:var(--accent); }
+.purpose-promise p > span { color:var(--text-mute); }
+.compose-intro { padding:24px 0 14px; }
+.compose-intro h2 { margin:12px 0; font-size:1.8rem; line-height:1.45; word-break:keep-all; }
+.compose-intro p { color:var(--text-sub); font-size:.87rem; line-height:1.8; }
+.compose-aftercare { margin-top:14px; color:var(--text-mute); font-size:.75rem; text-align:center; word-break:keep-all; }
+@media(max-width:1099px) {
+  .intent-card { padding:24px; }
+  .purpose-steps { gap:16px; }
+  .purpose-steps p br { display:none; }
+}
+@media(max-width:639px) {
+  .purpose-intro { padding:26px 0 28px; }
+  .purpose-intro .eyebrow { font-size:.72rem; }
+  .purpose-intro h2 { font-size:1.95rem; margin:16px 0; }
+  .purpose-intro > p { font-size:.85rem; line-height:1.85; }
+  .intent-actions { grid-template-columns:1fr; gap:12px; }
+  .intent-card { display:grid; grid-template-columns:28px minmax(0,1fr); column-gap:14px; padding:22px; }
+  .intent-card > svg { width:23px; height:23px; margin:2px 0 0; grid-row:1 / 4; }
+  .intent-card h3 { font-size:1.03rem; }
+  .intent-card p { grid-column:2; font-size:.81rem; margin:7px 0 18px; }
+  .intent-card p br { display:none; }
+  .intent-cta { grid-column:2; font-size:.78rem; }
+  .connection-story { margin-top:32px; }
+  .connection-story > h3 { font-size:.97rem; }
+  .purpose-steps { grid-template-columns:1fr; gap:24px; margin-top:24px; }
+  .purpose-steps li { display:flex; gap:14px; align-items:flex-start; }
+  .purpose-step-number { flex-shrink:0; margin:0; }
+  .purpose-steps h4 { font-size:.85rem; margin-top:2px; }
+  .purpose-steps p { font-size:.8rem; }
+  .purpose-promise { font-size:.75rem; margin-top:26px; padding-top:22px; }
+  .compose-intro h2 { font-size:1.55rem; }
+}
+
+/* Lists, profiles and connection decisions */
+.list { list-style:none; margin:0; padding:0; } .list > li { border-bottom:1px solid var(--line); }
+.list > li > a,.list > li > .item { display:block; padding:22px 0; }
+.item-title { font-size:1.05rem; font-weight:600; margin:3px 0; }
+.item-preview { color:var(--text-sub); font-size:.92rem; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.tags { display:flex; flex-wrap:wrap; gap:4px 12px; margin-top:8px; font-size:.77rem; color:var(--text-mute); }
+.badge { font-size:.7rem; color:var(--accent); background:var(--accent-soft); padding:3px 7px; margin-left:7px; border-radius:5px; }
+.feed-list > li > a { padding:30px 0; } .feed-list .item-title { margin:10px 0; font-size:1.18rem; line-height:1.5; } .feed-list .item-preview { line-height:1.8; } .feed-list .tags { margin-top:15px; }
+.feed-row-footer { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; margin-top:20px; font-size:.72rem; color:var(--text-mute); }
+.feed-row-footer > span:last-child { color:var(--accent); font-weight:550; } .feed-list > li > a:hover .item-title { color:var(--accent); }
+.page-intro { padding-top:36px; } .page-intro h2 { font-size:1.8rem; margin:12px 0; line-height:1.4; } .page-intro p { color:var(--text-sub); font-size:.9rem; }
+.journey { display:grid; grid-template-columns:1fr 1fr 1.22fr; list-style:none; padding:24px 0; margin:0; gap:10px; }
+.journey li { display:flex; align-items:center; gap:7px; color:var(--text-mute); font-size:.72rem; white-space:nowrap; }
+.journey li span { display:inline-flex; width:25px; height:25px; border:1px solid var(--line); border-radius:50%; align-items:center; justify-content:center; font-size:.64rem; flex-shrink:0; }
+.journey .current { color:var(--accent); font-weight:600; } .journey .current span { background:var(--accent); color:var(--bg); border-color:var(--accent); } .journey .done { color:var(--text-sub); }
+.connection-list .connection-row { display:grid; grid-template-columns:48px minmax(0,1fr) 18px; gap:18px; align-items:center; padding:26px 0; }
+.connection-mark { display:flex; align-items:center; justify-content:center; width:48px; height:48px; background:var(--accent-soft); border-radius:15px; color:var(--accent); }
+.connection-list .meta { font-size:.75rem; } .connection-list .item-preview { font-size:.83rem; }
+.context-note { border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:26px 0; } .context-note h2 { font-size:1.22rem; margin:10px 0; line-height:1.6; } .context-note .eyebrow { color:var(--text-sub); }
+summary { cursor:pointer; font-size:.82rem; color:var(--text-sub); padding:10px 0; } details[open] > .prose { padding:12px 0; font-size:.92rem; color:var(--text-sub); }
+.decision-panel { background:var(--surface); border-radius:18px; padding:32px; margin:28px 0; } .decision-panel h2 { font-size:1.4rem; line-height:1.5; margin:10px 0 12px; } .decision-panel p { color:var(--text-sub); font-size:.9rem; margin-bottom:22px; } .decision-panel .meta { font-size:.8rem; }
+.privacy-seal { display:flex; justify-content:center; align-items:center; width:56px; height:56px; border-radius:18px; margin:0 auto 20px; color:var(--accent); background:var(--accent-soft); }
+.own-profile { border-bottom:1px solid var(--line); padding:8px 0 18px; } .own-profile .profile-name { font-size:1.1rem; }
+.revealed-label { display:flex; align-items:center; gap:10px; color:var(--accent); font-size:.82rem; padding-top:28px; }
+.revealed-profile { margin:14px 0; padding:0 28px 24px; border:1px solid var(--line); border-radius:18px; background:var(--raised); }
+.profile-name { font-size:1.5rem; font-weight:650; padding-top:28px; } .profile-line { color:var(--text-sub); font-size:.92rem; } .profile-block { padding:20px 0; border-bottom:1px solid var(--line); } .profile-block:last-child { border-bottom:0; } .profile-block h3 { font-size:.8rem; color:var(--text-sub); font-weight:500; margin-bottom:6px; }
+.safety-actions { display:flex; justify-content:center; gap:28px; margin-top:32px; } .safety-actions .link { font-size:.76rem; }
+.answer-guide { margin:0 0 20px; padding:20px; background:var(--accent-soft); border-radius:12px; } .answer-guide p { font-size:.85rem; color:var(--text-sub); margin-top:7px; }
+
+/* Conversation */
+.chat { display:flex; flex-direction:column; height:100dvh; } .chat-head { flex:none; }
+.chat-sub { padding:12px 24px; font-size:.8rem; color:var(--text-sub); border-bottom:1px solid var(--line); display:flex; justify-content:space-between; gap:10px; align-items:center; }
+.chat-body { flex:1; overflow-y:auto; padding:24px; display:flex; flex-direction:column; gap:14px; }
+.msg { max-width:82%; white-space:pre-wrap; overflow-wrap:anywhere; font-size:.97rem; }
+.msg.mine { align-self:flex-end; background:var(--accent-soft); border-radius:17px 17px 4px 17px; padding:12px 16px; }
+.msg.theirs { align-self:flex-start; background:var(--surface); border-radius:17px 17px 17px 4px; padding:12px 16px; }
+.msg.theirs .who { display:block; font-size:.75rem; color:var(--text-mute); margin-bottom:5px; }
+.msg.system { align-self:center; max-width:100%; text-align:center; font-size:.77rem; color:var(--text-mute); padding:8px 0; }
+.msg time { display:block; font-size:.67rem; color:var(--text-mute); margin-top:6px; }
+.chat-banner { margin:0 24px 12px; padding:16px; background:var(--surface); border-radius:12px; font-size:.86rem; }
+.chat-input { flex:none; display:flex; gap:8px; padding:16px 24px calc(16px + env(safe-area-inset-bottom)); border-top:1px solid var(--line); background:var(--bg); }
+.chat-input textarea { flex:1; min-width:0; min-height:48px; max-height:140px; resize:none; }
+
+/* Overlays and empty states */
+.backdrop { position:fixed; inset:0; z-index:50; background:#15101d55; display:flex; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(4px); }
+.dialog { width:100%; max-width:440px; background:var(--raised); border:1px solid var(--line); border-radius:20px; padding:28px; box-shadow:0 20px 80px #15101d20; }
+.dialog p { white-space:pre-wrap; } .dialog-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin-top:24px; }
+.toast { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(var(--tabbar-h) + 20px); z-index:60; width:max-content; max-width:calc(100% - 40px); background:var(--action); color:var(--on-action); border-radius:12px; padding:12px 18px; font-size:.85rem; box-shadow:0 8px 30px #15101d15; }
+.empty,.loading { padding:56px 0; text-align:center; color:var(--text-mute); font-size:.94rem; } .empty .btn { margin-top:24px; } .empty > svg { margin-bottom:16px; }
+.hero { min-height:100dvh; display:flex; flex-direction:column; justify-content:center; padding:40px 28px; gap:40px; max-width:740px; margin:0 auto; } .hero .brand { font-size:1rem; color:var(--accent); } .hero .lines p { font-size:1.7rem; font-weight:600; line-height:1.5; }
+.demo-accounts { margin-top:20px; border-top:1px solid var(--line); } .demo-accounts summary { font-size:.7rem; color:var(--text-mute); } .demo-accounts .row { gap:8px; margin-top:4px; } .demo-accounts button { min-height:36px; font-size:.72rem; padding:6px 10px; border:1px solid var(--line); border-radius:7px; } .demo-accounts button:hover { border-color:var(--accent); }
+
+/* Welcome */
+.landing { max-width:1220px; margin:0 auto; padding:36px 48px; } .landing-header { display:flex; align-items:center; justify-content:space-between; } .landing-header > .meta { font-size:.8rem; }
+.landing-grid { display:grid; grid-template-columns:1.15fr 1fr; gap:88px; align-items:center; padding:94px 0 80px; }
+.landing-copy h1 { font-size:clamp(2rem,3.6vw,3rem); line-height:1.35; margin:22px 0; font-weight:650; word-break:keep-all; letter-spacing:-.055em; } .landing-copy h1 em { color:var(--accent); font-style:normal; }
+.landing-description { font-size:.98rem; color:var(--text-sub); line-height:1.9; } .login-actions { max-width:380px; margin-top:20px; } .login-actions .meta { font-size:.74rem; margin-top:12px; }
+.landing-story { position:relative; padding:32px; background:var(--surface); border-radius:24px; } .story-label { display:flex; justify-content:space-between; color:var(--text-sub); font-size:.75rem; padding-bottom:22px; border-bottom:1px solid var(--line); } .story-label span { color:var(--accent); }
+.story-question { padding:26px 0; } .story-question .meta { font-size:.75rem; } .story-question h2 { font-size:1.18rem; line-height:1.8; margin:15px 0; }
+.story-answer { padding:24px; background:var(--raised); border:1px solid var(--line); border-radius:16px 16px 16px 3px; transform:translateX(-48px); box-shadow:0 12px 35px #27202f07; } .story-answer p { font-size:.87rem; line-height:1.9; margin-top:10px; }
+.story-lock { display:flex; gap:12px; align-items:center; padding-top:28px; color:var(--accent); } .story-lock strong { font-size:.88rem; font-weight:550; } .story-lock p { font-size:.76rem; color:var(--text-sub); margin-top:4px; }
+.story-footnote { font-size:.65rem; color:var(--text-mute); margin-top:24px; } .landing-footer { border-top:1px solid var(--line); padding-top:24px; display:flex; justify-content:space-between; gap:16px; color:var(--text-mute); font-size:.74rem; }
+
+/* Responsive */
+@media(max-width:1099px) {
+  .app-frame { grid-template-columns:220px minmax(0,1fr); } .desktop-sidebar { padding-left:18px; padding-right:18px; }
+  .page,.topbar { padding-left:36px; padding-right:36px; } .topic-choice,.topic-write { padding:18px; gap:12px; }
+}
+@media(max-width:899px) {
+  .app-frame { display:block; } .desktop-sidebar { display:none; } .shell { max-width:740px; border:0; padding-bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px); } .shell.no-tabs { padding-bottom:0; }
+  .tabbar { display:block; position:fixed; bottom:0; left:0; right:0; z-index:20; height:calc(var(--tabbar-h) + env(safe-area-inset-bottom)); padding-bottom:env(safe-area-inset-bottom); border-top:1px solid var(--line); background:var(--bg); }
+  .tabbar nav { height:100%; max-width:740px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); }
+  .tabbar a { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; color:var(--text-mute); font-size:.68rem; font-weight:500; }
+  .tabbar a.active { color:var(--accent); font-weight:650; } .tabbar a.active svg { stroke-width:2; }
+  .landing { padding:28px; } .landing-grid { gap:42px; padding-top:65px; } .story-answer { transform:translateX(-20px); }
+}
+@media(max-width:639px) {
+  .page { padding:0 22px 32px; } .topbar { height:68px; padding:0 22px; } .topbar h1 { font-size:.86rem; } .topbar .meta { font-size:.7rem; } .topbar .coin { font-size:.73rem; }
+  .discovery-intro { padding:30px 0 26px; } .discovery-intro .eyebrow { font-size:.74rem; } .discovery-intro h2 { font-size:2.2rem; margin:16px 0; }
+  .discovery-intro > p { font-size:.85rem; max-width:310px; line-height:1.75; }
+  .discovery-search-field { gap:9px; padding:6px 6px 6px 13px; border-radius:12px; } .discovery-search-field > svg { width:18px; } .discovery-search-field .input { font-size:1rem; } .discovery-search-field .btn { padding:0 12px; font-size:.8rem; } .discovery-search-field .btn svg { display:none; }
+  .discovery-tags { gap:2px 3px; margin-top:10px; } .discovery-tags button { font-size:.73rem; min-height:36px; padding:4px 7px; }
+  .discovery-topics { margin-top:30px; } .discovery-section-heading h3 { font-size:.97rem; } .discovery-section-heading > span { font-size:.7rem; }
+  .topic-grid { gap:10px; } .topic-choice { flex-wrap:wrap; align-content:flex-start; gap:13px; min-height:143px; padding:17px; border-radius:12px; }
+  .topic-symbol { width:30px; height:30px; border-radius:8px; } .topic-symbol svg { width:19px; height:19px; }
+  .topic-copy { flex-basis:100%; } .topic-copy strong { font-size:.9rem; } .topic-copy > span { font-size:.72rem; } .topic-choice > svg { display:none; }
+  .topic-write { padding:17px; flex-direction:column-reverse; align-items:flex-start; justify-content:space-between; min-height:143px; border-radius:12px; } .topic-write > svg { width:22px; margin:4px; } .topic-write strong { font-size:.79rem; word-break:keep-all; } .topic-write span > span { font-size:.72rem; }
+  .discovery-note { align-items:flex-start; text-align:center; font-size:.7rem; padding-top:24px; } .discovery-note svg { margin-top:2px; }
+  .discovery-results-head h2 { font-size:2rem; } .discovery-results-head > p { font-size:.85rem; } .discovery-results-head .meta { font-size:.72rem; }
+  .page-intro { padding-top:28px; } .page-intro h2 { font-size:1.5rem; } .feed-list .item-title { font-size:1.1rem; }
+  .journey { gap:5px; } .journey li { gap:5px; font-size:.67rem; } .journey li span { width:22px; height:22px; font-size:.6rem; }
+  .decision-panel { padding:26px 20px; } .decision-panel h2 { font-size:1.28rem; } .revealed-profile { padding:0 22px 20px; } .connection-list .connection-row { gap:13px; }
+  .landing-header > .meta { display:none; } .landing-grid { grid-template-columns:1fr; gap:44px; padding:52px 0 40px; } .landing-copy h1 { font-size:2.12rem; } .landing-copy .eyebrow { font-size:.64rem; } .login-actions { max-width:none; } .landing-story { padding:24px; margin-left:10px; } .story-answer { transform:translateX(-22px); } .landing-footer { flex-direction:column; font-size:.68rem; }
+  .backdrop { align-items:flex-end; } .chat-sub,.chat-body { padding-left:20px; padding-right:20px; } .chat-input { padding-left:16px; padding-right:16px; }
+}
+@media(max-width:359px) {
+  .page,.topbar { padding-left:18px; padding-right:18px; } .discovery-intro h2 { font-size:2rem; } .topic-choice,.topic-write { padding:14px; } .discovery-section-heading > span { display:none; } .journey li { white-space:normal; }
+}
+@media(prefers-reduced-motion:reduce) { * { transition:none !important; animation:none !important; scroll-behavior:auto !important; } }
+
+/* Extends the main application's shared design tokens and components. */
+html { scroll-behavior:smooth; }
+body { overflow-wrap:anywhere; }
+[hidden] { display:none !important; }
+button,a { touch-action:manipulation; }
+button:disabled { opacity:.4; cursor:not-allowed; }
+textarea { resize:vertical; }
+input,textarea,select { font-size:16px !important; }
+h1:focus,h2:focus { outline:none; }
+.preview-badge { font-size:.68rem; color:var(--accent); background:var(--accent-soft); border-radius:20px; padding:6px 10px; white-space:nowrap; }
+.topbar .row { min-width:0; }
+.preview-note { font-size:.72rem; color:var(--text-mute); line-height:1.7; }
+.preview-foot { padding-top:22px; margin-top:26px; border-top:1px solid var(--line); }
+.preview-foot a { text-decoration:underline; text-underline-offset:3px; }
+.sidebar-bottom .preview-note { margin-top:20px; }
+.mobile-wordmark { display:none; }
+.stack { display:flex; flex-direction:column; gap:12px; }
+.btn-outline { border:1px solid var(--line); background:var(--raised); color:var(--text); }
+.btn-outline:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+.tag-link { display:inline-flex; align-items:center; min-height:40px; padding:5px 9px; color:var(--text-sub); font-size:.78rem; }
+.tag-link:hover { color:var(--accent); }
+.gap-top { margin-top:24px; }
+.wide { width:100%; }
+.field { display:flex; flex-direction:column; gap:9px; margin-top:24px; }
+.field label,.field legend { font-size:.85rem; font-weight:600; }
+.field fieldset,fieldset.field { border:0; padding:0; margin-inline:0; }
+.input,textarea.input { width:100%; border:1px solid var(--line); background:var(--raised); border-radius:10px; padding:12px 14px; outline-offset:2px; }
+.input:focus { border-color:var(--accent); }
+.field-help { color:var(--text-mute); font-size:.73rem; }
+.field textarea { min-height:170px; }
+.chip-options { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.chip-options label { font-weight:500; cursor:pointer; position:relative; }
+.chip-options input { position:absolute; width:1px; height:1px; opacity:0; }
+.chip-options span { display:block; border:1px solid var(--line); border-radius:24px; padding:9px 14px; font-size:.8rem; }
+.chip-options input:checked + span { color:var(--accent); background:var(--accent-soft); border-color:var(--accent); }
+.chip-options input:focus-visible + span { outline:2px solid var(--accent); outline-offset:3px; }
+.privacy-inline { display:flex; gap:10px; align-items:flex-start; color:var(--text-sub); font-size:.8rem; padding:17px 0; line-height:1.8; }
+.privacy-inline svg { color:var(--accent); margin-top:3px; width:18px; }
+.form-footer { margin-top:28px; }
+.detail-heading { font-size:clamp(1.55rem,3vw,2.05rem); line-height:1.55; margin:15px 0 24px; word-break:keep-all; }
+.detail-body { font-size:.96rem; line-height:1.95; color:var(--text-sub); }
+.detail-top { padding-top:24px; }
+.detail-bottom { padding:20px 0; margin:24px 0; border-top:1px solid var(--line); }
+.anonymous-label { display:flex; align-items:center; gap:8px; font-size:.75rem; color:var(--text-sub); }
+.anonymous-label svg { width:16px; color:var(--accent); }
+.answer-card { border:1px solid var(--line); background:var(--raised); border-radius:16px; padding:24px; margin:18px 0; }
+.answer-card .prose { line-height:1.9; font-size:.9rem; margin:18px 0; }
+.answer-card .btn { font-size:.8rem; }
+.section-line { display:flex; justify-content:space-between; align-items:center; margin-top:32px; }
+.section-line h2 { font-size:1.1rem; }
+.small-tabs { display:flex; gap:24px; margin:28px 0 4px; border-bottom:1px solid var(--line); }
+.small-tabs a { display:block; padding:12px 0; font-size:.86rem; color:var(--text-mute); }
+.small-tabs a.active { color:var(--accent); font-weight:600; border-bottom:2px solid var(--accent); }
+.demo-controls { border:1px dashed #b9a9d9; border-radius:12px; padding:16px; margin:22px 0; }
+.demo-controls p { font-size:.75rem; color:var(--text-sub); margin:0 0 10px; }
+.demo-controls .btn { font-size:.76rem; min-height:40px; }
+.demo-controls .eyebrow { font-size:.63rem; margin-bottom:7px; }
+.connection-context { padding:20px 0; border-bottom:1px solid var(--line); }
+.connection-context .quote { font-size:1.1rem; line-height:1.7; margin-top:10px; }
+.connection-context .meta { margin-top:12px; }
+.profile-cover { background:var(--accent-soft); border-radius:16px; min-height:155px; display:flex; flex-direction:column; align-items:center; justify-content:center; margin:24px 0 0; color:var(--accent); }
+.profile-cover svg { width:56px; height:56px; stroke-width:1; }
+.profile-cover span { font-size:.7rem; margin-top:10px; }
+.profile-facts { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+.profile-facts span { border:1px solid var(--line); border-radius:24px; padding:5px 12px; font-size:.76rem; }
+.profile-tags { display:flex; flex-wrap:wrap; gap:8px; }
+.profile-tags span { background:var(--surface); border-radius:8px; padding:5px 10px; font-size:.8rem; }
+.checkbox-row { display:flex; align-items:flex-start; gap:10px; font-size:.82rem; color:var(--text-sub); margin:22px 0; }
+.checkbox-row input { margin-top:5px; accent-color:var(--accent); width:18px; height:18px; flex-shrink:0; }
+.decision-panel .btn + .btn { margin-top:10px; }
+.list-preview { padding:24px 0; }
+.card-note { margin:12px 0 0; color:var(--text-mute); font-size:.75rem; }
+.empty-state { padding:42px 12px; text-align:center; }
+.empty-state svg { color:var(--accent); width:30px; height:30px; margin-bottom:18px; }
+.empty-state h2 { font-size:1.15rem; margin-bottom:12px; }
+.empty-state p { font-size:.84rem; color:var(--text-sub); line-height:1.8; margin-bottom:22px; }
+.me-heading { display:flex; align-items:center; gap:18px; padding:28px 0; }
+.avatar { display:grid; place-items:center; width:64px; height:64px; border-radius:22px; background:var(--accent-soft); color:var(--accent); }
+.me-heading h2 { font-size:1.3rem; }
+.settings-row { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:23px 0; border-bottom:1px solid var(--line); font-size:.9rem; }
+.setting-caption { display:block; color:var(--text-mute); font-size:.75rem; margin-top:5px; }
+.settings-row svg { width:17px; }
+.chat-body { min-height:300px; }
+.chat .topbar { position:static; }
+.chat .topbar .preview-badge { font-size:.6rem; }
+.chat-input .btn { align-self:flex-end; }
+.chat-replay { margin:0 24px 16px; border:1px dashed var(--line); border-radius:10px; padding:10px; font-size:.73rem; color:var(--accent); }
+.msg { animation:appear .2s ease-out; }
+@keyframes appear { from {opacity:0;transform:translateY(5px)} to {opacity:1;transform:translateY(0)} }
+.safety-panel { margin-top:22px; padding:18px; border:1px solid var(--line); border-radius:12px; }
+.safety-panel p { font-size:.8rem; color:var(--text-sub); line-height:1.8; }
+.test-actions { margin-top:18px; display:flex; flex-wrap:wrap; gap:12px; }
+.backdrop[open] { display:flex; }
+.native-dialog { position:fixed; inset:0; margin:auto; width:calc(100% - 40px); max-width:440px; border:1px solid var(--line); border-radius:20px; padding:28px; color:var(--text); background:var(--raised); }
+.native-dialog::backdrop { background:#15101d55; backdrop-filter:blur(3px); }
+.native-dialog h2 { font-size:1.2rem; margin-bottom:12px; }
+.native-dialog p { font-size:.87rem; color:var(--text-sub); line-height:1.8; }
+@media(max-width:899px) {
+  .desktop-home-title { display:none; }
+  .mobile-wordmark { display:flex; align-items:center; gap:8px; font-size:.98rem; font-weight:750; }
+  .mobile-wordmark img { width:25px; height:25px; }
+  .shell { padding-bottom:calc(88px + env(safe-area-inset-bottom)); }
+  .topbar { border-bottom:1px solid transparent; }
+}
+@media(max-width:639px) {
+  .purpose-intro h2 { font-size:clamp(1.6rem,6.8vw,1.95rem); letter-spacing:-.055em; }
+  .purpose-intro { padding-top:24px; }
+  .purpose-intro p br { display:none; }
+  .intent-card p,.purpose-steps p { word-break:keep-all; overflow-wrap:anywhere; }
+  .page,.topbar { padding-left:22px; padding-right:22px; }
+  .topbar { height:68px; }
+  .answer-card { padding:20px; }
+  .detail-heading { font-size:1.5rem; }
+  .profile-cover { min-height:150px; }
+  .journey { grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }
+  .journey li { font-size:.65rem; white-space:normal; }
+  .discovery-intro h2 { font-size:1.95rem; }
+  .chat { height:100dvh; }
+  .chat .topbar { height:64px; }
+  .chat-sub { font-size:.73rem; }
+  .preview-foot { font-size:.7rem; }
+  .native-dialog { top:auto; bottom:20px; }
+}
+</style>
+  
+</head>
+<body>
+  <div id="app"></div>
+  <div id="announcer" class="sr-only" aria-live="polite"></div>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript>사친사친 미리보기를 이용하려면 JavaScript를 켜 주세요.</noscript>
+  <script type="module">const TOPICS = [
+  {id:'love', name:'연애', icon:'heart', description:'설렘과 마음 사이'},
+  {id:'relationship', name:'인간관계', icon:'people', description:'서로의 거리와 진심'},
+  {id:'work', name:'직장', icon:'work', description:'일하는 하루의 마음'},
+  {id:'career', name:'진로', icon:'compass', description:'나만의 방향 찾기'},
+  {id:'family', name:'가족', icon:'home', description:'가까워서 어려운 사이'},
+  {id:'daily', name:'일상', icon:'sun', description:'마음에 남은 작은 순간'},
+  {id:'etc', name:'그 밖의 이야기', icon:'more', description:'어디에 담아도 괜찮아요'},
+];
+const SAMPLES = [
+  {id:'work-1',category:'work',title:'퇴근하고 나면, 나를 위한 시간이 없는 기분이에요.',body:'회사에서는 할 일을 잘 해내고 있는데, 집에 돌아오면 아무것도 하고 싶지 않아요.\n\n쉬고 있어도 시간을 버리는 것 같고, 새로운 걸 시작하자니 힘이 없어요. 다른 분들은 퇴근 후에 어떻게 자기 마음을 돌보나요?',tags:['퇴근후','내속도'],answers:2},
+  {id:'work-2',category:'work',title:'잘하고 있다는 말을 너무 기다리게 돼요.',body:'일을 마치고 나서도 계속 반응을 확인하게 돼요. 스스로 만족하는 기준을 만들고 싶은데 쉽지 않네요. 비슷한 마음을 느껴본 적 있나요?',tags:['일하는마음','내속도'],answers:1},
+  {id:'love-1',category:'love',title:'좋아하는 마음과 익숙해진 마음, 어떻게 구분하나요?',body:'연락이 오면 반갑고, 만나면 편해요. 그런데 이게 좋아하는 건지 그냥 좋은 친구인 건지 모르겠어요. 이성의 입장에서 어떤 순간에 마음을 확신했는지 듣고 싶어요.',tags:['마음알아가기','관계의거리'],answers:3},
+  {id:'relationship-1',category:'relationship',title:'친한 사이에도 혼자 있을 시간이 필요하다고 말해도 될까요?',body:'소중한 친구지만 매일 연락하는 건 조금 버거워요. 마음이 멀어진 건 아닌데 어떻게 전하면 좋을까요? 상대가 서운하지 않았으면 좋겠어요.',tags:['관계의거리','내속도'],answers:2},
+  {id:'career-1',category:'career',title:'새로운 시작이 늦은 건 아닐까요?',body:'좋아하던 일을 다시 배워보고 싶어요. 지금 하던 일을 잘 이어가는 것과 다른 길을 찾는 것 사이에서 고민 중이에요. 비슷한 선택을 한 분의 이야기가 궁금해요.',tags:['새로운시작','내속도'],answers:1},
+  {id:'family-1',category:'family',title:'부모님께 독립하고 싶다는 말을 꺼내기가 어려워요.',body:'함께 사는 시간이 편하면서도 이제는 혼자 생활을 꾸려보고 싶어요. 걱정하실까 봐 계속 미루고 있어요. 마음을 어떻게 전하면 좋을까요?',tags:['새로운시작','관계의거리'],answers:0},
+  {id:'daily-1',category:'daily',title:'주말을 혼자 보내도 잘 보낸 하루라고 느끼고 싶어요.',body:'일정이 없는 주말이면 괜히 누군가와 비교하게 돼요. 혼자서도 편안하고 기분 좋게 시간을 보내는 작은 습관이 있다면 나눠 주세요.',tags:['일상나누기','내속도'],answers:2},
+];
+const MY_SAMPLE = {id:'my-first',category:'relationship',title:'괜찮은 척하는 게 익숙해진 것 같아요.',body:'친구들 앞에서는 항상 이야기를 들어주는 편이에요. 그런데 막상 제 마음을 말하려면 별일 아닌 것 같아서 웃고 넘기게 돼요.\n\n누군가에게 기대고 싶다는 말을 어떻게 시작하면 좋을까요?',tags:['마음알아가기','관계의거리'],own:true,answers:2};
+const SAMPLE_ANSWERS = [
+  {id:'answer-a',alias:'익명의 답변 01',body:'저도 늘 들어주는 쪽이었어요. 그래서인지 힘들다는 말도 잘해야 할 것 같더라고요.\n\n어느 날 친구에게 “해결해 주지 않아도 돼. 오늘은 그냥 내 얘기 좀 들어줄래?”라고 말했어요. 생각보다 가볍게 시작해도 괜찮았어요.\n\n당신의 마음도 충분히 들어줄 만한 이야기예요.'},
+  {id:'answer-b',alias:'익명의 답변 02',body:'늘 괜찮은 사람일 필요는 없다고 생각해요. 가장 편한 한 사람에게 작은 이야기부터 해보면 어떨까요? 오늘 유난히 피곤했다는 말부터요. 그 정도 시작으로도 괜찮아요.'},
+];
+function initialState() { return {version:1, concerns:[], answers:[], connections:{}, messages:[], draft:{category:'',title:'',body:'',tags:''}}; }
+function filterConcerns(items, choice) {
+  if (!choice) return [];
+  if (choice.category) return TOPICS.some(t=>t.id===choice.category) ? items.filter(c=>!c.own && c.category===choice.category) : [];
+  if (choice.tag) return items.filter(c=>!c.own && c.tags.includes(choice.tag));
+  return [];
+}
+function profilesVisible(connection) { return Boolean(connection && !connection.closed && connection.mineReveal && connection.theirReveal); }
+function chatAllowed(connection) { return profilesVisible(connection) && connection.mineChat===true && connection.theirChat===true; }
+function transition(connection, action) {
+  const next={...connection};
+  if(action==='request' && !next.closed) next.mineReveal=true;
+  if(action==='demo-reveal' && next.mineReveal && !next.closed) next.theirReveal=true;
+  if(action==='choose-chat' && profilesVisible(next)) next.mineChat=true;
+  if(action==='demo-chat' && profilesVisible(next) && next.mineChat) next.theirChat=true;
+  if(action==='close') { next.closed=true; next.mineChat=false; next.theirChat=false; }
+  return next;
+}
+
+
+const STORAGE_KEY='sachin-user-preview-v1';
+const $=selector=>document.querySelector(selector);
+const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let state=initialState();
+try { const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)); if(saved?.version===1) state={...state,...saved}; } catch {}
+const paths={
+  feed:'<path d="M4 5h16v11H9l-5 4V5Z"/><path d="M8 9h8M8 12h5"/>',
+  mine:'<path d="M6 3h12v18H6z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+  connection:'<path d="M9 8H6a4 4 0 0 0 0 8h4M15 8h3a4 4 0 0 1 0 8h-4M8 12h8"/>',
+  me:'<circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/>',
+  lock:'<rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/>',
+  arrow:'<path d="m9 5 7 7-7 7"/>', plus:'<path d="M12 5v14M5 12h14"/>',
+  search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+  heart:'<path d="M20.8 5.7a5 5 0 0 0-7.1 0L12 7.4l-1.7-1.7a5 5 0 0 0-7.1 7.1L12 21l8.8-8.2a5 5 0 0 0 0-7.1Z"/>',
+  work:'<rect x="3" y="7" width="18" height="14" rx="3"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12c5 4 13 4 18 0M12 12v4"/>',
+  compass:'<circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/>',
+  people:'<circle cx="9" cy="8" r="3"/><path d="M3 21v-2a6 6 0 0 1 12 0v2M16 5a3 3 0 0 1 0 6M21 21v-2a6 6 0 0 0-3-5.2"/>',
+  home:'<path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/>',
+  more:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+  check:'<path d="m5 12 4 4L19 6"/>', back:'<path d="m15 5-7 7 7 7"/>',
+};
+const icon=name=>`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]??paths.feed}</svg>`;
+const topic=id=>TOPICS.find(t=>t.id===id)?.name??'이야기';
+const tags=items=>`<div class="tags">${items.map(t=>`<span>#${esc(t)}</span>`).join('')}</div>`;
+const link=(href,label,cls='btn btn-primary')=>`<a class="${cls}" href="#${href}">${label}</a>`;
+const button=(action,label,cls='btn btn-primary',extra='')=>`<button type="button" class="${cls}" data-action="${action}" ${extra}>${label}</button>`;
+const previewFoot=()=>`<p class="preview-note preview-foot">화면 미리보기 · 등장하는 고민과 인물은 모두 예시예요.<br>작성한 내용은 이 브라우저에만 저장돼요. ${link('/me','미리보기 안내','')}</p>`;
+const privacy=copy=>`<div class="privacy-inline">${icon('lock')}<p>${copy}</p></div>`;
+const demo=(copy,action,label,extra='')=>`<aside class="demo-controls"><span class="eyebrow">미리보기 조작</span><p>${copy}</p>${button(action,label,'btn btn-outline',extra)}</aside>`;
+const empty=(title,copy,action)=>`<section class="empty-state">${icon('feed')}<h2>${title}</h2><p>${copy}</p>${action??''}</section>`;
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch{toast('브라우저 저장 공간이 없어, 이번 방문에서만 유지돼요.');}}
+let toastTimer;
+function toast(message){clearTimeout(toastTimer);$('#toast').textContent=message;$('#toast').hidden=false;toastTimer=setTimeout(()=>{$('#toast').hidden=true;},3600);}
+function route(){const [path,query='']=(location.hash.slice(1)||'/home').split('?');return {path,params:new URLSearchParams(query)};}
+function navigate(path){if(location.hash==='#'+path)render();else location.hash=path;}
+function getConcern(id){return [MY_SAMPLE,...state.concerns,...SAMPLES].find(c=>c.id===id);}
+function ownAnswers(c){return c.id===MY_SAMPLE.id || c.mockAnswers ? SAMPLE_ANSWERS : [];}
+function connectionKey(concernId,answerId){return `${concernId}_${answerId}`;}
+function currentConnection(){return state.connections[route().params.get('id')];}
+function allConnections(){return Object.values(state.connections);}
+
+const tabs=[['/home','마음 나누기','feed'],['/mine','내 이야기','mine'],['/connections','연결과 대화','connection'],['/me','마이','me']];
+function shell(title,body,{back,chat=false,home=false}={}){
+  const {path}=route();
+  const active=path.startsWith('/mine')?'/mine':/connection|chat/.test(path)?'/connections':path==='/me'?'/me':'/home';
+  const nav=tabs.map(([href,label,symbol])=>`<a href="#${href}" ${href===active?'class="active" aria-current="page"':''}>${icon(symbol)}${label}</a>`).join('');
+  const head=`<header class="topbar"><div class="row">${back?`<a class="back" href="#${back}" aria-label="뒤로">${icon('back')}</a>`:''}${home?'<a class="mobile-wordmark" href="#/home"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23f0ebfa%22%2F%3E%3Cpath%20d%3D%22M5%205h13a5%205%200%200%201%205%205v5a5%205%200%200%201-5%205h-6l-7%205V5Z%22%20stroke%3D%22%236c50ba%22%20stroke-width%3D%222%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M13%2012h10a4%204%200%200%201%204%204v11l-6-4h-4a4%204%200%200%201-4-4v-7Z%22%20fill%3D%22%236c50ba%22%2F%3E%3C%2Fsvg%3E%0A" alt="">사친사친</a>':''}<h1 tabindex="-1" ${home?'class="desktop-home-title"':''}>${title}</h1></div><a class="preview-badge" href="#/me">화면 미리보기</a></header>`;
+  return `<div class="app-frame"><aside class="desktop-sidebar"><a href="#/home" class="wordmark"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23f0ebfa%22%2F%3E%3Cpath%20d%3D%22M5%205h13a5%205%200%200%201%205%205v5a5%205%200%200%201-5%205h-6l-7%205V5Z%22%20stroke%3D%22%236c50ba%22%20stroke-width%3D%222%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M13%2012h10a4%204%200%200%201%204%204v11l-6-4h-4a4%204%200%200%201-4-4v-7Z%22%20fill%3D%22%236c50ba%22%2F%3E%3C%2Fsvg%3E%0A" width="31" height="31" alt="">사친사친<sup>PREVIEW</sup></a><nav aria-label="주 메뉴">${nav}</nav>${link('/write',icon('plus')+'내 고민 나누기','btn btn-primary btn-block')}<div class="sidebar-bottom"><div class="sidebar-note">${icon('lock')}<p>서로를 알기 전에,<br>마음부터 나누는 곳.</p></div><p class="preview-note">고민에서 시작되는 새로운 만남.<br>사용자 화면 미리보기 v1</p></div></aside><div class="shell ${chat?'no-tabs':''}">${chat?`<div class="chat">${head}${body}</div>`:`${head}<main class="page">${body}</main><div class="tabbar"><nav aria-label="하단 메뉴">${nav}</nav></div>`}</div></div>`;
+}
+
+function home(){return shell('마음 나누기',`
+  <section class="purpose-intro"><span class="eyebrow">고민에서 시작되는 새로운 만남</span><h2>고민을 나누고,<br><em>마음이 닿으면 알아가요.</em></h2><p>프로필을 숨긴 채 이성과 고민을 나눠요.<br> 나를 이해해 준 답변에서 호감이 생기면, 그때 서로를 알아가요.</p></section>
+  <section class="intent-actions" aria-label="오늘 마음을 나누는 방법"><a class="intent-card intent-share" href="#/write">${icon('feed')}<h3>내 고민 나누기</h3><p>혼자 담아둔 마음에,<br> 이성의 다른 시선을 만나보세요.</p><span class="intent-cta">이야기 남기기 ${icon('arrow')}</span></a><a class="intent-card intent-listen" href="#/listen">${icon('heart')}<h3>누군가의 고민 듣기</h3><p>이야기를 듣고 싶은 주제를 골라,<br> 도움이 될 답변을 나눠 주세요.</p><span class="intent-cta">마음 들어주기 ${icon('arrow')}</span></a></section>
+  <section class="connection-story"><h3>답변에서 시작해, 서로를 알아가기까지.</h3><ol class="purpose-steps"><li><span class="purpose-step-number">01</span><div><h4>먼저, 고민과 답변</h4><p>프로필 없이 고민을 나누고, 이성의 진심 어린 답변을 받아요.</p></div></li><li><span class="purpose-step-number">02</span><div><h4>궁금해지면, 서로 프로필</h4><p>마음에 드는 답변을 고르고, 서로 동의하면 프로필을 확인해요.</p></div></li><li><span class="purpose-step-number">03</span><div><h4>확인한 뒤, 각자 대화 선택</h4><p>프로필을 본 뒤 둘 다 원할 때, 채팅을 열고 만남을 시작해요.</p></div></li></ol></section>
+  <div class="purpose-promise">${icon('lock')}<p>도움이 된 답변만으로도 충분해요.<br><span>더 알아갈지는 언제나 두 사람이 선택해요.</span></p></div>${previewFoot()}`,{home:true});}
+
+function concernRow(c){return `<li><a href="#/concern?id=${encodeURIComponent(c.id)}"><div class="meta">${topic(c.category)} · ${c.own?'내 고민':'익명의 고민'} · 답변 ${c.own?ownAnswers(c).length:c.answers}개</div><h3 class="item-title">${esc(c.title)}</h3><p class="item-preview">${esc(c.body)}</p>${tags(c.tags)}<div class="feed-row-footer"><span>${c.own?'답변을 읽고 천천히 선택해요':'프로필 비공개'}</span><span>${c.own?'답변 확인하기':'마음 들어주기'} ↗</span></div></a></li>`;}
+function listen(){
+  const p=route().params; const choice=p.has('category')?{category:p.get('category')}:p.has('tag')?{tag:p.get('tag')}:null;
+  if(choice){const items=filterConcerns(SAMPLES,choice); const label=choice.category?topic(choice.category):'#'+choice.tag;
+    return shell('고민 들어주기',`<section class="discovery-results-head">${link('/listen','‹ 주제·해시태그 다시 고르기','link')}<span class="eyebrow">당신이 고른 이야기</span><h2>${esc(label)}</h2><p>상대의 고민을 먼저 읽고, 도움이 될 생각을 나눠 주세요.</p><span class="meta">고른 ${choice.category?'주제':'해시태그'}의 고민 ${items.length}개 · 예시</span></section>${items.length?`<ul class="list feed-list">${items.map(concernRow).join('')}</ul>`:empty('아직 기다리는 이야기가 없어요.','다른 주제나 해시태그를 골라볼까요?',link('/listen','다른 이야기 찾아보기'))}${previewFoot()}`,{back:'/listen'});
+  }
+  return shell('고민 들어주기',`<section class="discovery-intro"><span class="eyebrow">오늘은, 누군가의 이야기에 귀 기울여요.</span><h2>어떤 마음에<br><em>답해주고 싶나요?</em></h2><p>주제나 해시태그를 골라 주세요. 관련된 이성의 고민만 소개해요.</p></section><section class="discovery-search"><form id="search-form"><div class="discovery-search-field">${icon('search')}<label class="sr-only" for="tag-search">찾고 싶은 해시태그</label><input id="tag-search" class="input" name="tag" placeholder="예: #관계의거리" maxlength="16" required><button class="btn btn-primary" type="submit">찾기</button></div><p id="search-error" class="field-help danger" role="alert"></p></form><div class="discovery-tags">${['관계의거리','퇴근후','마음알아가기','새로운시작','내속도','일상나누기'].map(t=>link('/listen?tag='+encodeURIComponent(t),'#'+t,'tag-link')).join('')}</div></section><section class="discovery-topics"><div class="discovery-section-heading"><h3>이야기를 듣고 싶은 주제</h3><span>하나씩, 천천히</span></div><div class="topic-grid">${TOPICS.map(t=>`<a class="topic-choice" href="#/listen?category=${t.id}" aria-label="${t.name} 이야기 찾기"><span class="topic-symbol">${icon(t.icon)}</span><span class="topic-copy"><strong>${t.name}</strong><span>${t.description}</span></span>${icon('arrow')}</a>`).join('')}<a class="topic-write" href="#/write"><span><strong>내 이야기도 나눠볼까요?</strong><span>고민 남기기</span></span>${icon('plus')}</a></div></section><div class="discovery-note">${icon('lock')}<p>고민은 고른 주제 안에서.<br>프로필은 서로 동의한 다음에.</p></div>${previewFoot()}`,{back:'/home'});
+}
+
+function write(){const d=state.draft; return shell('내 고민 나누기',`<section class="compose-intro"><span class="eyebrow">지금은, 당신의 이야기부터</span><h2>혼자 담아두었던 마음을<br>편하게 들려주세요.</h2><p>당신의 프로필은 보이지 않아요.<br>이성의 답변을 듣고, 더 알아갈지는 나중에 선택해요.</p></section>${privacy('고른 주제나 해시태그를 찾은 사람에게만 소개돼요. 이름이나 연락처는 적지 말아 주세요.')}<form id="concern-form"><fieldset class="field"><legend>어떤 이야기인가요?</legend><div class="chip-options">${TOPICS.map(t=>`<label><input type="radio" name="category" value="${t.id}" required ${d.category===t.id?'checked':''}><span>${t.name}</span></label>`).join('')}</div></fieldset><div class="field"><label for="concern-title">한 문장으로 들려주세요</label><input class="input" id="concern-title" name="title" value="${esc(d.title)}" placeholder="지금 마음에 남아 있는 일은 무엇인가요?" minlength="5" maxlength="80" required><p class="field-help">5~80자</p></div><div class="field"><label for="concern-body">어떤 마음이었나요?</label><textarea class="input" id="concern-body" name="body" placeholder="어떤 일이 있었는지, 어떤 마음이었는지 편하게 적어 주세요. 공감이 필요한지, 다른 생각이 궁금한지도 좋아요." minlength="20" maxlength="2000" required>${esc(d.body)}</textarea><p class="field-help"><span id="body-count">${d.body.length}</span> / 2,000자 · 20자 이상</p></div><div class="field"><label for="concern-tags">해시태그 <span class="mute">선택</span></label><input class="input" id="concern-tags" name="tags" value="${esc(d.tags)}" placeholder="#관계의거리 #마음알아가기" maxlength="80"><p class="field-help">주제를 찾을 수 있도록, 최대 3개까지</p></div><p id="form-error" class="danger small" role="alert"></p><div class="form-footer"><button class="btn btn-primary btn-block" type="submit">고민 나누고 답변 기다리기 ${icon('arrow')}</button><p class="compose-aftercare">답변을 받아보는 것만으로도 괜찮아요.<br>프로필 교환과 대화는 나중에 선택해요.</p></div></form>${previewFoot()}`,{back:'/home'});}
+
+function detail(){const c=getConcern(route().params.get('id')); if(!c)return shell('이야기',empty('이야기를 찾을 수 없어요.','새로운 이야기를 만나보세요.',link('/listen','고민 들어주기')),{back:'/home'});
+  const answered=state.answers.find(a=>a.concernId===c.id);
+  const introduction=`<section class="detail-top"><div class="anonymous-label">${icon(c.own?'mine':'lock')}${c.own?'내가 나눈 고민':'프로필 비공개 · 익명의 고민'} <span>· ${topic(c.category)}</span></div><h2 class="detail-heading">${esc(c.title)}</h2><div class="detail-body prose">${esc(c.body)}</div>${tags(c.tags)}</section>`;
+  let content;
+  if(c.own){const answers=ownAnswers(c);content=`<div class="section-line"><h2>도착한 답변 <span class="accent">${answers.length}</span></h2><span class="meta">당신에게 전하는 진심</span></div>${answers.length?`<div class="answer-guide gap-top"><strong>답변을 읽고, 마음이 움직였다면</strong><p>답변을 쓴 사람이 궁금해지면 프로필 교환을 요청해요. 프로필을 본 뒤 대화 여부를 다시 선택할 수 있어요.</p></div>${answers.map(a=>`<article class="answer-card"><div class="anonymous-label">${icon('lock')}${a.alias}</div><p class="prose">${esc(a.body)}</p>${link('/connection?id='+encodeURIComponent(connectionKey(c.id,a.id))+'&concern='+encodeURIComponent(c.id)+'&answer='+a.id,'이 사람이 궁금해요 '+icon('arrow'),'btn btn-outline btn-block')}</article>`).join('')}`:empty('아직 답변을 기다리고 있어요.','누군가 당신의 이야기에 귀 기울일 거예요.')}${!answers.length?demo('답변이 도착한 다음 화면도 확인해 보세요.','demo-answer','예시 답변 받아보기',`data-id="${esc(c.id)}"`):''}`;}
+  else content=`<div class="detail-bottom"><div class="answer-guide"><strong>지금은, 이 고민에 도움이 되는 답변을</strong><p>먼저 마음을 이해해 주세요. 정답을 정해주기보다 당신의 경험과 생각을 나눠 주세요.</p></div>${answered?`<article class="answer-card"><span class="eyebrow">내가 전한 답변</span><p class="prose">${esc(answered.body)}</p><p class="field-help">답변을 전했어요. 작성자가 더 알아가고 싶다면 프로필 교환을 요청할 수 있어요.</p></article>${link('/mine?tab=answers','내가 전한 답변 보기','btn btn-outline btn-block')}`:`<form id="answer-form" data-id="${esc(c.id)}"><div class="field"><label for="answer-body">당신의 생각을 들려주세요</label><textarea class="input" id="answer-body" name="body" minlength="20" maxlength="2000" required placeholder="저도 비슷한 마음을 느낀 적이 있어요…"></textarea><p class="field-help">20자 이상 · 답변에도 프로필은 표시되지 않아요.</p></div><button type="submit" class="btn btn-primary btn-block gap-top">진심 담아 답변 보내기</button></form>`}</div>`;
+  return shell(c.own?'내 이야기':'고민 들어주기',introduction+content+previewFoot(),{back:c.own?'/mine':'/listen?category='+c.category});
+}
+
+function mine(){const answers=route().params.get('tab')==='answers'; return shell('내 이야기',`<section class="page-intro"><span class="eyebrow">나누고, 듣고, 조금 가까워진 마음</span><h2>내가 나눈 이야기.</h2><p>받은 답변과 전한 진심을 여기서 이어가요.</p></section><nav class="small-tabs" aria-label="이야기 종류">${link('/mine','내 고민',!answers?'active':'')}${link('/mine?tab=answers','내가 쓴 답변',answers?'active':'')}</nav>${answers?(state.answers.length?`<ul class="list feed-list">${state.answers.map(a=>{const c=getConcern(a.concernId);return `<li><a href="#/concern?id=${esc(c.id)}"><span class="meta">${topic(c.category)} · 답변을 전했어요</span><h3 class="item-title">${esc(c.title)}</h3><p class="item-preview">${esc(a.body)}</p></a></li>`}).join('')}</ul>`:empty('아직 전한 답변이 없어요.','당신의 경험이 누군가에게는<br>기다리던 한마디일 수 있어요.',link('/listen','고민 들어주기'))):`<ul class="list feed-list">${[...state.concerns].reverse().concat(MY_SAMPLE).map(concernRow).join('')}</ul>${link('/write',icon('plus')+'새 고민 나누기','btn btn-outline btn-block gap-top')}`} ${previewFoot()}`);}
+
+function journey(step){return `<ol class="journey"><li class="${step===1?'current':'done'}"><span>1</span>답변에서 시작</li><li class="${step===2?'current':step>2?'done':''}"><span>2</span>서로 프로필</li><li class="${step===3?'current':''}"><span>3</span>각자 대화 선택</li></ol>`;}
+function status(c){return c.closed?'연결 종료':chatAllowed(c)?'대화 중':profilesVisible(c)?c.mineChat?'대화 선택 기다리는 중':'프로필 확인 · 대화 선택':'프로필 공개 동의 기다리는 중';}
+function connections(){const items=allConnections();return shell('연결과 대화',`<section class="page-intro"><span class="eyebrow">고민을 들어준 그 사람이 궁금해졌다면</span><h2>답변에서 시작된 인연.</h2><p>서로 동의하면 프로필을 확인해요.<br>그다음, 대화할지는 각자 다시 선택해요.</p></section>${items.length?`<ul class="list connection-list gap-top">${items.map(c=>`<li><a class="connection-row" href="#/${chatAllowed(c)?'chat':'connection'}?id=${esc(c.id)}"><span class="connection-mark">${icon(c.closed?'lock':'connection')}</span><span><span class="meta">${status(c)}</span><h3 class="item-title">${profilesVisible(c)?'여름산책':'익명의 답변에서 시작된 연결'}</h3><span class="item-preview">${esc(getConcern(c.concernId)?.title)}</span></span>${icon('arrow')}</a></li>`).join('')}</ul>`:empty('먼저, 마음이 닿는 답변부터.','받은 답변을 읽고 마음이 움직이면<br>그 사람을 조금 더 알아갈 수 있어요.',link('/concern?id=my-first','도착한 예시 답변 읽어보기'))}${previewFoot()}`);}
+
+function profile(){return `<div class="revealed-label">${icon('check')}서로 동의해 공개된 프로필</div><article class="revealed-profile"><div class="profile-cover">${icon('me')}<span>사진이 들어갈 자리 · 예시 프로필</span></div><h2 class="profile-name">여름산책</h2><p class="profile-line">여성 · 29세 · 서울</p><div class="profile-facts"><span>디자이너</span><span>느긋한 대화</span><span>산책을 좋아해요</span></div><div class="profile-block"><h3>나를 소개해요</h3><p>작은 일에도 마음을 쓰는 편이에요.<br>서로의 하루를 편하게 나눌 수 있는 사람이 좋아요.</p></div><div class="profile-block"><h3>함께 나누고 싶은 것</h3><div class="profile-tags"><span>동네 산책</span><span>독립 서점</span><span>조용한 카페</span></div></div><div class="profile-block"><h3>내가 좋아하는 대화</h3><p>답을 서두르지 않고, 서로의 이야기를 끝까지 들어주는 대화요.</p></div></article>`;}
+function connection(){const p=route().params;const id=p.get('id');let c=state.connections[id];const concern=getConcern(c?.concernId??p.get('concern'));const answer=SAMPLE_ANSWERS.find(a=>a.id===(c?.answerId??p.get('answer')));
+  if(!concern||!answer)return shell('서로 알아가기',empty('아직 시작된 연결이 없어요.','마음에 닿은 답변에서 시작해 보세요.',link('/mine','내 이야기 보기')),{back:'/connections'});
+  let body=journey(!c?1:profilesVisible(c)?3:2)+`<section class="connection-context"><span class="eyebrow">이 답변에서 시작된 마음</span><p class="quote">“${esc(answer.body.split('\n')[0])}”</p><p class="meta">내 고민 · ${esc(concern.title)}</p></section>`;
+  if(c?.closed){body+=`<section class="decision-panel center"><div class="privacy-seal">${icon('lock')}</div><h2>여기까지의 마음도 소중해요.</h2><p>연결이 종료되어 프로필은 다시 보이지 않아요.<br>도움이 된 답변은 내 이야기에 남아 있어요.</p>${link('/home','마음 나누기로 돌아가기','btn btn-primary btn-block')}</section>`;}
+  else if(!c){body+=`<section class="decision-panel"><span class="eyebrow">답변을 넘어, 조금 더 궁금해졌다면</span><h2>서로의 프로필을<br>확인해 볼까요?</h2><p>상대도 동의하면 두 사람의 프로필이 함께 공개돼요. 프로필을 본 뒤, 대화할지는 다시 선택해요.</p><div class="own-profile"><strong>상대에게 공개되는 내 정보</strong><p class="card-note">프로필 사진 · 닉네임 · 성별 · 나이 · 활동 지역 · 직업 · 자기소개 · 관심사</p></div><label class="checkbox-row"><input id="reveal-consent" type="checkbox">위 정보를 이 상대와 서로 공개하는 데 동의해요.</label>${button('request','프로필 교환 요청하기','btn btn-primary btn-block',`data-id="${esc(id)}" data-concern="${esc(concern.id)}" data-answer="${esc(answer.id)}" disabled`)}${link('/concern?id='+concern.id,'답변으로 돌아가기','btn btn-outline btn-block')}</section>`;}
+  else if(!profilesVisible(c)){body+=`<section class="decision-panel center"><div class="privacy-seal">${icon('lock')}</div><span class="eyebrow">프로필 교환 요청을 보냈어요</span><h2>서로 궁금해질 때까지,<br>조금 기다려요.</h2><p>상대의 동의를 기다리는 중이에요.<br>아직 두 사람의 프로필은 공개되지 않았어요.</p>${button('ask-close','요청 취소하기','btn btn-outline',`data-id="${esc(id)}"`)}</section>${demo('실제 상대에게 요청이 전송되지는 않아요. 상대가 동의한 상황을 이어서 확인할 수 있어요.','demo-reveal','상대의 프로필 공개 동의 재현',`data-id="${esc(id)}"`)}`;}
+  else {body+=profile();if(chatAllowed(c)){body+=`<section class="decision-panel"><span class="eyebrow">두 사람 모두 대화를 선택했어요</span><h2>이제, 두 사람의 대화를.</h2><p>고민에서 시작된 마음을 천천히 이어가 보세요.</p>${link('/chat?id='+id,'대화방으로 가기 '+icon('arrow'),'btn btn-primary btn-block')}</section>`;}
+    else if(c.mineChat){body+=`<section class="decision-panel"><span class="eyebrow">당신의 선택을 전했어요</span><h2>상대의 마음도 기다려요.</h2><p>상대도 대화를 선택하면 채팅방이 열려요. 아직 채팅은 시작되지 않았어요.</p>${button('ask-close','여기까지 할게요','btn btn-outline',`data-id="${esc(id)}"`)}</section>${demo('상대가 프로필을 확인하고 대화를 선택한 상황을 재현해요.','demo-chat','상대의 대화 선택 재현',`data-id="${esc(id)}"`)}`;}
+    else body+=`<section class="decision-panel"><span class="eyebrow">서로를 확인한 뒤, 당신의 선택</span><h2>이 사람과<br>대화해 보고 싶나요?</h2><p>둘 다 원할 때만 채팅방이 열려요. 마음이 가지 않는다면 여기서 마쳐도 괜찮아요.</p>${button('choose-chat','대화해 보고 싶어요','btn btn-primary btn-block',`data-id="${esc(id)}"`)}${button('ask-close','여기까지 할게요','btn btn-outline btn-block',`data-id="${esc(id)}"`)}</section>`;
+  }
+  return shell('서로 알아가기',body+previewFoot(),{back:'/connections'});
+}
+
+function chat(){const c=currentConnection(); if(!chatAllowed(c))return shell('대화',empty('서로 선택한 다음에 열리는 대화예요.','프로필을 확인한 뒤 두 사람이 모두<br>대화를 선택해야 채팅할 수 있어요.',link(c?'/connection?id='+c.id:'/connections','연결 확인하기')),{back:'/connections'});
+  const messages=state.messages.filter(m=>m.connectionId===c.id);
+  return shell('여름산책',`<div class="chat-sub"><span>서로 대화를 선택했어요.</span>${button('ask-close','대화 끝내기','link',`data-id="${esc(c.id)}"`)}</div><div class="chat-body" id="chat-messages" role="log" aria-label="대화 내용"><p class="msg system">고민을 나누던 두 사람의 새로운 대화.<br>급하지 않게, 당신의 속도로 시작해요.</p><div class="msg theirs"><span class="who">여름산책 · 예시 메시지</span>제 답변이 조금이나마 도움이 됐다니 기뻐요. 오늘은 어떤 하루였나요?</div>${messages.map(m=>`<div class="msg ${m.mine?'mine':'theirs'}">${!m.mine?'<span class="who">여름산책 · 예시 응답</span>':''}${esc(m.body)}<time>${esc(m.time)}</time></div>`).join('')}</div>${messages.some(m=>m.mine)?button('demo-reply','미리보기 · 상대의 예시 답장 보기','chat-replay',`data-id="${esc(c.id)}"`):''}<form id="chat-form" class="chat-input" data-id="${esc(c.id)}"><label for="chat-message" class="sr-only">메시지</label><textarea id="chat-message" class="input" name="body" rows="1" maxlength="1000" required placeholder="편하게 인사를 건네보세요"></textarea><button class="btn btn-primary" type="submit">보내기</button></form>`,{back:'/connections',chat:true});
+}
+
+function me(){return shell('마이',`<section class="me-heading"><div class="avatar">${icon('me')}</div><div><h2>느린숲</h2><p class="meta">예시 계정 · 남성 · 30세</p></div></section>${privacy('내 프로필은 처음부터 공개되지 않아요. 마음이 닿은 상대와 서로 동의했을 때만 공유해요.')}<section><h2 class="section-title">미리보기 안내</h2><p class="detail-body">지금은 사친사친의 화면과 이용 흐름을 확인하는 체험 공간이에요. 고민, 답변, 인물은 모두 가상이며 실제 회원에게 전달되지 않아요.</p><div class="settings-row"><span>내가 작성한 내용<span class="setting-caption">이 브라우저에만 저장되며 기기 간 공유되지 않아요.</span></span>${icon('lock')}</div>${link('/home','홈에서 다시 둘러보기 '+icon('arrow'),'settings-row')}${link('/mine','받은 답변부터 연결까지 체험 '+icon('arrow'),'settings-row')}<button class="settings-row wide" type="button" data-action="ask-reset"><span>체험 기록 초기화<span class="setting-caption">이 브라우저에서 작성한 고민과 답변, 연결을 지워요.</span></span>${icon('arrow')}</button></section><div class="purpose-promise">${icon('heart')}<p>도움이 된 답변만으로도 충분해요.<br>더 알아갈지는 언제나 두 사람이 선택해요.</p></div>`);}
+
+function render(){const {path}=route();const pages={'/home':home,'/listen':listen,'/write':write,'/concern':detail,'/mine':mine,'/connections':connections,'/connection':connection,'/chat':chat,'/me':me};$('#app').innerHTML=(pages[path]??home)();document.title=($('#app h1')?.textContent??'마음 나누기')+' · 사친사친';window.scrollTo({top:0,behavior:'instant'});$('#app h1')?.focus({preventScroll:true});if(path==='/chat')$('#chat-messages')?.scrollTo({top:$('#chat-messages').scrollHeight});$('#announcer').textContent=document.title;}
+function showDialog(title,copy,confirmLabel,onConfirm){
+  document.querySelector('dialog')?.remove();const dialog=document.createElement('dialog');dialog.className='native-dialog';dialog.setAttribute('aria-labelledby','dialog-title');dialog.innerHTML=`<h2 id="dialog-title">${esc(title)}</h2><p>${esc(copy)}</p><div class="dialog-actions"><button class="btn btn-outline" data-cancel>돌아가기</button><button class="btn btn-primary" data-confirm>${esc(confirmLabel)}</button></div>`;document.body.append(dialog);dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.querySelector('[data-confirm]').onclick=()=>{dialog.close();onConfirm();};dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();
+}
+
+document.addEventListener('input',event=>{const form=event.target.closest('#concern-form');if(form){const f=new FormData(form);state.draft={category:String(f.get('category')??''),title:String(f.get('title')??''),body:String(f.get('body')??''),tags:String(f.get('tags')??'')};$('#body-count').textContent=state.draft.body.length;save();}if(event.target.id==='reveal-consent')document.querySelector('[data-action="request"]').disabled=!event.target.checked;});
+document.addEventListener('submit',event=>{
+  const form=event.target;event.preventDefault();const f=new FormData(form);
+  if(form.id==='search-form'){const tag=String(f.get('tag')).trim().replace(/^#/,'');if(!tag||tag.length>15||/[\s,#]/.test(tag)){ $('#search-error').textContent='해시태그 하나를 띄어쓰기 없이 15자 이내로 입력해 주세요.';return;}navigate('/listen?tag='+encodeURIComponent(tag));}
+  if(form.id==='concern-form'){
+    const category=String(f.get('category')??''),title=String(f.get('title')).trim(),body=String(f.get('body')).trim();const inputTags=[...new Set(String(f.get('tags')).split(/[\s,#]+/).filter(Boolean))];
+    if(!TOPICS.some(t=>t.id===category)||title.length<5||body.length<20){$('#form-error').textContent='주제를 고르고, 제목 5자·내용 20자 이상을 입력해 주세요.';return;}
+    if(inputTags.length>3||inputTags.some(t=>t.length>15)){ $('#form-error').textContent='해시태그는 각각 15자 이내, 최대 3개로 입력해 주세요.';return; }
+    const id='local-'+crypto.randomUUID();state.concerns.push({id,category,title,body,tags:inputTags,own:true});state.draft=initialState().draft;save();navigate('/concern?id='+id);toast('이 브라우저에 고민을 남겼어요.');
+  }
+  if(form.id==='answer-form'){const body=String(f.get('body')).trim();if(body.length<20){toast('답변을 20자 이상 적어 주세요.');return;}state.answers.push({concernId:form.dataset.id,body});save();render();toast('체험 답변을 저장했어요.');}
+  if(form.id==='chat-form'){const c=state.connections[form.dataset.id],body=String(f.get('body')).trim();if(!chatAllowed(c)||!body)return;state.messages.push({connectionId:c.id,mine:true,body,time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})});save();render();$('#chat-message')?.focus({preventScroll:true});}
+});
+document.addEventListener('click',event=>{
+  const target=event.target.closest('[data-action]');if(!target||target.disabled)return;const action=target.dataset.action,id=target.dataset.id;
+  if(action==='demo-answer'){const concern=state.concerns.find(c=>c.id===id);if(concern){concern.mockAnswers=true;save();render();toast('예시 답변이 도착한 화면이에요.');}}
+  if(action==='request'){
+    if(!$('#reveal-consent')?.checked)return;
+    const c={id,concernId:target.dataset.concern,answerId:target.dataset.answer,mineReveal:false,theirReveal:false,mineChat:false,theirChat:false,closed:false};state.connections[id]=transition(c,'request');save();navigate('/connection?id='+encodeURIComponent(id));
+  }
+  if(['demo-reveal','choose-chat','demo-chat'].includes(action)&&state.connections[id]){state.connections[id]=transition(state.connections[id],action);save();render();if(action==='demo-chat')toast('두 사람 모두 대화를 선택한 화면이에요.');}
+  if(action==='ask-close')showDialog('여기서 마칠까요?','연결을 마치면 프로필과 대화방을 더 이상 볼 수 없어요. 받은 답변은 내 이야기에 남아요.','연결 마치기',()=>{state.connections[id]=transition(state.connections[id],'close');save();navigate('/connection?id='+encodeURIComponent(id));});
+  if(action==='demo-reply'&&chatAllowed(state.connections[id])){state.messages.push({connectionId:id,mine:false,body:'이야기해 줘서 고마워요. 서두르지 말고 편하게 알아가요.',time:'예시 응답'});save();render();}
+  if(action==='ask-reset')showDialog('체험 기록을 초기화할까요?','이 브라우저에서 직접 작성한 고민과 답변, 연결과 대화가 지워져요. 기본 예시는 그대로 남아요.','초기화하기',()=>{state=initialState();save();navigate('/home');toast('처음부터 다시 둘러볼 수 있어요.');});
+});
+window.addEventListener('hashchange',render);
+render();
+</script>
+</body>
+</html>
