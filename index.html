@@ -378,6 +378,13 @@
 .is-browsing .arrival-intro.arrival-note{flex-direction:row;align-items:center;gap:10px;padding:7px 0 19px;min-height:54px}.is-browsing .arrival-note p{font-size:18px;line-height:1.6;white-space:nowrap;letter-spacing:-.35px}.is-browsing .arrival-note .paper-drawing{width:21px;height:27px;flex:none}.arrival-note .typed-line.is-typing>span>span{animation:typed-letter .001s step-end backwards;animation-delay:var(--delay)}.arrival-note .typed-line.is-typing>span>span:after{animation-duration:.064s}.arrival-note .typed-line.is-typing>span>span:last-child:after{animation:typed-cursor .45s step-end 2 forwards;animation-delay:var(--delay)}
 @media(max-width:370px),(max-height:700px) and (max-width:650px){.is-browsing .arrival-intro.arrival-note{gap:8px;padding:2px 0 12px;min-height:40px}.is-browsing .arrival-note p{font-size:16px}.is-browsing .arrival-note .paper-drawing{width:18px;height:24px}}
 @media(prefers-reduced-motion:reduce){.arrival-note .typed-line.is-typing>span>span{animation:none!important;opacity:1}.arrival-note .typed-line.is-typing>span>span:after{display:none}}
+
+/* Status lives in a temporary paper ticker, outside the page composition. */
+.toast{top:calc(76px + env(safe-area-inset-top));bottom:auto;display:flex;align-items:center;gap:9px;width:calc(100% - 32px);max-width:440px;min-height:60px;padding:7px 8px 7px 14px;background:#efeeecf7;color:#514663;border:1px solid #c4bed1;border-radius:13px;box-shadow:0 7px 26px #33274320;backdrop-filter:blur(14px);font-size:12px;line-height:1.65;animation:notice-arrive .2s ease-out}.toast-pen{display:flex;align-items:center;justify-content:center;color:var(--blue);flex:none;width:23px}.toast-pen .pen-doodle{width:23px;height:29px;stroke-width:1.9}.toast-pen>svg:not(.pen-doodle){width:19px;height:19px}.toast-message{flex:1;min-width:0;word-break:keep-all;overflow-wrap:anywhere}.toast-action{flex:none;color:var(--blue);font-size:11px;min-height:44px;display:flex;align-items:center;justify-content:center;padding:0 5px;white-space:nowrap;text-decoration:underline;text-underline-offset:4px}.toast-dismiss{display:grid;place-items:center;flex:none;width:34px;height:44px;border-radius:7px;color:#82798c}.toast-dismiss svg{width:15px;height:15px}.toast-dismiss:hover{background:#d5cfdf80}.toast-action:focus-visible,.toast-dismiss:focus-visible{outline-offset:0}.profile-editor-privacy{font-size:10px;line-height:1.8;text-align:center;color:#696371;margin:0}.compose-bottom input{width:100%}
+@keyframes notice-arrive{from{opacity:0;transform:translate(-50%,-7px)}to{opacity:1;transform:translate(-50%,0)}}
+@media(max-width:650px){.toast{top:calc(72px + env(safe-area-inset-top));max-width:430px}}
+@media(max-width:370px){.toast{gap:6px;padding-left:11px;font-size:11px;min-height:56px}.toast-action{padding:0 2px;font-size:10px}.toast-pen{width:21px}.toast-dismiss{width:30px}}
+@media(prefers-reduced-motion:reduce){.toast{animation:none}}
 </style>
   
 </head>
@@ -834,8 +841,45 @@ const privacy=copy=>`<div class="privacy-inline">${icon('lock')}<p>${copy}</p></
 const demo=()=>'';
 const empty=(title,copy,action)=>`<section class="empty-state"><div class="empty-illustration">${doodleSvg('paperboat')}</div><h2>${title}</h2><p>${copy}</p>${action??''}</section>`;
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));return true;}catch{toast('브라우저 저장 공간이 없어, 이번 방문에서만 유지돼요');return false;}}
-let toastTimer;
-function toast(message){clearTimeout(toastTimer);$('#toast').textContent=message;$('#toast').hidden=false;toastTimer=setTimeout(()=>{$('#toast').hidden=true;},3600);}
+let toastTimer,toastDuration=3600,toastScope='',draftNoticeTimer,noticeRoute=null;
+const noticeSeen=new Set();
+function dismissToast(){clearTimeout(toastTimer);const el=$('#toast');if(el)el.hidden=true;}
+function restartToastTimer(){clearTimeout(toastTimer);toastTimer=setTimeout(dismissToast,toastDuration);}
+function toast(message,{href='',label='이어서 쓰기',duration=href?8000:3600}={}){
+  const el=$('#toast');if(!el)return;
+  toastDuration=duration;toastScope=route().path;
+  el.innerHTML=`<span class="toast-pen" aria-hidden="true">${href?doodleSvg('envelope'):icon('feed')}</span><span class="toast-message">${esc(message)}</span>${href?`<a class="toast-action" href="#${esc(href)}" data-toast-action>${esc(label)}</a>`:''}<button type="button" class="toast-dismiss" data-action="dismiss-toast" aria-label="알림 닫기">${icon('close')}</button>`;
+  el.hidden=false;restartToastTimer();
+}
+function hasUnsavedProfile(){
+  if(!state.profileDraft)return false;
+  const draft=validateProfile(state.profileDraft,viewer()),saved=validateProfile({...viewer(),...state.profile},viewer());
+  return Boolean(draft.error)||JSON.stringify(draft.value)!==JSON.stringify(saved.value);
+}
+function updatePageNotice(path){
+  if(path===noticeRoute)return;
+  clearTimeout(draftNoticeTimer);noticeRoute=path;noticeSeen.delete('autosaved:'+path);
+  if(toastScope!==path)dismissToast();
+  if(['/me','/profile'].includes(path)&&hasUnsavedProfile()&&!noticeSeen.has('profile-resume')){
+    noticeSeen.add('profile-resume');toast('쓰던 소개가 있어요',{href:'/profile/edit'});
+  }else if(path==='/profile/edit'&&hasUnsavedProfile()&&!noticeSeen.has('profile-restored')){
+    noticeSeen.add('profile-restored');toast('쓰던 소개를 불러왔어요',{duration:2600});
+  }else if(path==='/write'&&(state.draft.title||state.draft.body)&&!noticeSeen.has('story-restored')){
+    noticeSeen.add('story-restored');toast('쓰던 고민을 불러왔어요',{duration:2600});
+  }
+}
+function queueDraftNotice(saved){
+  clearTimeout(draftNoticeTimer);if(!saved)return;
+  const path=route().path,key='autosaved:'+path;
+  if(path==='/profile/edit')noticeSeen.delete('profile-resume');
+  if(noticeSeen.has(key))return;
+  draftNoticeTimer=setTimeout(()=>{if(route().path!==path||$('#toast')?.hidden===false)return;noticeSeen.add(key);toast('임시 저장했어요',{duration:2400});},1000);
+}
+const toastElement=$('#toast');
+toastElement?.addEventListener?.('pointerenter',()=>clearTimeout(toastTimer));
+toastElement?.addEventListener?.('focusin',()=>clearTimeout(toastTimer));
+toastElement?.addEventListener?.('pointerleave',()=>{if(!toastElement.contains(document.activeElement))restartToastTimer();});
+toastElement?.addEventListener?.('focusout',event=>{if(!toastElement.contains(event.relatedTarget))restartToastTimer();});
 function route(){const [path,query='']=(location.hash.slice(1)||'/home').split('?');return {path,params:new URLSearchParams(query)};}
 function navigate(path){if(location.hash==='#'+path)render();else location.hash=path;}
 function getConcern(id){return [MY_SAMPLE,...state.concerns,...sampleConcerns()].find(c=>c.id===id);}
@@ -947,7 +991,7 @@ function listen(){
 }
 function write(){
   const d=state.draft;
-  return shell('고민 쓰기',`<form id="concern-form" class="compose-form" novalidate><p class="compose-salutation" lang="en">${typed("dear, friend","write")}</p><div class="compose-sheet"><div class="compose-toolbar">${choiceSelect('concern-topic','category','고민 주제',d.category,TOPICS.map(t=>({value:t.id,label:t.name,icon:t.icon})),'주제 선택')}</div><label class="sr-only" for="concern-title">고민 제목</label><textarea id="concern-title" name="title" rows="1" placeholder="오늘, 어떤 마음인가요?" minlength="5" maxlength="80" required>${esc(d.title)}</textarea><label class="sr-only" for="concern-body">고민 내용</label><textarea id="concern-body" name="body" placeholder="잘 정리된 이야기가 아니어도 괜찮아요.\n지금 마음에 남은 일을 편하게 들려주세요" minlength="20" maxlength="2000" required>${esc(d.body)}</textarea><div class="compose-bottom"><label class="sr-only" for="concern-tags">해시태그</label><input id="concern-tags" name="tags" value="${esc(d.tags)}" placeholder="#태그 추가"><span class="draft-state" aria-live="polite">${d.title||d.body?'임시 저장됨':''}</span></div></div><div class="compose-footer fixed-actions"><p class="form-privacy">${icon('lock')}이 주제를 선택한 이성에게만 전해져요</p><p id="form-error" class="danger" role="alert"></p><button type="submit" class="btn btn-primary btn-block">고민 보내기 ${icon('arrow')}</button></div></form>`,{back:'/me',screen:'compose-page has-fixed-actions'});
+  return shell('고민 쓰기',`<form id="concern-form" class="compose-form" novalidate><p class="compose-salutation" lang="en">${typed("dear, friend","write")}</p><div class="compose-sheet"><div class="compose-toolbar">${choiceSelect('concern-topic','category','고민 주제',d.category,TOPICS.map(t=>({value:t.id,label:t.name,icon:t.icon})),'주제 선택')}</div><label class="sr-only" for="concern-title">고민 제목</label><textarea id="concern-title" name="title" rows="1" placeholder="오늘, 어떤 마음인가요?" minlength="5" maxlength="80" required>${esc(d.title)}</textarea><label class="sr-only" for="concern-body">고민 내용</label><textarea id="concern-body" name="body" placeholder="잘 정리된 이야기가 아니어도 괜찮아요.\n지금 마음에 남은 일을 편하게 들려주세요" minlength="20" maxlength="2000" required>${esc(d.body)}</textarea><div class="compose-bottom"><label class="sr-only" for="concern-tags">해시태그</label><input id="concern-tags" name="tags" value="${esc(d.tags)}" placeholder="#태그 추가"></div></div><div class="compose-footer fixed-actions"><p class="form-privacy">${icon('lock')}이 주제를 선택한 이성에게만 전해져요</p><p id="form-error" class="danger" role="alert"></p><button type="submit" class="btn btn-primary btn-block">고민 보내기 ${icon('arrow')}</button></div></form>`,{back:'/me',screen:'compose-page has-fixed-actions'});
 }
 function detail(){
   const c=getConcern(route().params.get('id'));
@@ -1044,11 +1088,11 @@ function chat(){
 }
 function me(){
   const m=viewer(),p=state.profile;
-  return shell('마이',`<p class="stationery-eyebrow my-letter-eyebrow" lang="en">${typed('my little corner','me')}</p><a class="my-profile-card my-letter-card" href="#/profile" aria-label="내 프로필 보기"><div class="my-letter-identity">${ownPortrait(p.photo)}<div><h2>${esc(m.nickname)}</h2><p>${publicFacts(m)}</p></div></div><p class="my-letter-excerpt ${profileIntroduction(p)?'':'is-empty'}">${esc(profileIntroduction(p)||'좋아하는 것부터, 나를 조금씩 소개해요')}</p><div class="my-letter-footer"><span>내 프로필 보기</span>${icon('arrow')}</div></a>${state.profileDraft?link('/profile/edit',`<span>${icon('mine')}쓰던 소개가 있어요</span><span>이어 쓰기 ${icon('arrow')}</span>`,'profile-draft-link'):''}<p class="my-letter-privacy">${icon('lock')}사진과 소개는 서로 동의한 상대에게만</p><section class="settings my-letter-settings" aria-label="내 활동과 설정">${link('/write',`<span class="settings-symbol">${icon('mine')}</span><span>고민 쓰기</span>${icon('plus')}`,'settings-row')}${link('/preferences?from=me',`<span class="settings-symbol">${icon('filter')}</span><span>관심 주제<small>${state.topics.length?state.topics.map(topic).join(' · '):'들어줄 주제 선택'}</small></span>${icon('back')}`,'settings-row')}</section>`,{screen:'my-page stationery-page',compact:true,tools:link('/mine','내 고민 관리','header-manage')});
+  return shell('마이',`<p class="stationery-eyebrow my-letter-eyebrow" lang="en">${typed('my little corner','me')}</p><a class="my-profile-card my-letter-card" href="#/profile" aria-label="내 프로필 보기"><div class="my-letter-identity">${ownPortrait(p.photo)}<div><h2>${esc(m.nickname)}</h2><p>${publicFacts(m)}</p></div></div><p class="my-letter-excerpt ${profileIntroduction(p)?'':'is-empty'}">${esc(profileIntroduction(p)||'좋아하는 것부터, 나를 조금씩 소개해요')}</p><div class="my-letter-footer"><span>내 프로필 보기</span>${icon('arrow')}</div></a><p class="my-letter-privacy">${icon('lock')}사진과 소개는 서로 동의한 상대에게만</p><section class="settings my-letter-settings" aria-label="내 활동과 설정">${link('/write',`<span class="settings-symbol">${icon('mine')}</span><span>고민 쓰기</span>${icon('plus')}`,'settings-row')}${link('/preferences?from=me',`<span class="settings-symbol">${icon('filter')}</span><span>관심 주제<small>${state.topics.length?state.topics.map(topic).join(' · '):'들어줄 주제 선택'}</small></span>${icon('back')}`,'settings-row')}</section>`,{screen:'my-page stationery-page',compact:true,tools:link('/mine','내 고민 관리','header-manage')});
 }
 function ownProfile(){
   const m=viewer(),p=state.profile;
-  return shell('내 프로필',`<p class="profile-privacy own-letter-privacy">${icon('lock')}서로 동의한 상대에게, 이렇게 보여요</p>${profileLetter(ownPublicProfile(m,p),{label:'상대에게 보일 내 프로필'})}<div class="own-letter-actions">${link('/profile/edit',state.profileDraft?'쓰던 소개 이어가기':'프로필 수정하기','btn btn-primary btn-block')}${!profileIntroduction(p)||!p.photo?'<p>사진도 소개도, 천천히 채워도 괜찮아요</p>':''}</div>`,{back:'/me',screen:'own-profile-page stationery-page',tools:link('/profile/edit','수정','header-manage')});
+  return shell('내 프로필',`<p class="profile-privacy own-letter-privacy">${icon('lock')}서로 동의한 상대에게, 이렇게 보여요</p>${profileLetter(ownPublicProfile(m,p),{label:'상대에게 보일 내 프로필'})}<div class="own-letter-actions">${link('/profile/edit','프로필 수정하기','btn btn-primary btn-block')}${!profileIntroduction(p)||!p.photo?'<p>사진도 소개도, 천천히 채워도 괜찮아요</p>':''}</div>`,{back:'/me',screen:'own-profile-page stationery-page',tools:link('/profile/edit','수정','header-manage')});
 }
 function editorPhoto(photo){return photo?`<img src="${esc(photo)}" alt="선택한 프로필 사진">`:`<span class="photo-pick-empty">${personDoodle(viewer().id)}<span>내가 편안한 순간의 사진</span></span>`;}
 function profileStep(){const step=route().params.get('step')??state.profileDraft?.editorStep;return ['basics','photos','about'].includes(step)?step:'basics';}
@@ -1085,7 +1129,7 @@ function profileEdit(){
   if(step==='photos')body=profilePhotoStep(d);
   if(step==='about')body=profileChoiceStep(d);
   const back=step==='basics'?editorReturn():profileStepRoute(step==='photos'?'basics':'photos');
-  return shell('프로필 꾸미기',`${profileProgress(step)}<section class="wizard-intro">${doodleSvg(copy[0])}<h2>${copy[1]}</h2><p>${copy[2]}</p></section><form id="profile-form" data-step="${step}" class="profile-form profile-letter-editor wizard-form" novalidate>${body}<div class="profile-editor-actions fixed-actions"><p id="profile-error" class="danger" role="alert"></p><p class="profile-draft-status" id="profile-draft-status" role="status">${state.profileDraft?'쓰던 내용을 불러왔어요':'프로필은 서로 동의한 상대에게만 보여요'}</p><button type="submit" class="btn btn-primary btn-block">${step==='basics'?'사진 고르기':step==='photos'?'나를 소개하기':'공개될 모습 보기'} ${icon('arrow')}</button></div></form>`,{back,screen:'profile-edit-page stationery-page has-fixed-actions profile-wizard',entry:true});
+  return shell('프로필 꾸미기',`${profileProgress(step)}<section class="wizard-intro">${doodleSvg(copy[0])}<h2>${copy[1]}</h2><p>${copy[2]}</p></section><form id="profile-form" data-step="${step}" class="profile-form profile-letter-editor wizard-form" novalidate>${body}<div class="profile-editor-actions fixed-actions"><p id="profile-error" class="danger" role="alert"></p><p class="profile-editor-privacy">프로필은 서로 동의한 상대에게만 보여요</p><button type="submit" class="btn btn-primary btn-block">${step==='basics'?'사진 고르기':step==='photos'?'나를 소개하기':'공개될 모습 보기'} ${icon('arrow')}</button></div></form>`,{back,screen:'profile-edit-page stationery-page has-fixed-actions profile-wizard',entry:true});
 }
 function profilePreview(){
   const result=validateProfile(profileEditorValue(),viewer());
@@ -1160,13 +1204,13 @@ function render({keepScroll=false,focus=null}={}){
   const section=path==='/home'&&['approach','experience','privacy','start'].includes(params.get('section'))?$('#landing-'+params.get('section')):null;
   const heading=section?.querySelector('h2')??$('#app h1');heading?.setAttribute('tabindex','-1');if(focus)$(focus)?.focus({preventScroll:true});else if(!keepScroll)heading?.focus({preventScroll:true});section?.scrollIntoView({behavior:'instant',block:'start'});
   if(path==='/chat')$('#chat-messages')?.scrollTo({top:$('#chat-messages').scrollHeight});
-  $('#announcer').textContent=document.title;initLanding();initSwipe();resizeWritingTitle();measureCardText();resizeChatInput();
+  $('#announcer').textContent=document.title;updatePageNotice(path);initLanding();initSwipe();resizeWritingTitle();measureCardText();resizeChatInput();
 }
 function resizeChatInput(){const input=$('#chat-message');if(!input)return;input.style.height='auto';input.style.height=Math.min(120,Math.max(42,input.scrollHeight))+'px';}
 function showDialog(title,copy,confirmLabel,onConfirm){
   document.querySelector('dialog')?.remove();const dialog=document.createElement('dialog');dialog.className='native-dialog';dialog.setAttribute('aria-labelledby','dialog-title');dialog.innerHTML=`<h2 id="dialog-title">${esc(title)}</h2><p>${esc(copy)}</p><div class="dialog-actions"><button class="btn btn-outline" data-cancel>돌아가기</button><button class="btn btn-primary" data-confirm>${esc(confirmLabel)}</button></div>`;document.body.append(dialog);dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.querySelector('[data-confirm]').onclick=()=>{dialog.close();onConfirm();};dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();
 }
-function captureDraft(form){const data=new FormData(form);for(const key of ['category','title','body','tags'])if(data.has(key))state.draft[key]=String(data.get(key)??'');save();const status=$('.draft-state');if(status)status.textContent=state.draft.title||state.draft.body?'임시 저장됨':'';const error=$('#form-error');if(error)error.textContent='';}
+function captureDraft(form){const data=new FormData(form);for(const key of ['category','title','body','tags'])if(data.has(key))state.draft[key]=String(data.get(key)??'');const saved=save();const error=$('#form-error');if(error)error.textContent='';return saved;}
 function captureProfile(form){
   const data=new FormData(form),old=profileEditorValue(),has=key=>data.get(key)!=null;state.profileDraft={...old,...profileExtras(old)};
   for(const key of ['nickname','region','occupation','bio','bioMode','layout'])if(has(key))state.profileDraft[key]=String(data.get(key));
@@ -1175,7 +1219,7 @@ function captureProfile(form){
   for(const [key,g] of Object.entries(PROFILE_CHOICES))if(has('choices-present-'+key))state.profileDraft.selections[key]=[...new Set(data.getAll('choice-'+key))].filter(item=>g.options.includes(item)).slice(0,g.limit);
   for(const b of state.profileDraft.blocks)for(const key of ['title','body','caption'])if(has('block-'+b.id+'-'+key))b[key]=String(data.get('block-'+b.id+'-'+key));
   if(['basics','photos','about'].includes(form.dataset?.step))state.profileDraft.editorStep=form.dataset.step;
-  const saved=save(),status=$('#profile-draft-status');if(status)status.textContent=saved?'임시 저장됨 · 아직 공개되지 않아요':'저장 공간이 부족해, 이번 방문에서만 유지돼요';
+  const saved=save();
   return saved;
 }
 function openAdvancedProfile(){const panel=$('.feed-composition-panel');if(panel)panel.open=true;}
@@ -1213,9 +1257,9 @@ document.addEventListener('input',event=>{
     const panel=$('.wizard-custom-job'),input=panel?.querySelector('input'),custom=event.target.value==='__custom__';
     if(panel&&input){panel.hidden=!custom;input.disabled=!custom;if(custom)input.focus();}
   }
-  const profileForm=event.target.closest('#profile-form');if(profileForm&&event.target.type!=='file'){captureProfile(profileForm);updateProfileChoiceUI(profileForm);$('#profile-error').textContent='';}
+  const profileForm=event.target.closest('#profile-form');if(profileForm&&event.target.type!=='file'){queueDraftNotice(captureProfile(profileForm));updateProfileChoiceUI(profileForm);$('#profile-error').textContent='';}
   if(event.target.id==='concern-title')resizeWritingTitle();
-  const form=event.target.closest('#concern-form');if(form)captureDraft(form);
+  const form=event.target.closest('#concern-form');if(form)queueDraftNotice(captureDraft(form));
   if(event.target.closest('#signup-form')){state.signupDraft=Object.fromEntries(new FormData($('#signup-form')));$('#form-error').textContent='';save();}
   const reply=event.target.closest('#answer-form');if(reply){state.replyDrafts[reply.dataset.id]=event.target.value;save();const error=$('#answer-error');if(error)error.textContent='';event.target.removeAttribute('aria-invalid');}
   const chat=event.target.closest('#chat-form');if(chat){state.chatDrafts[chat.dataset.id]=event.target.value;save();resizeChatInput();chat.querySelector('[type="submit"]').disabled=!event.target.value.trim();}
@@ -1251,9 +1295,11 @@ document.addEventListener('submit',event=>{
   if(form.id==='chat-form'){const c=state.connections[form.dataset.id],body=String(f.get('body')).trim();if(!chatAllowed(c,viewer())||!body||body.length>1000)return;delete state.chatDrafts[c.id];state.messages.push({connectionId:c.id,mine:true,body,time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})});save();render();$('#chat-message')?.focus({preventScroll:true});}
 });
 document.addEventListener('click',event=>{
+  if(event.target.closest('[data-toast-action]')){noticeSeen.add('profile-restored');dismissToast();return;}
   const choice=event.target.closest('[data-choice]');if(choice){openChoice(choice);return;}
   const target=event.target.closest('[data-action]');if(!target||target.disabled)return;const action=target.dataset.action,id=target.dataset.id;
 
+  if(action==='dismiss-toast'){dismissToast();return;}
   if(action==='pick-occupation'){
     const form=target.closest('form'),input=form?.querySelector('[name="occupation"]');if(!input)return;
     input.value=target.dataset.value;input.dispatchEvent(new Event('input',{bubbles:true}));target.closest('details').open=false;input.focus();return;
