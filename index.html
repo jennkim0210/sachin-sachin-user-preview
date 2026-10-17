@@ -618,6 +618,130 @@ html { scroll-padding-top: 90px; overflow-x:clip; }
   .product-header .brand-symbol,.brand-header .brand-symbol { transform:none; }
   .product-app .product-header,.image-landing .brand-header { height:64px; }
 }
+
+/* Conversation home: one person, one story, one response surface. */
+.product-app.conversation-home { --ink:#292725; --paper:#f6f5f2; --muted:#75716c; background:var(--paper); }
+.conversation-home .product-header { height:68px; max-width:1120px; padding:0 32px; display:grid; grid-template-columns:1fr auto 1fr; gap:24px; background:#f6f5f2f2; border-bottom:1px solid transparent; }
+.conversation-home .product-header.is-scrolled { border-color:#e6e3de; }
+.conversation-home .wordmark.member-wordmark { font-size:24px; gap:7px; letter-spacing:-1px; width:max-content; }
+.conversation-home .brand-symbol { width:29px; height:29px; }
+.conversation-home .product-header nav { gap:8px; }
+.conversation-home .product-header nav a { color:#78736e; }
+.conversation-home .product-header nav a.active { color:#292725; background:#eae7e2; }
+.conversation-home .header-tools { display:flex; align-items:center; justify-content:flex-end; gap:8px; }
+.conversation-home .header-tools .icon-button { width:40px; height:40px; color:#514d48; background:transparent; border:1px solid #ddd9d3; border-radius:50%; }
+.conversation-home .header-tools .write-shortcut { color:#fff; background:#292725; border-color:#292725; }
+.conversation-home .header-tools .icon-button:hover { background:#eae6e0; }
+.conversation-home .header-tools .write-shortcut:hover { background:#48423d; }
+.conversation-home .header-tools svg { width:19px; height:19px; }
+.product-app.conversation-home .app-main { max-width:530px; margin:26px auto 0; padding:0 24px; }
+.conversation-home .discovery-stage { padding:0 0 12px; }
+.conversation-home .concern-stack { perspective:none; }
+.conversation-home .stack-near { inset:14px 10px -9px; transform:none; border-radius:25px; background:#ebe7e1; border-color:#e1dcd5; }
+.conversation-home .concern-card { display:block; border:1px solid #e2ded7; border-radius:25px; background:#fff!important; box-shadow:0 12px 32px -20px #312a222f,0 2px 4px #312a2205; }
+.conversation-home .card-open { min-height:0; padding:27px 28px 0; border-radius:25px 25px 0 0; }
+.conversation-home .card-open:focus-visible { outline:2px solid #82766a; outline-offset:-5px; }
+.conversation-home .card-person { display:flex; align-items:center; gap:12px; }
+.conversation-home .person-mark { display:grid; place-items:center; width:46px; height:48px; flex:none; border:1px solid #e4dfd8; border-radius:18px 18px 20px 20px; background:#f2eee9; color:#807061; }
+.conversation-home .person-mark svg { width:24px; height:24px; stroke-width:1.35; }
+.conversation-home .card-person strong { font-size:16px; font-weight:600; letter-spacing:-.35px; }
+.conversation-home .card-person p { display:flex; align-items:center; gap:7px; font-size:12px; color:#79736b; margin-top:5px; }
+.conversation-home .card-person p span { color:#b6aea5; }
+.conversation-home .person-privacy { margin-left:auto; color:#9d958c; }
+.conversation-home .person-privacy svg { width:15px; height:15px; }
+.conversation-home .card-story { padding:29px 0 0; }
+.conversation-home .card-topic { display:block; color:#8b7868; font-size:12px; font-weight:500; margin-bottom:12px; }
+.conversation-home .concern-card h2 { font-size:29px; font-weight:600; line-height:1.4; letter-spacing:-.8px; color:#292725; text-wrap:pretty; }
+.conversation-home .card-excerpt { margin:20px 0 0; font-size:16px; font-weight:400; line-height:1.8; color:#706a63; -webkit-line-clamp:3; white-space:pre-line; }
+.conversation-home .card-excerpt.is-expanded { display:block; overflow:visible; }
+.conversation-home .card-expand { display:flex; align-items:center; gap:5px; min-height:44px; margin:5px 0 0; padding:0; background:none; border:0; font-size:12px; color:#6b6157; }
+.conversation-home .card-expand svg { width:14px; height:14px; }
+.conversation-home .card-expand[aria-expanded="true"] svg { transform:rotate(180deg); }
+.conversation-home .card-actions { display:flex; align-items:center; gap:12px; padding:17px 28px 25px; border-top:1px solid #efede9; margin-top:7px; }
+.conversation-home .card-primary,.conversation-home .card-secondary { display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:50px; padding:0 22px; border:1px solid #e2ddd6; border-radius:100px; font-size:14px; font-weight:600; background:#fff; color:#766e65; transition:background .15s; }
+.conversation-home .card-primary { background:#292725; border-color:#292725; color:#fff; }
+.conversation-home .card-primary:hover { background:#4d443c; }
+.conversation-home .card-secondary:hover { background:#f2eee9; }
+.conversation-home .card-primary svg,.conversation-home .card-secondary svg { width:19px; height:19px; }
+.conversation-home .card-actions .card-primary { flex:1; }
+.conversation-home .card-actions .card-secondary { padding:0 16px; }
+.conversation-home .deck-foot { display:flex; align-items:center; justify-content:center; gap:6px; margin:22px 0 0; min-height:36px; }
+.conversation-home .swipe-help { display:block; font-size:11px; color:#837b72; margin:0; text-align:center; line-height:1.6; }
+.conversation-home .deck-undo { display:grid; place-items:center; width:36px; height:36px; border:0; background:transparent; color:#766c61; flex:none; }
+.conversation-home .deck-undo svg { width:16px; height:16px; }
+.conversation-home .stamp-reply { color:#5f5145; background:#fffaf4ed; }
+.conversation-home .stamp-skip { color:#8b7770; background:#fffbf8ed; }
+.conversation-home .card-reply { border-top:1px solid #e8e2da; background:#faf8f5; padding:17px 28px 25px; margin-top:7px; scroll-margin-bottom:105px; scroll-margin-top:80px; }
+.conversation-home .reply-label { display:flex; align-items:center; justify-content:space-between; margin:0 0 10px; }
+.conversation-home .reply-label label { font-size:13px; font-weight:600; color:#4d443b; }
+.conversation-home .reply-label .icon-button { width:32px; height:32px; color:#86796d; }
+.conversation-home .reply-label .icon-button:hover { background:#ece6df; }
+.conversation-home .reply-label .icon-button svg { width:17px; height:17px; }
+.conversation-home .card-reply textarea { display:block; width:100%; min-height:132px; resize:vertical; border:1px solid #e1dbd3; border-radius:15px; padding:15px; font-size:16px; line-height:1.75; color:#403a34; background:#fff; }
+.conversation-home .card-reply textarea::placeholder { color:#9b9186; }
+.conversation-home .card-reply textarea:focus { outline:1px solid #8a7a6a; border-color:#8a7a6a; outline-offset:0; }
+.conversation-home .reply-hint { font-size:11px; color:#83786d; line-height:1.7; margin-top:8px; }
+.conversation-home .danger { color:#a33b31; }
+.conversation-home .danger:not(:empty) { margin-top:8px; }
+.conversation-home .reply-submit { display:flex; align-items:center; gap:14px; justify-content:space-between; margin-top:19px; }
+.conversation-home .reply-submit p { font-size:11px; line-height:1.65; color:#7c7064; }
+.conversation-home .card-sent { display:grid; grid-template-columns:28px 1fr; gap:10px; background:#f7f4ee; border-top:1px solid #e8e2da; padding:23px 28px 25px; margin-top:7px; }
+.conversation-home .sent-check { display:grid; place-items:center; width:26px; height:26px; border:1px solid #d9cfc2; border-radius:50%; color:#7b6955; }
+.conversation-home .sent-check svg { width:15px; height:15px; }
+.conversation-home .card-sent h3 { font-size:16px; font-weight:600; line-height:26px; }
+.conversation-home .card-sent h3:focus { outline:none; }
+.conversation-home .card-sent p { font-size:12px; line-height:1.8; color:#817465; margin-top:4px; }
+.conversation-home .card-sent-actions { display:flex; gap:9px; grid-column:1/-1; margin-top:13px; }
+.conversation-home .card-sent-actions > * { flex:1; padding:0 12px; font-size:13px; }
+.conversation-home :focus-visible { outline-color:#8a7766; }
+.conversation-home .tabbar { background:#f6f5f2f5; border-color:#e3dfd8; }
+.conversation-home .tabbar a { color:#827a71; }
+.conversation-home .tabbar a.active { color:#292725; }
+.conversation-home .tabbar a.active svg { background:#e9e4dd; }
+.conversation-home .deck-empty .btn-primary { background:#292725; color:#fff; }
+.conversation-home .empty-art { background:#ece7df; color:#8c7a66; }
+@media(max-width:650px) {
+  .conversation-home .product-header { display:flex; height:64px; padding:0 22px; gap:16px; }
+  .conversation-home .product-header nav { display:none; }
+  .conversation-home .header-tools { margin-left:auto; gap:8px; }
+  .conversation-home .header-tools .icon-button { width:36px; height:36px; }
+  .conversation-home .wordmark.member-wordmark { font-size:23px; }
+  .conversation-home .brand-symbol { width:28px; height:28px; }
+  .product-app.conversation-home .app-main { margin-top:14px; padding:0 18px; }
+  .conversation-home .concern-card { border-radius:23px; }
+  .conversation-home .card-open { padding:23px 23px 0; }
+  .conversation-home .card-person strong { font-size:15px; }
+  .conversation-home .card-person p { font-size:11px; }
+  .conversation-home .person-mark { width:42px; height:44px; border-radius:16px 16px 18px 18px; }
+  .conversation-home .card-story { padding-top:26px; }
+  .conversation-home .concern-card h2 { font-size:26px; line-height:1.43; letter-spacing:-.65px; }
+  .conversation-home .card-excerpt { font-size:15px; line-height:1.8; margin-top:18px; }
+  .conversation-home .card-actions { padding:17px 23px 23px; }
+  .conversation-home .card-reply { padding:15px 23px 23px; }
+  .conversation-home .card-sent { padding:21px 23px 23px; }
+  .conversation-home .deck-foot { margin-top:19px; }
+}
+@media(max-width:370px), (max-height:700px) and (max-width:650px) {
+  .conversation-home .product-header { height:58px; padding:0 17px; }
+  .product-app.conversation-home .app-main { margin-top:10px; padding:0 14px; }
+  .conversation-home .card-open { padding:19px 20px 0; }
+  .conversation-home .card-story { padding-top:20px; }
+  .conversation-home .card-topic { margin-bottom:9px; }
+  .conversation-home .concern-card h2 { font-size:23px; }
+  .conversation-home .card-excerpt { -webkit-line-clamp:2; font-size:14px; margin-top:14px; }
+  .conversation-home .card-expand { min-height:38px; margin-top:3px; }
+  .conversation-home .card-actions { padding:13px 20px 19px; }
+  .conversation-home .card-primary,.conversation-home .card-secondary { min-height:46px; font-size:13px; }
+  .conversation-home .deck-foot { margin-top:17px; }
+  .conversation-home .swipe-help { font-size:10px; }
+  .conversation-home .card-reply,.conversation-home .card-sent { padding-left:20px; padding-right:20px; }
+  .conversation-home .reply-submit { gap:8px; }
+  .conversation-home .reply-submit .card-primary { padding:0 16px; }
+  .conversation-home .reply-submit p { font-size:10px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .conversation-home .concern-card,.conversation-home .card-primary,.conversation-home .card-secondary { transition:none; }
+}
 </style>
   
   
@@ -798,11 +922,11 @@ function anonymousAvatar(c){return '<span class="anonymous-avatar" aria-label="�
 function choiceFrom(p){return p.has('category')?{category:p.get('category')}:p.has('tag')?{tag:p.get('tag')}:null;}
 function choiceQuery(c){return c?.category?'category='+encodeURIComponent(c.category):c?.tag?'tag='+encodeURIComponent(c.tag):'';}
 const tabs=[['/listen','홈','home'],['/connections','채팅방','feed'],['/me','마이','me']];
-function shell(title,body,{back,chat=false,tools='',screen='',entry=false}={}){
+function shell(title,body,{back,chat=false,tools='',screen='',entry=false,compact=false}={}){
   const {path}=route(),own=path==='/concern'&&getConcern(route().params.get('id'))?.own;
   const active=path==='/me'||path==='/mine'||path==='/write'||path==='/about'||own?'/me':/connection|chat/.test(path)?'/connections':'/listen';
   const nav=tabs.map(([href,label,symbol])=>`<a href="#${href}" ${href===active?'class="active" aria-current="page"':''}>${icon(symbol)}<span>${label}</span></a>`).join('');
-  return `<div class="product-app ${chat?'is-chat':''} ${entry?'is-entry':''} ${screen}"><header class="product-header">${brand(entry?'/home':'/listen')}${entry?'':'<nav aria-label="주 메뉴">'+nav+'</nav>'}</header><main class="app-main"><div class="topbar"><div class="row">${back?link(back,icon('back'), 'back') .replace('class="back"','class="back" aria-label="뒤로"'):''}${chat?personAvatar(currentConnection()):''}<h1 tabindex="-1">${title}</h1></div><div class="topbar-tools">${tools}</div></div><div class="page ${chat?'chat':''}">${body}</div></main>${entry?'':'<nav class="tabbar" aria-label="하단 메뉴">'+nav+'</nav>'}</div>`;
+  return `<div class="product-app ${chat?'is-chat':''} ${entry?'is-entry':''} ${screen}"><header class="product-header">${brand(entry?'/home':'/listen')}${entry?'':'<nav aria-label="주 메뉴">'+nav+'</nav>'}${compact?'<div class="header-tools">'+tools+'</div>':''}</header><main class="app-main">${compact?`<h1 class="sr-only" tabindex="-1">${title}</h1>`:`<div class="topbar"><div class="row">${back?link(back,icon('back'), 'back') .replace('class="back"','class="back" aria-label="뒤로"'):''}${chat?personAvatar(currentConnection()):''}<h1 tabindex="-1">${title}</h1></div><div class="topbar-tools">${tools}</div></div>`}<div class="page ${chat?'chat':''}">${body}</div></main>${entry?'':'<nav class="tabbar" aria-label="하단 메뉴">'+nav+'</nav>'}</div>`;
 }
 
 let landingHeaderObserver;
@@ -847,13 +971,28 @@ function preferences(){
 }
 const publicFacts=c=>[c.ageBand??'30대',c.occupation??'직장인',c.region??'서울'].map(esc).join(' · ');
 const eligible=c=>Boolean(c&&(c.own||canRespond(c,viewer())&&(state.topics.includes(c.category)||state.answers.some(a=>a.concernId===c.id))));
+let discovery={id:null,expanded:false,reply:false,sent:false};
+function openCardReply(){
+  if(!discovery.id||discovery.sent)return;
+  discovery.reply=true;
+  render({keepScroll:true,focus:'#answer-body'});
+  $('#answer-form')?.scrollIntoView({behavior:'instant',block:'end'});
+}
 function listen(){
   if(!state.topics.length)return preferences();
-  const queue=recommendedConcerns(sampleConcerns(),state,viewer()),c=queue[0];
-  const tools=`${state.skipped.length?button('undo-skip',icon('undo'),'icon-button','aria-label="방금 넘긴 고민 다시 보기"'):''}${link('/preferences',icon('filter'),'icon-button').replace('class="icon-button"','class="icon-button" aria-label="관심 주제 변경"')}${link('/write',icon('plus'),'icon-button').replace('class="icon-button"','class="icon-button" aria-label="고민 쓰기"')}`;
-  if(!c)return shell('도착한 고민',`<div class="deck-empty"><span class="empty-art">${icon('check')}</span><h2>오늘 도착한 고민을<br>모두 만났어요.</h2>${link('/preferences','관심 주제 바꾸기','btn btn-primary')}${state.skipped.length?button('restart-deck','넘긴 고민 다시 보기','quiet-link'):''}</div>`,{tools,screen:'deck-page text-deck'});
-  const href='/concern?id='+encodeURIComponent(c.id);
-  return shell('도착한 고민',`<div class="discovery-stage"><div class="concern-stack" data-depth="${Math.min(2,queue.length-1)}">${queue.length>2?'<div class="stack-layer stack-far" aria-hidden="true"></div>':''}${queue.length>1?'<div class="stack-layer stack-near" aria-hidden="true"></div>':''}<article class="concern-card text-card" data-concern="${esc(c.id)}" aria-roledescription="스와이프 카드"><span class="swipe-stamp stamp-skip" aria-hidden="true">다음 고민</span><span class="swipe-stamp stamp-reply" aria-hidden="true">들어줄게요</span><a class="card-open" href="#${href}" aria-label="고민 자세히 보기" aria-describedby="swipe-help"><div class="card-topline"><span class="topic-badge">${icon(TOPICS.find(t=>t.id===c.category)?.icon)}${topic(c.category)}</span><span class="card-private">${icon('lock')}익명</span></div><div class="card-story"><h2>${esc(c.title)}</h2><p class="card-excerpt">${esc(c.body.replace(/\s+/g,' '))}</p></div><div class="card-bottom"><p class="card-facts">${publicFacts(c)}</p><span class="card-more">자세히 보기 ${icon('arrow')}</span></div></a></article></div><div class="deck-actions">${button('skip-card',icon('close')+'<span>넘기기</span>','skip-card',`data-id="${esc(c.id)}"`)}${link(href+'&reply=1',icon('feed')+'<span>들어주기</span>','listen-card')}</div><p class="swipe-help" id="swipe-help"><span>← 넘기기</span><span>들어주기 →</span><span class="sr-only">카드를 좌우로 밀거나 아래 버튼을 눌러 주세요. 카드에 초점을 두고 왼쪽 또는 오른쪽 방향키도 사용할 수 있어요.</span></p></div>`,{tools,screen:'deck-page text-deck'});
+  const queue=recommendedConcerns(sampleConcerns(),state,viewer());
+  const sent=discovery.sent&&state.answers.some(a=>a.concernId===discovery.id)&&canRespond(getConcern(discovery.id),viewer());
+  const c=sent?getConcern(discovery.id):queue[0];
+  if(c?.id!==discovery.id)discovery={id:c?.id??null,expanded:false,reply:Boolean(state.replyDrafts[c?.id]),sent:false};
+  const tools=`${link('/preferences',icon('filter'),'icon-button').replace('class="icon-button"','class="icon-button" aria-label="관심 주제 변경"')}${link('/write',icon('plus'),'icon-button write-shortcut').replace('class="icon-button write-shortcut"','class="icon-button write-shortcut" aria-label="고민 쓰기"')}`;
+  const options={tools,screen:'deck-page text-deck conversation-home',compact:true};
+  if(!c)return shell('홈',`<div class="deck-empty"><span class="empty-art">${icon('check')}</span><h2>오늘 도착한 고민을<br>모두 만났어요.</h2>${link('/preferences','관심 주제 바꾸기','btn btn-primary')}${state.skipped.length?button('restart-deck','넘긴 고민 다시 보기','quiet-link'):''}</div>`,options);
+  const id=esc(c.id),hasNext=sent?queue.length>0:queue.length>1,conn=state.connections['sent_'+c.id];
+  let response;
+  if(sent)response=`<section class="card-sent" aria-labelledby="answer-sent-heading"><span class="sent-check">${icon('check')}</span><div><h3 id="answer-sent-heading" tabindex="-1">답변을 보냈어요.</h3><p>${chatAllowed(conn,viewer())?'채팅방이 열렸어요. 이야기를 이어가 보세요.':'상대가 선택하면 익명 채팅방이 열려요.'}</p></div><div class="card-sent-actions">${chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(conn.id),'채팅방 열기','card-secondary'):link('/concern?id='+encodeURIComponent(c.id),'보낸 답변','card-secondary')}${button('next-concern','다음 고민 '+icon('arrow'),'card-primary')}</div></section>`;
+  else if(discovery.reply)response=`<form id="answer-form" data-id="${id}" data-inline="true" class="card-reply" novalidate><div class="reply-label"><label for="answer-body">내 답변</label>${button('close-card-reply',icon('close'),'icon-button','aria-label="답변 접기, 작성 내용은 저장돼요"')}</div><textarea id="answer-body" name="body" rows="4" minlength="20" maxlength="2000" required aria-describedby="answer-hint answer-error answer-consent" placeholder="저도 그런 날이 있었어요…">${esc(state.replyDrafts[c.id]??'')}</textarea><p id="answer-hint" class="reply-hint">20자 이상, 진심을 담아 주세요.</p><p id="answer-error" class="danger" role="alert"></p><div class="reply-submit"><p id="answer-consent">상대가 답변을 선택하면<br>익명 채팅방이 열려요.</p><button type="submit" class="card-primary">보내기 ${icon('arrow')}</button></div></form>`;
+  else response=`<div class="card-actions">${button('skip-card',icon('close')+'<span>넘기기</span>','card-secondary',`data-id="${id}"`)}${button('reply-card',icon('feed')+'<span>'+(state.replyDrafts[c.id]?'답변 이어쓰기':'답변하기')+'</span>','card-primary',`data-id="${id}"`)}</div>`;
+  return shell('홈',`<div class="discovery-stage"><div class="concern-stack" data-depth="${hasNext?1:0}">${hasNext?'<div class="stack-layer stack-near" aria-hidden="true"></div>':''}<article class="concern-card text-card ${discovery.reply?'is-replying':''} ${sent?'is-sent':''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-skip" aria-hidden="true">다음 고민</span><span class="swipe-stamp stamp-reply" aria-hidden="true">답변하기</span><div class="card-open" tabindex="0" aria-label="고민 카드, 왼쪽 키로 넘기기, 오른쪽 키로 답변하기" aria-describedby="swipe-help"><div class="card-person"><span class="person-mark" aria-hidden="true">${icon('me')}</span><div><strong>${esc(c.ageBand)} ${esc(c.occupation)}</strong><p>${esc(c.region)}<span>·</span>익명의 사친</p></div><span class="person-privacy" aria-label="프로필 비공개">${icon('lock')}</span></div><div class="card-story"><span class="card-topic">${topic(c.category)} 이야기</span><h2 id="card-title">${esc(c.title)}</h2><p id="card-body" class="card-excerpt ${discovery.expanded?'is-expanded':''}">${esc(discovery.expanded?c.body:c.body.replace(/\s+/g,' '))}</p>${button('expand-concern',(discovery.expanded?'접기':'더 읽기')+icon('chevron'),'card-expand',`aria-label="${discovery.expanded?'고민 접기':'고민 자세히 보기'}" aria-expanded="${discovery.expanded}" aria-controls="card-body"`)}</div></div>${response}</article></div><div class="deck-foot">${state.skipped.length&&!sent?button('undo-skip',icon('undo'),'deck-undo','aria-label="방금 넘긴 고민 다시 보기"'):''}<p class="swipe-help" id="swipe-help">${discovery.reply?'작성 중인 답변은 자동으로 저장돼요.':sent?'프로필은 서로 원할 때만 공개돼요.':'옆으로 넘기며, 마음이 닿는 이야기를 만나세요.'}</p></div></div>`,options);
 }
 function write(){
   const d=state.draft;
@@ -912,14 +1051,16 @@ function initSwipe(){
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const reset=()=>{card.classList.remove('is-dragging');card.style.transform='';card.style.removeProperty('--swipe-left');card.style.removeProperty('--swipe-right');};
   const finish=direction=>{
-    if(busy||!card.isConnected)return;busy=true;start=null;card.classList.remove('is-dragging');card.classList.add('is-leaving');
+    if(busy||!card.isConnected||discovery.sent||discovery.reply)return;
+    if(direction==='reply'){reset();openCardReply();return;}
+    busy=true;start=null;card.classList.remove('is-dragging');card.classList.add('is-leaving');
     card.style.setProperty(direction==='skip'?'--swipe-left':'--swipe-right','1');
     card.style.transform=`translateX(${(direction==='skip'?-1:1)*(window.innerWidth+card.offsetWidth)}px) rotate(${direction==='skip'?-15:15}deg)`;
     const id=card.dataset.concern;
-    timer=setTimeout(()=>{if(!card.isConnected||route().path!=='/listen')return;if(direction==='skip'){if(recommendedConcerns(sampleConcerns(),state,viewer())[0]?.id!==id)return;state.skipped.push(id);save();render();}else navigate('/concern?id='+encodeURIComponent(id)+'&reply=1');},reduced?0:240);
+    timer=setTimeout(()=>{if(!card.isConnected||route().path!=='/listen')return;if(recommendedConcerns(sampleConcerns(),state,viewer())[0]?.id!==id)return;state.skipped.push(id);save();render();},reduced?0:240);
   };
   commitSwipe=finish;
-  card.addEventListener('pointerdown',event=>{if(busy||!event.isPrimary||event.button!==0)return;suppressClick=false;start={x:event.clientX,y:event.clientY,id:event.pointerId};dx=dy=0;dragging=false;},{signal});
+  card.addEventListener('pointerdown',event=>{suppressClick=false;if(busy||discovery.reply||discovery.sent||!event.isPrimary||event.button!==0||event.target.closest('button,a,textarea,input,form'))return;start={x:event.clientX,y:event.clientY,id:event.pointerId};dx=dy=0;dragging=false;},{signal});
   card.addEventListener('pointermove',event=>{
     if(!start||start.id!==event.pointerId||busy)return;dx=event.clientX-start.x;dy=event.clientY-start.y;
     if(!dragging){if(Math.abs(dy)>12&&Math.abs(dy)>Math.abs(dx)){suppressClick=true;start=null;return;}if(Math.abs(dx)<10||Math.abs(dx)<Math.abs(dy)*1.35)return;dragging=true;card.classList.add('is-dragging');card.setPointerCapture(event.pointerId);}
@@ -929,21 +1070,21 @@ function initSwipe(){
   card.addEventListener('pointerup',event=>{if(!start||start.id!==event.pointerId)return;start=null;if(!dragging)return;suppressClick=true;dragging=false;const result=swipeDecision(dx,dy,card.offsetWidth);if(card.hasPointerCapture(event.pointerId))card.releasePointerCapture(event.pointerId);if(result)finish(result);else reset();},{signal});
   const cancel=()=>{start=null;dragging=false;if(!busy)reset();};
   card.addEventListener('pointercancel',cancel,{signal});card.addEventListener('lostpointercapture',()=>{if(start)cancel();},{signal});
-  card.addEventListener('dragstart',event=>event.preventDefault(),{signal});
+  card.addEventListener('dragstart',event=>{if(!event.target.closest('textarea,input'))event.preventDefault();},{signal});
   card.addEventListener('click',event=>{if(suppressClick||busy){event.preventDefault();event.stopImmediatePropagation();suppressClick=false;}},{capture:true,signal});
-  anchor.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();finish(event.key==='ArrowLeft'?'skip':'reply');}},{signal});
+  anchor.addEventListener('keydown',event=>{if(event.target===anchor&&(event.key==='ArrowLeft'||event.key==='ArrowRight')){event.preventDefault();finish(event.key==='ArrowLeft'?'skip':'reply');}},{signal});
   swipeCleanup=()=>{controller.abort();clearTimeout(timer);commitSwipe=null;};
 }
 function resizeWritingTitle(){const input=$('#concern-title');if(input){input.style.height='0px';input.style.height=Math.max(34,input.scrollHeight)+'px';}}
-function render(){
+function render({keepScroll=false,focus=null}={}){
   const {path,params}=route();
   const pages={'/home':home,'/signup':signup,'/listen':listen,'/preferences':preferences,'/write':write,'/concern':detail,'/mine':mine,'/connections':connections,'/connection':connection,'/chat':chat,'/me':me,'/about':about};
   const needsMember=!state.member&&!['/home','/about'].includes(path);
   $('#app').innerHTML=needsMember?signup():(pages[path]??home)();
   document.title=path==='/home'?'사친 · 내 얘기를 들어주는, 뜻밖의 사친':($('#app h1')?.textContent??'사친')+' · 사친';
-  window.scrollTo({top:0,behavior:'instant'});
+  if(!keepScroll)window.scrollTo({top:0,behavior:'instant'});
   const section=path==='/home'&&['approach','experience','privacy','start'].includes(params.get('section'))?$('#landing-'+params.get('section')):null;
-  const heading=section?.querySelector('h2')??$('#app h1');heading?.setAttribute('tabindex','-1');heading?.focus({preventScroll:true});section?.scrollIntoView({behavior:'instant',block:'start'});
+  const heading=section?.querySelector('h2')??$('#app h1');heading?.setAttribute('tabindex','-1');if(focus)$(focus)?.focus({preventScroll:true});else if(!keepScroll)heading?.focus({preventScroll:true});section?.scrollIntoView({behavior:'instant',block:'start'});
   if(path==='/chat')$('#chat-messages')?.scrollTo({top:$('#chat-messages').scrollHeight});
   $('#announcer').textContent=document.title;initLanding();initSwipe();resizeWritingTitle();
 }
@@ -956,7 +1097,7 @@ document.addEventListener('input',event=>{
   if(event.target.id==='concern-title')resizeWritingTitle();
   const form=event.target.closest('#concern-form');if(form)captureDraft(form);
   if(event.target.closest('#signup-form')){state.signupDraft=Object.fromEntries(new FormData($('#signup-form')));$('#form-error').textContent='';save();}
-  const reply=event.target.closest('#answer-form');if(reply){state.replyDrafts[reply.dataset.id]=event.target.value;save();}
+  const reply=event.target.closest('#answer-form');if(reply){state.replyDrafts[reply.dataset.id]=event.target.value;save();const error=$('#answer-error');if(error)error.textContent='';event.target.removeAttribute('aria-invalid');}
   const chat=event.target.closest('#chat-form');if(chat){state.chatDrafts[chat.dataset.id]=event.target.value;save();}
   if(event.target.closest('#preferences-form'))$('#preferences-form button[type="submit"]').disabled=!$('#preferences-form input:checked');
   if(event.target.id==='reveal-consent')$('[data-action="request-reveal"]').disabled=!event.target.checked;
@@ -970,15 +1111,20 @@ document.addEventListener('submit',event=>{
     const id='local-'+crypto.randomUUID();state.concerns.push({id,...result.value,own:true,authorId:viewer().id,authorGender:viewer().gender,ageBand:viewer().ageBand,occupation:viewer().occupation,region:viewer().region});state.draft=initialState().draft;save();navigate('/concern?id='+id);toast('고민을 남겼어요.');
   }
   if(form.id==='answer-form'){
-    const body=String(f.get('body')).trim(),c=getConcern(form.dataset.id);if(!canRespond(c,viewer())||!eligible(c))return;if(body.length<20||body.length>2000){toast('답변은 20~2,000자로 적어 주세요.');return;}
+    const body=String(f.get('body')).trim(),c=getConcern(form.dataset.id);if(!canRespond(c,viewer())||!eligible(c))return;if(body.length<20||body.length>2000){const error=$('#answer-error');if(error){error.textContent='답변은 20~2,000자로 적어 주세요.';$('#answer-body')?.setAttribute('aria-invalid','true');$('#answer-body')?.focus();}else toast('답변은 20~2,000자로 적어 주세요.');return;}
     delete state.replyDrafts[c.id];
-    if(!state.answers.some(a=>a.concernId===c.id))state.answers.push({concernId:c.id,body,authorId:viewer().id,authorGender:viewer().gender,chatConsent:true});save();render();
+    if(!state.answers.some(a=>a.concernId===c.id))state.answers.push({concernId:c.id,body,authorId:viewer().id,authorGender:viewer().gender,chatConsent:true});
+    if(form.dataset.inline){discovery={id:c.id,expanded:discovery.expanded,reply:false,sent:true};save();render({focus:'#answer-sent-heading'});}else{save();render();}
   }
   if(form.id==='chat-form'){const c=state.connections[form.dataset.id],body=String(f.get('body')).trim();if(!chatAllowed(c,viewer())||!body||body.length>1000)return;delete state.chatDrafts[c.id];state.messages.push({connectionId:c.id,mine:true,body,time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})});save();render();$('#chat-message')?.focus({preventScroll:true});}
 });
 document.addEventListener('click',event=>{
   const choice=event.target.closest('[data-choice]');if(choice){openChoice(choice);return;}
   const target=event.target.closest('[data-action]');if(!target||target.disabled)return;const action=target.dataset.action,id=target.dataset.id;
+  if(action==='expand-concern'){discovery.expanded=!discovery.expanded;render({keepScroll:true,focus:'[data-action="expand-concern"]'});}
+  if(action==='reply-card'&&discovery.id===id)openCardReply();
+  if(action==='close-card-reply'){discovery.reply=false;render({keepScroll:true,focus:'[data-action="reply-card"]'});}
+  if(action==='next-concern'){discovery={id:null,expanded:false,reply:false,sent:false};render();}
   if(action==='skip-card'&&recommendedConcerns(sampleConcerns(),state,viewer())[0]?.id===id)commitSwipe?.('skip');
   if(action==='undo-skip'){state.skipped.pop();save();render();}
   if(action==='restart-deck'){state.skipped=[];save();render();}
