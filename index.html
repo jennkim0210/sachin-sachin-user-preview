@@ -61,6 +61,70 @@
 /* A readable letter fills a normal phone; compact phones keep the same hierarchy. */
 @media(min-width:371px) and (min-height:701px){.card-excerpt{font-size:17px;line-height:1.85;-webkit-line-clamp:7}}
 @media(max-width:370px),(max-height:700px) and (max-width:650px){.card-excerpt{-webkit-line-clamp:3}}
+/* Arrival screen: user's 105593.jpg. Small paper doodle, a tilted paper frame,
+   lavender note sampled at #d0cdde, then one full-width action and a quiet skip.
+   The presentation straightens for long reading and composition. */
+.conversation-home .app-main{margin-top:5px;max-width:480px}
+.conversation-home .page{padding-bottom:0}
+.conversation-home .discovery-stage{display:flex;flex-direction:column;min-height:min(730px,calc(100dvh - 110px));padding:0 0 12px}
+.arrival-intro{display:flex;flex-direction:column;align-items:center;text-align:center;padding:4px 0 26px;gap:10px}
+.paper-drawing{width:35px;height:44px;color:var(--blue)}
+.arrival-intro p{font-size:21px;line-height:1.4;letter-spacing:-.2px}.arrival-intro p span{color:var(--blue)}
+.conversation-home .concern-stack{width:100%;margin:8px 0 0}
+.conversation-home .concern-card{background:#e5e5e5;border:0;border-radius:23px;box-shadow:0 10px 24px #3b39451c,0 2px 5px #3b394509;transform:rotate(1.6deg);transform-origin:50% 60%;transition:transform .24s ease,box-shadow .24s ease}
+.conversation-home .concern-card:after{display:none}
+.conversation-home .card-open{padding:12px;border-radius:23px}
+.conversation-home .card-person{min-height:42px;padding:0 6px 11px;gap:8px;border:0;color:var(--blue)}
+.conversation-home .card-person>div{display:flex;align-items:center;flex:1;justify-content:space-between;gap:3px 10px;flex-wrap:wrap;min-width:0}
+.conversation-home .card-person strong{font-size:13px;line-height:1.5;letter-spacing:0}
+.conversation-home .card-person p{color:#655b8b;font-size:11px;margin:0;gap:4px}
+.letter-flower{display:flex;align-items:center}.letter-flower .flower-drawing{width:19px;height:27px;stroke-width:3}
+.conversation-home .deck-undo{width:32px;height:32px;color:#655b8b;margin-left:0}.conversation-home .deck-undo svg{width:16px;height:16px}
+.conversation-home .card-story{padding:20px 21px 17px;background:#d0cdde;border-radius:16px;min-height:clamp(240px,32dvh,290px)}
+.conversation-home .card-topic{font-size:11px;line-height:1.5;padding:0;margin-bottom:12px;background:transparent;border-radius:0;color:var(--blue)}
+.conversation-home .concern-card h2{font-size:25px;line-height:1.45;letter-spacing:-.4px;color:var(--blue)}
+.conversation-home .card-excerpt{font-size:15.5px;line-height:1.8;color:#4f4a65;margin-top:14px;-webkit-line-clamp:4}
+.conversation-home .card-excerpt.is-expanded{display:block}
+.conversation-home .card-expand{color:#5d5383;font-size:12px;min-height:35px;padding-top:7px}
+.conversation-home .card-actions.arrival-actions{display:flex;flex-direction:column;gap:2px;margin-top:auto;padding:30px 0 0;border:0}
+.conversation-home .arrival-actions .card-primary{width:100%;min-height:52px;padding:13px 20px;border-radius:8px;font-size:16px;box-shadow:none}
+.conversation-home .arrival-actions .card-secondary{align-self:center;min-height:44px;padding:7px 24px;border:0;background:transparent;color:var(--muted);font-size:14px;line-height:1.6;width:auto}
+.conversation-home .arrival-actions .card-secondary:after{display:none}
+.conversation-home .arrival-actions .card-secondary:hover{text-decoration:underline;text-underline-offset:4px}
+.conversation-home .concern-card.is-expanded,.conversation-home .concern-card.is-replying,.conversation-home .concern-card.is-sent{transform:none}
+.conversation-home .concern-card.is-dragging{transition:none}
+.conversation-home .card-arriving{animation:letter-arrive .28s ease-out}
+@keyframes letter-arrive{from{opacity:.35;transform:translateY(14px) rotate(3deg)}to{opacity:1;transform:rotate(1.6deg)}}
+.conversation-home .discovery-stage.is-composing{min-height:0;padding-bottom:20px}
+.conversation-home .is-composing .concern-stack{margin-top:10px}
+.conversation-home .is-composing .card-story{min-height:0}
+.conversation-home .card-reply,.conversation-home .card-sent{padding:12px 23px 23px;border:0}
+.conversation-home .card-reply textarea{background:#f1eff7;border-color:#b8b3cc;border-radius:8px}
+.conversation-home .swipe-stamp{top:85px;background:#e5e5e5}
+@media(max-width:650px){
+ .conversation-home .product-header{height:65px}
+ .conversation-home .app-main{padding:0 24px;margin-top:0}
+ .conversation-home .discovery-stage{min-height:calc(100dvh - 65px - var(--dock));padding-bottom:8px}
+ .arrival-intro{padding:5px 0 23px;gap:8px}.paper-drawing{width:32px;height:40px}.arrival-intro p{font-size:20px}
+ .conversation-home .card-person strong{font-size:12px}.conversation-home .card-person p{font-size:10px}
+ .conversation-home .card-story{padding:18px 19px 15px}.conversation-home .concern-card h2{font-size:24px}
+ .conversation-home .card-excerpt{font-size:15px;line-height:1.8;-webkit-line-clamp:4;margin-top:13px}
+ .conversation-home .card-reply,.conversation-home .card-sent{padding:12px 21px 23px}
+}
+@media(max-width:340px),(max-height:700px) and (max-width:650px){
+ .conversation-home .product-header{height:60px}
+ .conversation-home .app-main{padding:0 21px}
+ .conversation-home .discovery-stage{min-height:calc(100dvh - 60px - var(--dock));padding-bottom:4px}
+ .arrival-intro{flex-direction:row;justify-content:center;gap:10px;padding:0 0 13px}.arrival-intro p{font-size:17px;line-height:1.35;text-align:left}.paper-drawing{width:27px;height:35px}
+ .conversation-home .concern-stack{margin-top:4px}.conversation-home .concern-card{border-radius:20px;transform:rotate(1.2deg)}
+ .conversation-home .card-open{padding:10px;border-radius:20px}.conversation-home .card-person{min-height:35px;padding:0 4px 8px;gap:6px}.conversation-home .card-person strong{font-size:11px}.conversation-home .card-person p{font-size:10px;gap:3px}
+ .conversation-home .card-person>div{gap:2px 5px}.letter-flower .flower-drawing{width:16px;height:23px}.conversation-home .deck-undo{width:26px;height:30px}
+ .conversation-home .card-story{padding:15px 17px 12px;min-height:184px;border-radius:13px}.conversation-home .card-topic{font-size:10px;margin-bottom:9px}
+ .conversation-home .concern-card h2{font-size:21px;line-height:1.4;letter-spacing:-.4px}.conversation-home .card-excerpt{font-size:14px;line-height:1.7;-webkit-line-clamp:2;margin-top:11px}
+ .conversation-home .card-expand{min-height:32px;font-size:11px;padding-top:5px}
+ .conversation-home .card-actions.arrival-actions{padding-top:20px;gap:0}.conversation-home .arrival-actions .card-primary{min-height:46px!important;padding:10px 15px;font-size:15px}.conversation-home .arrival-actions .card-secondary{min-height:44px!important;font-size:13px;padding:5px 24px}
+ .conversation-home .card-reply,.conversation-home .card-sent{padding:12px 18px 20px}
+}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.btn:active,.card-primary:active,.card-secondary:active,.tabbar a:active{transform:none}}
 </style>
   
@@ -310,8 +374,10 @@ function listen(){
   let response;
   if(sent)response=`<section class="card-sent" aria-labelledby="answer-sent-heading"><span class="sent-check">${icon('check')}</span><div><h3 id="answer-sent-heading" tabindex="-1">답변을 보냈어요.</h3><p>${chatAllowed(conn,viewer())?'채팅방이 열렸어요. 이야기를 이어가 보세요.':'상대가 선택하면 익명 채팅방이 열려요.'}</p></div><div class="card-sent-actions">${chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(conn.id),'채팅방 열기','card-secondary'):link('/concern?id='+encodeURIComponent(c.id),'보낸 답변','card-secondary')}${button('next-concern','다음 고민 '+icon('arrow'),'card-primary')}</div></section>`;
   else if(discovery.reply)response=`<form id="answer-form" data-id="${id}" data-inline="true" class="card-reply" novalidate><div class="reply-label"><label for="answer-body">내 답변</label>${button('close-card-reply',icon('close'),'icon-button','aria-label="답변 접기, 작성 내용은 저장돼요"')}</div><textarea id="answer-body" name="body" rows="4" minlength="20" maxlength="2000" required aria-describedby="answer-hint answer-error answer-consent" placeholder="저도 그런 날이 있었어요…">${esc(state.replyDrafts[c.id]??'')}</textarea><p id="answer-hint" class="reply-hint">천천히 적어도 괜찮아요. 20자 이상</p><p id="answer-error" class="danger" role="alert"></p><div class="reply-submit"><p id="answer-consent">상대가 답변을 선택하면<br>익명 채팅방이 열려요.</p><button type="submit" class="card-primary">보내기 ${icon('arrow')}</button></div></form>`;
-  else response=`<div class="card-actions">${button('skip-card',icon('close'),'card-secondary',`data-id="${id}" aria-label="넘기기"`)}${button('reply-card',icon('feed')+'<span>'+(state.replyDrafts[c.id]?'답변 이어쓰기':'답변하기')+'</span>','card-primary',`data-id="${id}"`)}</div>`;
-  return shell('홈',`<div class="discovery-stage"><div class="concern-stack"><article class="concern-card text-card ${arriving?'card-arriving':''} ${discovery.reply?'is-replying':''} ${sent?'is-sent':''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-skip" aria-hidden="true">다음 고민</span><span class="swipe-stamp stamp-reply" aria-hidden="true">답변하기</span><div class="card-open" tabindex="0" aria-label="고민 카드, 왼쪽 키로 넘기기, 오른쪽 키로 답변하기" aria-describedby="swipe-help"><div class="card-person"><div><strong>${esc(c.ageBand)} ${esc(c.occupation)}</strong><p>${esc(c.region)}<span>·</span>익명</p></div>${state.skipped.length&&!sent&&!discovery.reply?button('undo-skip',icon('undo'),'deck-undo','aria-label="방금 넘긴 고민 다시 보기"'):''}</div><div class="card-story"><span class="card-topic">${topic(c.category)}</span><h2 id="card-title">${esc(c.title)}</h2><p id="card-body" class="card-excerpt ${discovery.expanded?'is-expanded':''}">${esc(discovery.expanded?c.body:c.body.replace(/\s+/g,' '))}</p>${button('expand-concern',(discovery.expanded?'접기':'더 읽기')+icon('chevron'),'card-expand',`aria-label="${discovery.expanded?'고민 접기':'고민 자세히 보기'}" aria-expanded="${discovery.expanded}" aria-controls="card-body"`)}</div></div>${response}</article></div><p class="sr-only" id="swipe-help">왼쪽으로 넘기거나 오른쪽으로 밀어 답변할 수 있어요.</p></div>`,options);
+  else response=`<div class="card-actions arrival-actions">${button('reply-card',state.replyDrafts[c.id]?'답변 이어쓰기':'답변하기','card-primary',`data-id="${id}"`)}${button('skip-card','넘기기','card-secondary',`data-id="${id}" aria-label="넘기기"`)}</div>`;
+  const composing=discovery.reply||sent;
+  const arrival=`<div class="arrival-intro"><svg class="paper-drawing" viewBox="0 0 56 70" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 9 22-1 15 15-1 39-38-1 2-52ZM34 9l-1 15 15-1M18 35l22 1M18 45l21 1M18 54h14"/></svg><p>당신에게<br><span>고민</span>이 도착했어요.</p></div>`;
+  return shell('홈',`<div class="discovery-stage ${composing?'is-composing':''}">${composing?'':arrival}<div class="concern-stack"><article class="concern-card text-card ${arriving?'card-arriving':''} ${discovery.expanded?'is-expanded':''} ${discovery.reply?'is-replying':''} ${sent?'is-sent':''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-skip" aria-hidden="true">다음 고민</span><span class="swipe-stamp stamp-reply" aria-hidden="true">답변하기</span><div class="card-open" tabindex="0" aria-label="고민 카드, 왼쪽 키로 넘기기, 오른쪽 키로 답변하기" aria-describedby="swipe-help"><div class="card-person"><span class="letter-flower" aria-hidden="true">${duo()}</span><div><strong>${esc(c.ageBand)} ${esc(c.occupation)}</strong><p>${esc(c.region)}<span>·</span>익명</p></div>${state.skipped.length&&!sent&&!discovery.reply?button('undo-skip',icon('undo'),'deck-undo','aria-label="방금 넘긴 고민 다시 보기"'):''}</div><div class="card-story"><span class="card-topic">${topic(c.category)}</span><h2 id="card-title">${esc(c.title)}</h2><p id="card-body" class="card-excerpt ${discovery.expanded?'is-expanded':''}">${esc(discovery.expanded?c.body:c.body.replace(/\s+/g,' '))}</p>${button('expand-concern',(discovery.expanded?'접기':'더 읽기')+icon('chevron'),'card-expand',`aria-label="${discovery.expanded?'고민 접기':'고민 자세히 보기'}" aria-expanded="${discovery.expanded}" aria-controls="card-body"`)}</div></div>${composing?response:''}</article></div>${composing?'':response}<p class="sr-only" id="swipe-help">왼쪽으로 넘기거나 오른쪽으로 밀어 답변할 수 있어요.</p></div>`,options);
 }
 function write(){
   const d=state.draft;
