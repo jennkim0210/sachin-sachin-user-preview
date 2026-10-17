@@ -79,6 +79,7 @@
 .conversation-home .card-person strong{font-size:13px;line-height:1.5;letter-spacing:0}
 .conversation-home .card-person p{color:#655b8b;font-size:11px;margin:0;gap:4px}
 .letter-flower{display:flex;align-items:center}.letter-flower .flower-drawing{width:19px;height:27px;stroke-width:3}
+.letter-flower .pen-doodle{width:25px;height:29px;stroke-width:2.5;flex:none}
 .conversation-home .deck-undo{width:32px;height:32px;color:#655b8b;margin-left:0}.conversation-home .deck-undo svg{width:16px;height:16px}
 .conversation-home .card-story{padding:20px 21px 17px;background:#d0cdde;border-radius:16px;min-height:clamp(240px,32dvh,290px)}
 .conversation-home .card-topic{font-size:11px;line-height:1.5;padding:0;margin-bottom:12px;background:transparent;border-radius:0;color:var(--blue)}
@@ -118,7 +119,7 @@
  .arrival-intro{flex-direction:row;justify-content:center;gap:10px;padding:0 0 13px}.arrival-intro p{font-size:17px;line-height:1.35;text-align:left}.paper-drawing{width:27px;height:35px}
  .conversation-home .concern-stack{margin-top:4px}.conversation-home .concern-card{border-radius:20px;transform:rotate(1.2deg)}
  .conversation-home .card-open{padding:10px;border-radius:20px}.conversation-home .card-person{min-height:35px;padding:0 4px 8px;gap:6px}.conversation-home .card-person strong{font-size:11px}.conversation-home .card-person p{font-size:10px;gap:3px}
- .conversation-home .card-person>div{gap:2px 5px}.letter-flower .flower-drawing{width:16px;height:23px}.conversation-home .deck-undo{width:26px;height:30px}
+ .conversation-home .card-person>div{gap:2px 5px}.letter-flower .flower-drawing{width:16px;height:23px}.letter-flower .pen-doodle{width:22px;height:25px}.conversation-home .deck-undo{width:26px;height:30px}
  .conversation-home .card-story{padding:15px 17px 12px;min-height:184px;border-radius:13px}.conversation-home .card-topic{font-size:10px;margin-bottom:9px}
  .conversation-home .concern-card h2{font-size:21px;line-height:1.4;letter-spacing:-.4px}.conversation-home .card-excerpt{font-size:14px;line-height:1.7;-webkit-line-clamp:2;margin-top:11px}
  .conversation-home .card-expand{min-height:32px;font-size:11px;padding-top:5px}
@@ -309,6 +310,65 @@ function swipeDecision(dx,dy,width,velocity=0){
   return dx<0?'skip':'reply';
 }
 
+// Original pen marks, drawn for the approved blue-ink stationery system.
+// No photographs, filled shapes, emoji, or external asset requests.
+const CONCERN_DOODLES = [
+  {id:'sprout',label:'새싹',path:'M32 60c-1-13 2-23-1-34M31 39C19 40 11 32 10 20c11-1 20 6 21 19ZM32 31c0-13 9-20 22-20-1 13-10 21-22 20ZM19 62c8-2 17-1 25 0'},
+  {id:'leaf',label:'잎사귀',path:'M16 51C3 27 28 11 51 10c4 23-7 47-29 42M14 63c7-17 15-28 28-40M25 44l-1-13M32 35l12-2M11 64l6 1'},
+  {id:'sun',label:'햇살',path:'M45 36c0 10-7 17-17 16-10-1-15-9-14-18 1-10 9-16 18-15 9 1 14 8 13 17ZM29 7l1 6M49 13l-5 6M55 34l-5 1M49 55l-4-5M29 60v6M8 55l6-5M3 34l6 1M9 12l5 6'},
+  {id:'moon',label:'달',path:'M35 11C13 12 5 33 16 49c9 14 29 14 40-1-17 6-36-10-21-37ZM47 14l2 5 6 1-5 3-1 6-3-5-6-1 5-3 2-6ZM51 60l3 2M7 15l2 1'},
+  {id:'cloud',label:'구름',path:'M18 45C3 47 5 28 17 28c-1-17 23-21 28-4 17-4 23 22 6 22-11-1-23 1-33-1ZM24 55c-1 3-2 5-3 8M38 54l-2 7'},
+  {id:'umbrella',label:'우산',path:'M7 34C7 9 51 5 57 33c-7-4-12-3-17 3-6-5-12-5-17 0-6-5-10-5-16-2ZM33 11l-1-5M32 17c-1 14 1 29-1 41-1 9-13 9-13 0M17 18l-3-1M50 8l-1 4'},
+  {id:'mug',label:'머그잔',path:'M13 29c10 2 20 2 30 0l-1 20c-1 12-25 14-28 0l-1-20ZM44 33c16-4 15 17-1 17M11 62c11 2 26 2 38-1M23 23c6-7-5-8 0-16M34 23c6-6-4-8 1-13'},
+  {id:'book',label:'책',path:'M31 18C23 11 14 11 6 15l2 40c9-4 16-2 24 4 7-6 15-8 25-4l1-40c-10-4-18-1-27 3ZM31 18l1 41M13 25c4-1 8 0 12 2M13 34c4-1 8 1 12 2M39 26l11-3M39 35l10-2M43 14v15l4-4 4 2V13'},
+  {id:'envelope',label:'편지',path:'M7 24c16 1 33 0 50-1l-1 32c-16 2-33 1-48 0L7 24ZM8 25l24 18 24-19M8 54l16-16M56 54 40 38M26 16c-7-7 1-14 6-7 6-7 13 0 7 6l-7 6-6-5Z'},
+  {id:'candle',label:'촛불',path:'M24 29c6 2 12 2 18 0l-1 30c-6 3-13 2-18 0l1-30ZM31 25v7M32 7c-2 7-10 10-7 16 4 8 17 3 13-5-1-4-5-6-6-11ZM16 63c10 3 23 3 33 0M17 18l-4-2M46 19l4-2M43 7l-2 4'},
+  {id:'compass',label:'나침반',path:'M55 39c-1 14-11 23-24 22C17 61 8 51 9 38c0-14 11-24 25-22 13 1 22 11 21 23ZM27 16c-6-11 12-14 11-1M40 28l-5 16-13 7 6-16 12-7ZM29 36l5 7M31 21v4M15 39h4M46 39h4M31 52v4'},
+  {id:'mountain',label:'산',path:'M5 58 25 19l14 27 8-15 13 27C42 59 23 57 5 58ZM18 34l6 5 6-7M22 19l5-4M43 14c0-7 11-8 12-1 1 8-12 9-12 1ZM15 65l15-1M36 65h11'},
+  {id:'paperboat',label:'종이배',path:'M6 38 32 12l17 26M6 38l28-12-2-14M34 26l3 12M6 38l9 16 36-1 9-16-54 1ZM15 54l19-16 17 15M4 61c7-4 11 4 19 0 8-4 13 4 21 0 7-3 10 3 16 0'},
+  {id:'kite',label:'연',path:'m32 7 21 16-17 23-22-18L32 7ZM14 28l39-5M32 7l4 39M36 46c17 5-14 12-1 19M36 51l-8-3 1 8 7-5 7 5 2-8-9 3'},
+  {id:'balloon',label:'풍선',path:'M46 25C45 6 19 4 15 23c-3 13 6 21 16 25 9-5 16-12 15-23ZM31 48l-4 6h8l-4-6ZM31 55c-12 4 9 9-1 13M23 19c-4 3-4 7-4 9M52 13l3-3'},
+  {id:'headphones',label:'헤드폰',path:'M10 42V29c0-25 45-25 45 0v14M15 30c0-18 34-18 34 0M10 35c-8-2-8 22 1 22l6-1-1-20-6-1ZM55 35c8-1 8 21-1 22l-6-1 1-20 6-1ZM54 57c-3 7-11 9-19 7'},
+  {id:'music',label:'음표',path:'M26 49c-16-7-21 15-8 15 8 0 9-7 8-15l-1-31 28-7 1 32M25 27l28-7M54 43c-14-8-22 12-10 14 9 1 12-8 10-14M10 13l1 7M7 17l7-1'},
+  {id:'home',label:'집',path:'M5 31 30 9l28 20M11 27l1 34 41-1-1-34M26 61l-1-19 13-1 1 20M17 29l9-1v8l-9 1v-8ZM43 18V9h7l1 15M5 66l12-1M47 66h11'},
+  {id:'thread',label:'이어진 실',path:'M7 17c17-12 25 9 20 24-3 9-16 8-17 0-2-12 18-17 30-10 15 8 18 25 6 29-8 3-12-8-6-15 11-13 22-7 17 5M17 21l-4 5M31 53l-3 4M22 57l5 2'},
+  {id:'spark',label:'작은 별',path:'m32 11 5 18 18 5-18 6-6 18-5-18-18-6 18-5 6-18ZM48 7l1 8M45 11l8-1M8 51l1 7M5 55l8-1M49 55l3 4M16 10l-3-3'},
+];
+
+const DOODLE_POOLS={
+  work:['mug','sprout','sun','candle','leaf','spark'],
+  relationship:['envelope','thread','umbrella','mug','book'],
+  love:['envelope','thread','kite','balloon','moon'],
+  family:['home','mug','envelope','candle'],
+  career:['compass','mountain','sprout','kite','paperboat'],
+  daily:['sun','leaf','mug','moon','music','headphones','paperboat','cloud'],
+  etc:CONCERN_DOODLES.map(d=>d.id),
+};
+// This is decorative topic matching, not a judgement of a person's emotional state.
+function concernDoodleCandidates(concern={}){
+  const text=String(concern.title??'')+' '+String(concern.body??'');
+  if(/힘들|괴롭|눈물|슬프|불안|버거|지쳐|지친/.test(text))return ['umbrella','candle','cloud','moon'];
+  if(/노래|음악|플레이리스트/.test(text))return ['music','headphones'];
+  if(/전시|여행|약속|같이 가/.test(text))return ['kite','balloon','paperboat'];
+  if(/퇴근|쉬고|휴식|쉬어|피곤/.test(text))return ['mug','moon','leaf','cloud'];
+  if(/독립|부모|가족|집에서/.test(text)&&concern.category==='family')return ['home','candle','envelope'];
+  if(/시작|배우|진로|선택/.test(text)&&concern.category==='career')return ['sprout','compass','mountain','paperboat'];
+  if(/칭찬|잘하고|인정|만족/.test(text)&&concern.category==='work')return ['sprout','sun','candle','spark'];
+  return DOODLE_POOLS[concern.category]??DOODLE_POOLS.etc;
+}
+function chooseConcernDoodle(concern={}){
+  const candidates=concernDoodleCandidates(concern);
+  // Seed by concern rather than by render: skip/undo, expansion and refresh stay stable.
+  const seed=String(concern.id??concern.title??'sachin')+':'+String(concern.category??'etc');
+  let hash=2166136261;for(const character of seed){hash^=character.codePointAt(0);hash=Math.imul(hash,16777619);}
+  return candidates[(hash>>>0)%candidates.length];
+}
+function doodleSvg(id){
+  const mark=CONCERN_DOODLES.find(d=>d.id===id)??CONCERN_DOODLES[0];
+  return `<svg class="pen-doodle" data-doodle="${mark.id}" viewBox="0 0 64 72" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${mark.path}"/></svg>`;
+}
+function concernDoodle(concern){return doodleSvg(chooseConcernDoodle(concern));}
+
 
 const STORAGE_KEY='sachin-user-preview-v1';
 const $=selector=>document.querySelector(selector);
@@ -448,7 +508,7 @@ function listen(){
   else response=`<div class="card-actions arrival-actions">${button('reply-card',state.replyDrafts[c.id]?'답변 이어쓰기':'답변하기','card-primary',`data-id="${id}"`)}${button('skip-card','넘기기','card-secondary',`data-id="${id}" aria-label="넘기기"`)}</div>`;
   const composing=discovery.reply||sent;
   const arrival=`<div class="arrival-intro"><svg class="paper-drawing" viewBox="0 0 56 70" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 9 22-1 15 15-1 39-38-1 2-52ZM34 9l-1 15 15-1M18 35l22 1M18 45l21 1M18 54h14"/></svg><p>당신에게<br><span>고민</span>이 도착했어요.</p></div>`;
-  return shell('홈',`<div class="discovery-stage ${composing?'is-composing':''}">${composing?'':arrival}<div class="concern-stack" data-depth="${composing||discovery.expanded?0:Math.min(2,queue.length-1)}"><article class="concern-card text-card ${arriving?'card-arriving':''} ${discovery.expanded?'is-expanded':''} ${discovery.reply?'is-replying':''} ${sent?'is-sent':''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-skip" aria-hidden="true">다음 고민</span><span class="swipe-stamp stamp-reply" aria-hidden="true">답변하기</span><div class="card-open" tabindex="0" aria-label="고민 카드, 왼쪽 키로 넘기기, 오른쪽 키로 답변하기" aria-describedby="swipe-help"><div class="card-person"><span class="letter-flower" aria-hidden="true">${duo()}</span><div><strong>${esc(c.ageBand)} ${esc(c.occupation)}</strong><p>${esc(c.region)}<span>·</span>익명</p></div>${state.skipped.length&&!sent&&!discovery.reply?button('undo-skip',icon('undo'),'deck-undo','aria-label="방금 넘긴 고민 다시 보기"'):''}</div><div class="card-story"><span class="card-topic">${topic(c.category)}</span><h2 id="card-title">${esc(c.title)}</h2><p id="card-body" class="card-excerpt ${discovery.expanded?'is-expanded':''}">${esc(discovery.expanded?c.body:c.body.replace(/\s+/g,' '))}</p>${button('expand-concern',(discovery.expanded?'접기':'더 읽기')+icon('chevron'),'card-expand',`aria-label="${discovery.expanded?'고민 접기':'고민 자세히 보기'}" aria-expanded="${discovery.expanded}" aria-controls="card-body"`)}</div></div>${composing?response:''}</article></div>${composing?'':response}<p class="sr-only" id="swipe-help">왼쪽으로 넘기거나 오른쪽으로 밀어 답변할 수 있어요.</p></div>`,options);
+  return shell('홈',`<div class="discovery-stage ${composing?'is-composing':''}">${composing?'':arrival}<div class="concern-stack" data-depth="${composing||discovery.expanded?0:Math.min(2,queue.length-1)}"><article class="concern-card text-card ${arriving?'card-arriving':''} ${discovery.expanded?'is-expanded':''} ${discovery.reply?'is-replying':''} ${sent?'is-sent':''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-skip" aria-hidden="true">다음 고민</span><span class="swipe-stamp stamp-reply" aria-hidden="true">답변하기</span><div class="card-open" tabindex="0" aria-label="고민 카드, 왼쪽 키로 넘기기, 오른쪽 키로 답변하기" aria-describedby="swipe-help"><div class="card-person"><span class="letter-flower" aria-hidden="true">${concernDoodle(c)}</span><div><strong>${esc(c.ageBand)} ${esc(c.occupation)}</strong><p>${esc(c.region)}<span>·</span>익명</p></div>${state.skipped.length&&!sent&&!discovery.reply?button('undo-skip',icon('undo'),'deck-undo','aria-label="방금 넘긴 고민 다시 보기"'):''}</div><div class="card-story"><span class="card-topic">${topic(c.category)}</span><h2 id="card-title">${esc(c.title)}</h2><p id="card-body" class="card-excerpt ${discovery.expanded?'is-expanded':''}">${esc(discovery.expanded?c.body:c.body.replace(/\s+/g,' '))}</p>${button('expand-concern',(discovery.expanded?'접기':'더 읽기')+icon('chevron'),'card-expand',`aria-label="${discovery.expanded?'고민 접기':'고민 자세히 보기'}" aria-expanded="${discovery.expanded}" aria-controls="card-body"`)}</div></div>${composing?response:''}</article></div>${composing?'':response}<p class="sr-only" id="swipe-help">왼쪽으로 넘기거나 오른쪽으로 밀어 답변할 수 있어요.</p></div>`,options);
 }
 function write(){
   const d=state.draft;
