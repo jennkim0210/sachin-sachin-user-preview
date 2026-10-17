@@ -362,6 +362,17 @@
 .wizard-cover .profile-photo-picker{max-width:230px;width:100%;aspect-ratio:1.04;border-width:7px}.wizard-cover .photo-pick-footer{max-width:230px;margin:3px auto 0}.wizard-cover .photo-pick-empty{gap:15px}.wizard-cover .photo-pick-empty .pen-doodle{width:39px;height:47px}.wizard-photo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.wizard-photo-item{position:relative;min-width:0}.wizard-photo-item .feed-photo-picker{aspect-ratio:1;min-height:0;border:4px solid var(--sheet);border-radius:10px}.wizard-photo-item .feed-photo-picker img{height:100%;width:100%;object-fit:cover}.wizard-photo-item .feed-photo-picker>span{min-height:0;height:100%;gap:6px;font-size:10px}.wizard-photo-item .feed-photo-picker .pen-doodle{width:24px;height:28px}.photo-tile-remove{position:absolute;top:-8px;right:-7px;width:40px;height:40px;display:grid;place-items:center;color:var(--blue);border:7px solid transparent;border-radius:50%;background:var(--sheet);background-clip:padding-box}.photo-tile-remove svg{width:13px;height:13px}.photo-tile-add{aspect-ratio:1;border:1px dashed #a9a2b6;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:11px;color:#625b75}.photo-tile-add svg{width:21px;height:21px}.profile-wizard .photo-status:empty{display:none}
 .profile-choice-groups{display:flex;flex-direction:column;gap:26px}.profile-choice-group{padding:0;border:0;min-width:0}.profile-choice-group legend{font-size:15px;margin-bottom:12px;width:100%}.profile-choice-group legend small{float:right;font-size:10px;line-height:24px;color:var(--muted)}.profile-choice-group>div{display:flex;flex-wrap:wrap;gap:8px}.profile-chip{position:relative;cursor:pointer}.profile-chip input{position:absolute;width:1px;height:1px;opacity:0}.profile-chip span{display:flex;align-items:center;justify-content:center;min-height:42px;padding:9px 14px;border:1px solid #c3becd;border-radius:8px;background:#e9e8e7;font-size:13px;line-height:1.6;transition:background .12s,border-color .12s}.profile-chip input:checked+span{background:var(--tint);border-color:var(--blue);color:var(--blue)}.profile-chip input:disabled+span{opacity:.55}.profile-chip input:focus-visible+span{outline:2px solid var(--blue);outline-offset:3px}.choice-introduction{border-left:2px solid #a69cc0;padding:3px 0 3px 16px;margin:2px 0}.choice-introduction>span{font:10px var(--mono);color:var(--blue)}.choice-introduction p{font-size:14px;line-height:1.85;white-space:pre-line;margin-top:8px;overflow-wrap:anywhere}.wizard-optional{border-top:1px solid #c7c4cd;padding-top:5px}.wizard-optional summary{display:flex;align-items:center;justify-content:space-between;gap:15px;list-style:none;min-height:47px;font-size:13px;cursor:pointer}.wizard-optional summary::-webkit-details-marker{display:none}.wizard-optional summary svg{width:16px;height:16px;color:var(--blue);flex:none}.wizard-optional[open]>summary svg{transform:rotate(45deg)}.bio-mode-picker{display:flex;gap:18px;flex-wrap:wrap;padding:12px 0 20px}.bio-mode-picker label{display:flex;align-items:center;gap:7px;font-size:12px;min-height:30px}.bio-mode-picker input{accent-color:var(--blue)}.custom-bio-panel .custom-bio-field{padding:15px;background:var(--sheet);border-radius:9px}.profile-wizard .feed-composition-panel>.profile-layout-picker{margin:16px 0 26px}.profile-wizard .feed-composition-panel .profile-field input{font-size:16px}.profile-wizard .feed-composition-panel .editor-section-heading h2{font-size:18px}.profile-wizard .profile-introduction p{white-space:pre-line}
 @media(max-width:370px){.profile-wizard .profile-progress{margin-bottom:23px}.wizard-intro{margin-bottom:22px}.wizard-intro h2{font-size:23px}.wizard-basics{padding:19px;gap:22px}.wizard-cover .profile-photo-picker{max-width:205px}.profile-choice-group>div{gap:7px}.profile-chip span{font-size:12px;padding:9px 12px}.profile-choice-groups{gap:22px}.profile-wizard .fixed-actions{width:calc(100% - 40px)}}
+
+/* A small stack of letters, with distinct paper edges and a calmer reading surface. */
+.conversation-home .concern-stack{overflow:visible}.is-browsing .concern-stack{width:calc(100% - 14px);margin:3px 7px 26px;isolation:isolate}
+.letter-underlay{position:absolute;inset:0;pointer-events:none;border:1px solid #c5c1cf;border-radius:20px;background:#e6e4e7;box-shadow:0 6px 14px #3028410c;padding:46px 11px 11px;transform-origin:50% 90%;transition:transform .24s ease}.letter-underlay>i{display:block;width:100%;height:100%;border-radius:13px;background:#d2cede;border:1px solid #c9c3d5}.letter-underlay:before{content:'';position:absolute;top:21px;left:23px;height:2px;width:61px;background:#b9b1ca;border-radius:2px}.letter-underlay.underlay-1{z-index:1;transform:translateY(calc(10px - 4px * var(--drag-progress,0))) rotate(-2.5deg) scale(calc(.975 + .025 * var(--drag-progress,0)))}.letter-underlay.underlay-2{z-index:0;transform:translateY(18px) rotate(2.6deg) scale(.95);background:#dcd9e3}
+.conversation-home .concern-card{border:1px solid #c9c5d1;border-radius:20px;background:#ecebea;box-shadow:0 8px 20px #2b243314,0 1px 3px #2b243309}.is-browsing .card-open{padding:11px;border-radius:20px}.conversation-home .card-person{min-height:46px;padding:0 6px 11px;gap:10px;align-items:center}.conversation-home .card-person strong{font-size:12px;color:#55496e;font-weight:400}.conversation-home .card-person p{font-size:10px;color:#777080}.conversation-home .letter-flower{width:29px;height:31px;justify-content:center}.conversation-home .letter-flower .pen-doodle{width:26px;height:30px;stroke-width:1.9}
+.conversation-home .card-story{border-radius:13px;background:#d0cdde;border:1px solid #c7c2d7;padding:19px 20px 22px;box-shadow:inset 0 1px 0 #e3dfec}.letter-story-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid #b4acc559}.conversation-home .letter-story-heading .card-topic{font-size:11px;line-height:1.5;margin:0}.letter-address{font:10px/1.5 var(--mono);color:#85789e;white-space:nowrap}.conversation-home .concern-card h2{font-size:26px;line-height:1.5;letter-spacing:-.7px;font-weight:400;text-wrap:pretty;word-break:keep-all;overflow-wrap:anywhere}.conversation-home .card-excerpt{font-size:15px;line-height:1.95;letter-spacing:-.15px;color:#595068;margin-top:20px}.is-browsing .card-story{scrollbar-width:thin;scrollbar-color:#b1a8c5 transparent;scroll-padding-bottom:18px}
+.deck-swipe-guide{position:absolute;bottom:calc(189px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:10px;color:#797180;letter-spacing:.2px;pointer-events:none;line-height:18px}.deck-swipe-guide>span{margin:0 10px;color:#aca3b6}.conversation-home .swipe-stamp{position:absolute;top:65px;z-index:5;padding:8px 12px;border:1px solid #9b90b3;border-radius:7px;background:#ecebea;color:var(--blue);font-size:14px;pointer-events:none}.stamp-previous{right:22px;left:auto;transform:rotate(6deg);opacity:var(--swipe-left,0)}.stamp-next{left:22px;right:auto;transform:rotate(-6deg);opacity:var(--swipe-right,0)}.conversation-home .concern-card.is-dragging{transition:none}.conversation-home .concern-card.is-leaving,.deck-end-card.is-leaving{transition:transform .24s ease,opacity .24s ease}.conversation-home .card-arriving.arrive-next{animation:letter-from-left .24s ease-out}.conversation-home .card-arriving.arrive-previous{animation:letter-from-right .24s ease-out}@keyframes letter-from-left{from{opacity:.4;transform:translateX(-34px) rotate(-2deg)}to{opacity:1;transform:none}}@keyframes letter-from-right{from{opacity:.4;transform:translateX(34px) rotate(2deg)}to{opacity:1;transform:none}}
+.deck-end-card{position:relative;touch-action:pan-y;transition:transform .24s ease}.deck-end-card.is-dragging{transition:none}.deck-end-card .card-open{padding:35px 5px}.deck-end-card .deck-return-hint{font-size:12px;margin:20px 0 0;color:#74688b}.deck-end-card .deck-empty .btn{margin-top:22px}.deck-end-card .card-open:focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:16px}
+@media(min-width:651px){.deck-swipe-guide{bottom:110px}}
+@media(max-width:370px),(max-height:700px) and (max-width:650px){.is-browsing .concern-stack{width:calc(100% - 12px);margin:1px 6px 21px}.is-browsing .card-open{padding:9px}.conversation-home .card-person{min-height:38px;padding:0 3px 8px;gap:8px}.conversation-home .card-person strong{font-size:11px}.conversation-home .card-person p{font-size:10px}.conversation-home .letter-flower{width:24px;height:28px}.conversation-home .letter-flower .pen-doodle{width:22px;height:26px}.conversation-home .card-story{padding:14px 16px 18px}.letter-story-heading{margin-bottom:13px;padding-bottom:9px}.letter-address{font-size:9px}.conversation-home .concern-card h2{font-size:23px;line-height:1.5}.conversation-home .card-excerpt{font-size:14px;line-height:1.9;margin-top:16px}.deck-swipe-guide{bottom:calc(173px + env(safe-area-inset-bottom));font-size:9px}.letter-underlay.underlay-2{transform:translateY(15px) rotate(2.6deg) scale(.95)}.letter-underlay{padding:38px 9px 9px}}
+@media(prefers-reduced-motion:reduce){.letter-underlay,.deck-end-card,.conversation-home .concern-card{transition:none!important}.conversation-home .card-arriving{animation:none!important}}
 </style>
   
 </head>
@@ -575,6 +586,31 @@ function recommendedConcerns(items,state,viewer=DEMO_USER) {
   const selected=new Set(state.topics??[]), skipped=new Set(state.skipped??[]),answered=new Set((state.answers??[]).map(a=>a.concernId));
   return items.filter(c=>canRespond(c,viewer)&&selected.has(c.category)&&!skipped.has(c.id)&&!answered.has(c.id));
 }
+// Navigation history stays separate from answers and is scoped to the chosen topics.
+function concernDeck(items,state,viewer=DEMO_USER){
+  const allowed=recommendedConcerns(items,{...state,skipped:[]},viewer),byId=new Map(allowed.map(c=>[c.id,c]));
+  const queue=recommendedConcerns(items,state,viewer),scope=viewer.gender+':'+[...state.topics].sort().join(',');
+  const raw=state.deckNavigation?.scope===scope?state.deckNavigation:null;
+  const clean=ids=>[...new Set((Array.isArray(ids)?ids:[]).filter(id=>byId.has(id)))];
+  const current=byId.get(raw?.current)??queue[0]??null;
+  const forward=clean(raw?.forward).filter(id=>id!==current?.id);
+  const back=clean(raw?.back??state.skipped).filter(id=>id!==current?.id&&!forward.includes(id));
+  const next=byId.get(forward[0])??queue.find(c=>c.id!==current?.id)??null;
+  const upcoming=[...new Set([...forward,...queue.map(c=>c.id)])].filter(id=>id!==current?.id);
+  return {current,next,previous:byId.get(back.at(-1))??null,depth:Math.min(2,upcoming.length),navigation:{scope,current:current?.id??'',back,forward}};
+}
+function moveConcernDeck(items,state,viewer,direction,expectedId){
+  const deck=concernDeck(items,state,viewer),nav=deck.navigation,current=deck.current;
+  if(expectedId!==undefined&&expectedId!==(current?.id??''))return false;
+  if(direction==='next'&&current){
+    nav.back.push(current.id);if(!state.skipped.includes(current.id))state.skipped.push(current.id);
+    nav.current=deck.next?.id??'';nav.forward=nav.forward.filter(id=>id!==nav.current);
+  }else if(direction==='previous'&&deck.previous){
+    nav.current=nav.back.pop();if(current)nav.forward.unshift(current.id);
+    state.skipped=state.skipped.filter(id=>id!==nav.current);
+  }else return false;
+  state.deckNavigation=nav;return true;
+}
 function acceptAnswer(concern,answer,existing,viewer=DEMO_USER) {
   if(!concern?.own||!answer?.chatConsent||!oppositeGender(viewer.gender,answer.authorGender)||existing?.closed)return null;
   const id=concern.id+'_'+answer.id;
@@ -672,7 +708,7 @@ function swipeDecision(dx,dy,width,velocity=0){
   if(!Number.isFinite(dx)||!Number.isFinite(dy)||!Number.isFinite(width)||width<=0||Math.abs(dx)<Math.abs(dy)*1.35)return null;
   const flick=Number.isFinite(velocity)&&Math.abs(velocity)>=.55&&Math.abs(dx)>=50;
   if(Math.abs(dx)<threshold&&!flick)return null;
-  return dx<0?'skip':'reply';
+  return dx<0?'previous':'next';
 }
 
 // Original pen marks, drawn for the approved blue-ink stationery system.
@@ -877,7 +913,7 @@ function preferences(){
 }
 const publicFacts=c=>[c.ageBand??'30대',c.occupation??'직장인',c.region??'서울'].map(esc).join(' · ');
 const eligible=c=>Boolean(c&&(c.own||canRespond(c,viewer())&&(state.topics.includes(c.category)||state.answers.some(a=>a.concernId===c.id))));
-let discovery={id:null,expanded:false,reply:false,sent:false},deckArrival=false;
+let discovery={id:null,expanded:false,reply:false,sent:false},deckArrival='';
 function openCardReply(){
   if(!discovery.id||discovery.sent)return;
   discovery.reply=true;
@@ -886,14 +922,14 @@ function openCardReply(){
 }
 function listen(){
   if(!state.topics.length)return preferences();
-  const arriving=deckArrival;deckArrival=false;
-  const queue=recommendedConcerns(sampleConcerns(),state,viewer());
+  const arriving=deckArrival;deckArrival='';
+  const deck=concernDeck(sampleConcerns(),state,viewer());
   const sent=discovery.sent&&state.answers.some(a=>a.concernId===discovery.id)&&canRespond(getConcern(discovery.id),viewer());
-  const c=sent?getConcern(discovery.id):queue[0];
+  const c=sent?getConcern(discovery.id):deck.current;
   if(c?.id!==discovery.id)discovery={id:c?.id??null,expanded:false,reply:Boolean(state.replyDrafts[c?.id]),sent:false};
   const tools=link('/preferences',icon('filter'),'icon-button').replace('class="icon-button"','class="icon-button" aria-label="관심 주제 변경"');
   const options={tools,screen:'deck-page text-deck conversation-home',compact:true};
-  if(!c)return shell('홈',`<div class="deck-empty"><span class="empty-art">${doodleSvg('envelope')}</span><h2>오늘 도착한 고민을<br>모두 만났어요</h2>${link('/preferences','관심 주제 바꾸기','btn btn-primary')}${state.skipped.length?button('restart-deck','넘긴 고민 다시 보기','quiet-link'):''}</div>`,options);
+  if(!c)return shell('홈',`<div class="deck-end-card" data-concern=""><div class="card-open deck-empty" tabindex="0" aria-label="모든 고민을 만났어요, 왼쪽으로 밀면 이전 고민"><span class="empty-art">${doodleSvg('envelope')}</span><h2>오늘 도착한 고민을<br>모두 만났어요</h2>${deck.previous?'<p class="deck-return-hint">← 왼쪽으로 밀면 이전 고민</p>':''}${link('/preferences','관심 주제 바꾸기','btn btn-primary')}</div></div>`,options);
   const id=esc(c.id),conn=state.connections['sent_'+c.id];
   let response;
   if(sent)response=`<section class="card-sent" aria-labelledby="answer-sent-heading"><span class="sent-check">${icon('check')}</span><div><h3 id="answer-sent-heading" tabindex="-1">답변을 보냈어요</h3><p>${chatAllowed(conn,viewer())?'채팅방이 열렸어요. 이야기를 이어가 보세요':'상대가 선택하면 익명 채팅방이 열려요'}</p></div><div class="card-sent-actions">${chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(conn.id),'채팅방 열기','card-secondary'):link('/concern?id='+encodeURIComponent(c.id),'보낸 답변','card-secondary')}${button('next-concern','다음 고민 '+icon('arrow'),'card-primary')}</div></section>`;
@@ -902,7 +938,7 @@ function listen(){
   const composing=discovery.reply||sent;
   if(!composing)options.screen+=' is-browsing';
   const arrival=`<div class="arrival-intro"><svg class="paper-drawing" viewBox="0 0 56 70" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 9 22-1 15 15-1 39-38-1 2-52ZM34 9l-1 15 15-1M18 35l22 1M18 45l21 1M18 54h14"/></svg><p>당신에게<br><span>고민</span>이 도착했어요</p></div>`;
-  return shell('홈',`<div class="discovery-stage ${composing?'is-composing':''}">${composing?'':arrival}<div class="concern-stack" data-depth="${composing||discovery.expanded?0:Math.min(2,queue.length-1)}"><article class="concern-card text-card ${arriving?'card-arriving':''} ${discovery.expanded?'is-expanded':''} ${discovery.reply?'is-replying':''} ${sent?'is-sent':''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-skip" aria-hidden="true">다음 고민</span><span class="swipe-stamp stamp-reply" aria-hidden="true">답변하기</span><div class="card-open" tabindex="0" aria-label="${composing?'고민 내용':'고민 카드, 왼쪽 키로 넘기기, 오른쪽 키로 답변하기'}" aria-describedby="swipe-help"><div class="card-person"><span class="letter-flower" aria-hidden="true">${concernDoodle(c)}</span><div><strong>${esc(c.ageBand)} ${esc(c.occupation)}</strong><p>${esc(c.region)}</p></div>${state.skipped.length&&!sent&&!discovery.reply?button('undo-skip',icon('undo'),'deck-undo','aria-label="방금 넘긴 고민 다시 보기"'):''}</div><div class="card-story"><span class="card-topic">${topic(c.category)}</span><h2 id="card-title">${esc(c.title)}</h2><p id="card-body" class="card-excerpt ${discovery.expanded?'is-expanded':''}">${esc(c.body)}</p>${button('expand-concern',(discovery.expanded?'접기':'더 읽기')+icon('chevron'),'card-expand',`aria-label="${discovery.expanded?'고민 접기':'고민 자세히 보기'}" aria-expanded="${discovery.expanded}" aria-controls="card-body"`)}</div></div>${composing?response:''}</article></div>${composing?'':response}<p class="sr-only" id="swipe-help">${composing?'답변 아래에서 다음 행동을 선택할 수 있어요':'왼쪽으로 넘기거나 오른쪽으로 밀어 답변할 수 있어요'}</p></div>`,options);
+  return shell('홈',`<div class="discovery-stage ${composing?'is-composing':''}">${composing?'':arrival}<div class="concern-stack" data-depth="${composing||discovery.expanded?0:deck.depth}">${composing||discovery.expanded?'':Array.from({length:deck.depth},(_,i)=>`<div class="letter-underlay underlay-${i+1}" aria-hidden="true"><i></i></div>`).join('')}<article class="concern-card text-card ${arriving?'card-arriving arrive-'+arriving:''} ${discovery.expanded?'is-expanded':''} ${discovery.reply?'is-replying':''} ${sent?'is-sent':''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-previous" aria-hidden="true">이전 고민</span><span class="swipe-stamp stamp-next" aria-hidden="true">다음 고민</span><div class="card-open" tabindex="0" aria-label="${composing?'고민 내용':'고민 카드, 오른쪽 키로 다음 고민, 왼쪽 키로 이전 고민'}" aria-describedby="swipe-help"><div class="card-person"><span class="letter-flower" aria-hidden="true">${concernDoodle(c)}</span><div><strong>${esc(c.ageBand)} ${esc(c.occupation)}</strong><p>${esc(c.region)}</p></div></div><div class="card-story"><div class="letter-story-heading"><span class="card-topic">${topic(c.category)}</span><span class="letter-address" lang="en">dear, friend</span></div><h2 id="card-title">${esc(c.title)}</h2><p id="card-body" class="card-excerpt ${discovery.expanded?'is-expanded':''}">${esc(c.body)}</p>${button('expand-concern',(discovery.expanded?'접기':'더 읽기')+icon('chevron'),'card-expand',`aria-label="${discovery.expanded?'고민 접기':'고민 자세히 보기'}" aria-expanded="${discovery.expanded}" aria-controls="card-body"`)}</div></div>${composing?response:''}</article></div>${composing?'':response}<p class="${composing?'sr-only':'deck-swipe-guide'}" id="swipe-help">${composing?'답변 아래에서 다음 행동을 선택할 수 있어요':'← 이전 고민 <span aria-hidden="true">·</span> 다음 고민 →'}</p></div>`,options);
 }
 function write(){
   const d=state.draft;
@@ -1056,7 +1092,7 @@ function about(){return shell('사친 소개',`<section class="about-copy"><h2>�
 let commitSwipe;
 function initSwipe(){
   swipeCleanup?.();commitSwipe=null;
-  const card=$('.concern-card'),anchor=card?.querySelector('.card-open');if(!card||!anchor)return;
+  const card=$('.concern-card')??$('.deck-end-card'),anchor=card?.querySelector('.card-open');if(!card||!anchor)return;
   const stack=card.closest('.concern-stack');
   const controller=new AbortController(),signal=controller.signal;
   let start=null,dx=0,dy=0,dragging=false,busy=false,timer,suppressClick=false;
@@ -1064,12 +1100,13 @@ function initSwipe(){
   const reset=()=>{card.classList.remove('is-dragging');card.style.transform='';card.style.removeProperty('--swipe-left');card.style.removeProperty('--swipe-right');stack?.style.removeProperty('--drag-progress');};
   const finish=direction=>{
     if(busy||!card.isConnected||discovery.sent||discovery.reply)return;
-    if(direction==='reply'){reset();openCardReply();return;}
+    const deck=concernDeck(sampleConcerns(),state,viewer());
+    if((direction==='previous'&&!deck.previous)||(direction==='next'&&!deck.current)){reset();toast(direction==='previous'?'처음 도착한 고민이에요':'새로운 고민을 기다리고 있어요');return;}
     busy=true;start=null;card.classList.remove('card-arriving');card.classList.remove('is-dragging');card.classList.add('is-leaving');
-    card.style.setProperty(direction==='skip'?'--swipe-left':'--swipe-right','1');
-    card.style.transform=`translateX(${(direction==='skip'?-1:1)*(window.innerWidth+card.offsetWidth)}px) rotate(${direction==='skip'?-15:15}deg)`;
+    card.style.setProperty(direction==='previous'?'--swipe-left':'--swipe-right','1');
+    card.style.transform=`translateX(${(direction==='previous'?-1:1)*(window.innerWidth+card.offsetWidth)}px) rotate(${direction==='previous'?-9:9}deg)`;
     const id=card.dataset.concern;
-    timer=setTimeout(()=>{if(!card.isConnected||route().path!=='/listen')return;if(recommendedConcerns(sampleConcerns(),state,viewer())[0]?.id!==id)return;state.skipped.push(id);deckArrival=true;save();render();},reduced?0:240);
+    timer=setTimeout(()=>{if(!card.isConnected||route().path!=='/listen')return;if(!moveConcernDeck(sampleConcerns(),state,viewer(),direction,id)){busy=false;card.classList.remove('is-leaving');reset();return;}deckArrival=direction;save();render();},reduced?0:240);
   };
   commitSwipe=finish;
   const begin=(x,y,id,kind,event)=>{
@@ -1103,7 +1140,7 @@ function initSwipe(){
   card.addEventListener('pointercancel',event=>{if(event.pointerType!=='touch')cancel();},{signal});card.addEventListener('lostpointercapture',()=>{if(start?.kind==='pointer')cancel();},{signal});
   card.addEventListener('dragstart',event=>{if(!event.target.closest('textarea,input'))event.preventDefault();},{signal});
   card.addEventListener('click',event=>{if(suppressClick||busy){event.preventDefault();event.stopImmediatePropagation();suppressClick=false;}},{capture:true,signal});
-  anchor.addEventListener('keydown',event=>{if(event.target===anchor&&(event.key==='ArrowLeft'||event.key==='ArrowRight')){event.preventDefault();finish(event.key==='ArrowLeft'?'skip':'reply');}},{signal});
+  anchor.addEventListener('keydown',event=>{if(event.target===anchor&&(event.key==='ArrowLeft'||event.key==='ArrowRight')){event.preventDefault();finish(event.key==='ArrowLeft'?'previous':'next');}},{signal});
   swipeCleanup=()=>{controller.abort();clearTimeout(timer);commitSwipe=null;};
 }
 function resizeWritingTitle(){const input=$('#concern-title');if(input){input.style.height='0px';input.style.height=Math.max(34,input.scrollHeight)+'px';}}
@@ -1236,9 +1273,7 @@ document.addEventListener('click',event=>{
   if(action==='reply-card'&&discovery.id===id)openCardReply();
   if(action==='close-card-reply'){discovery.reply=false;render({keepScroll:true,focus:'[data-action="reply-card"]'});}
   if(action==='next-concern'){discovery={id:null,expanded:false,reply:false,sent:false};render();}
-  if(action==='skip-card'&&recommendedConcerns(sampleConcerns(),state,viewer())[0]?.id===id)commitSwipe?.('skip');
-  if(action==='undo-skip'){state.skipped.pop();deckArrival=true;save();render();}
-  if(action==='restart-deck'){state.skipped=[];save();render();}
+  if(action==='skip-card'&&discovery.id===id)commitSwipe?.('next');
   if(action==='demo-answer'){const c=state.concerns.find(c=>c.id===id);if(c){c.mockAnswers=true;save();render();}}
   if(action==='helpful'){const c=getConcern(route().params.get('id'));if(!c?.own||!ownAnswers(c).some(a=>connectionKey(c.id,a.id)===id))return;state.helpfulAnswers[id]=!state.helpfulAnswers[id];save();target.setAttribute('aria-pressed',String(state.helpfulAnswers[id]));target.classList.toggle('is-helpful',state.helpfulAnswers[id]);}
   if(action==='accept-answer'){
