@@ -794,6 +794,61 @@ html { scroll-padding-top: 90px; overflow-x:clip; }
   .conversation-home .concern-card.card-arriving { animation:none; }
   .conversation-home .stack-near { transition:none; }
 }
+
+/* Balance the whole deck in the viewport; keep the card's content spacing intact. */
+@media(max-width:650px) {
+  .product-app { --dock-clearance:calc(92px + env(safe-area-inset-bottom,0px)); }
+  .product-app:not(.is-chat):not(.is-entry) { padding-bottom:var(--dock-clearance); }
+  .product-app.conversation-home { --deck-header-height:64px; }
+  .product-app.conversation-home .app-main { margin-top:0; }
+  .product-app.conversation-home .page {
+    min-height:calc(100svh - var(--deck-header-height) - var(--dock-clearance));
+    display:flex; flex-direction:column; justify-content:center;
+    padding:16px 0 20px;
+  }
+  .conversation-home .discovery-stage { width:100%; padding:0; }
+  .product-app .tabbar {
+    left:16px; right:16px; bottom:calc(12px + env(safe-area-inset-bottom,0px));
+    width:auto; max-width:430px; height:64px; margin:0 auto;
+    display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px;
+    padding:6px; border:1px solid #e3e1dc; border-radius:34px;
+    background:#ffffffed; backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+    box-shadow:0 6px 24px -8px #24232120,0 1px 3px #24232106;
+  }
+  .product-app .tabbar a {
+    display:flex; flex-direction:row; align-items:center; justify-content:center;
+    gap:7px; width:auto; max-width:none; min-width:0; min-height:50px;
+    padding:0 8px; border-radius:26px; font-size:12px; line-height:1;
+    font-weight:500; color:#706e69; background:transparent;
+    -webkit-tap-highlight-color:transparent; touch-action:manipulation;
+    transition:transform .12s ease,background .16s ease,color .16s ease;
+  }
+  .product-app .tabbar a svg,.product-app .tabbar a.active svg {
+    width:21px; height:21px; flex:none; padding:0; margin:0;
+    box-sizing:border-box; border-radius:0; background:transparent; stroke-width:1.6;
+  }
+  .product-app .tabbar a.active { color:#fff; background:#242321; font-weight:600; }
+  .product-app .tabbar a.active svg { stroke-width:1.85; }
+  .product-app .tabbar a:active { transform:scale(.95); background:#efeeeb; }
+  .product-app .tabbar a.active:active { background:#4a4844; }
+  .product-app .tabbar a:focus-visible { outline:2px solid #242321; outline-offset:3px; }
+  .product-app.is-chat .tabbar { display:none; }
+  .product-app .toast { bottom:calc(94px + env(safe-area-inset-bottom,0px)); }
+}
+@media(max-width:370px), (max-height:700px) and (max-width:650px) {
+  .product-app.conversation-home { --deck-header-height:58px; }
+  .product-app.conversation-home .page { padding-top:8px; padding-bottom:16px; }
+  .product-app .tabbar { left:12px; right:12px; }
+  .product-app .tabbar a { gap:6px; font-size:11px; padding:0 6px; }
+}
+@media(hover:hover) and (max-width:650px) {
+  .product-app .tabbar a:not(.active):hover { background:#f1f0ed; color:#242321; }
+  .product-app .tabbar a.active:hover { background:#3b3935; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .product-app .tabbar a { transition:none; }
+  .product-app .tabbar a:active { transform:none; }
+}
 </style>
   
   
