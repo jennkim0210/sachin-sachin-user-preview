@@ -355,6 +355,13 @@
 @media(max-width:650px){.is-browsing .card-actions.compact-card-actions{bottom:calc(103px + env(safe-area-inset-bottom))}.is-browsing .app-main{padding-bottom:calc(213px + env(safe-area-inset-bottom))}}
 @media(max-width:370px),(max-height:700px) and (max-width:650px){.is-browsing .card-actions.compact-card-actions{bottom:calc(100px + env(safe-area-inset-bottom));height:70px;gap:16px;width:238px}.conversation-home .compact-card-actions .card-secondary{width:54px;height:70px;min-height:70px!important;gap:4px}.skip-orb{width:50px;height:50px}.conversation-home .compact-card-actions .card-primary{width:158px;height:52px;min-height:52px!important;font-size:14px}.is-browsing .app-main{padding-bottom:calc(190px + env(safe-area-inset-bottom))}}
 
+
+/* Profile composition unfolds one decision at a time. */
+.profile-wizard .app-main{max-width:510px}.profile-wizard .product-header{max-width:510px}.profile-wizard .profile-progress{display:grid;grid-template-columns:repeat(4,1fr);list-style:none;gap:12px;margin:8px 0 29px;padding:0}.profile-progress li{font-size:11px;color:#77727f}.profile-progress li i{display:block;height:2px;background:#c7c4cd;margin-top:10px;border-radius:2px}.profile-progress li.current{color:var(--blue)}.profile-progress li.current i,.profile-progress li.done i{background:var(--blue)}.profile-progress li.done i{opacity:.4}
+.wizard-intro{position:relative;padding:0 45px 0 0;margin-bottom:27px}.wizard-intro>.pen-doodle{position:absolute;right:2px;top:3px;width:32px;height:39px;color:var(--blue);stroke-width:1.8;transform:rotate(-5deg)}.wizard-intro h2{font-size:27px;line-height:1.5;letter-spacing:-.5px}.wizard-intro p{font-size:12px;color:var(--muted);line-height:1.8;margin-top:7px}.profile-wizard .wizard-form{gap:20px;padding:0}.wizard-basics{display:flex;flex-direction:column;gap:25px;padding:24px}.wizard-basics .profile-field>span{margin-bottom:10px}.wizard-custom-job{display:block;margin-top:15px}.profile-wizard [hidden]{display:none!important}.profile-wizard .optional-profile-fields{background:transparent;border:0;border-top:1px solid #c7c4cd;border-radius:0;padding:10px 0}.profile-wizard .optional-profile-fields>summary{font-size:14px}.profile-wizard .optional-profile-fields .profile-field input{font-size:16px}.profile-wizard .fixed-actions .btn{min-height:53px;border-radius:9px}.profile-wizard .profile-draft-status{font-size:10px}.profile-wizard .profile-privacy{margin:0 0 22px}
+.wizard-cover .profile-photo-picker{max-width:230px;width:100%;aspect-ratio:1.04;border-width:7px}.wizard-cover .photo-pick-footer{max-width:230px;margin:3px auto 0}.wizard-cover .photo-pick-empty{gap:15px}.wizard-cover .photo-pick-empty .pen-doodle{width:39px;height:47px}.wizard-photo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.wizard-photo-item{position:relative;min-width:0}.wizard-photo-item .feed-photo-picker{aspect-ratio:1;min-height:0;border:4px solid var(--sheet);border-radius:10px}.wizard-photo-item .feed-photo-picker img{height:100%;width:100%;object-fit:cover}.wizard-photo-item .feed-photo-picker>span{min-height:0;height:100%;gap:6px;font-size:10px}.wizard-photo-item .feed-photo-picker .pen-doodle{width:24px;height:28px}.photo-tile-remove{position:absolute;top:-8px;right:-7px;width:40px;height:40px;display:grid;place-items:center;color:var(--blue);border:7px solid transparent;border-radius:50%;background:var(--sheet);background-clip:padding-box}.photo-tile-remove svg{width:13px;height:13px}.photo-tile-add{aspect-ratio:1;border:1px dashed #a9a2b6;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:11px;color:#625b75}.photo-tile-add svg{width:21px;height:21px}.profile-wizard .photo-status:empty{display:none}
+.profile-choice-groups{display:flex;flex-direction:column;gap:26px}.profile-choice-group{padding:0;border:0;min-width:0}.profile-choice-group legend{font-size:15px;margin-bottom:12px;width:100%}.profile-choice-group legend small{float:right;font-size:10px;line-height:24px;color:var(--muted)}.profile-choice-group>div{display:flex;flex-wrap:wrap;gap:8px}.profile-chip{position:relative;cursor:pointer}.profile-chip input{position:absolute;width:1px;height:1px;opacity:0}.profile-chip span{display:flex;align-items:center;justify-content:center;min-height:42px;padding:9px 14px;border:1px solid #c3becd;border-radius:8px;background:#e9e8e7;font-size:13px;line-height:1.6;transition:background .12s,border-color .12s}.profile-chip input:checked+span{background:var(--tint);border-color:var(--blue);color:var(--blue)}.profile-chip input:disabled+span{opacity:.55}.profile-chip input:focus-visible+span{outline:2px solid var(--blue);outline-offset:3px}.choice-introduction{border-left:2px solid #a69cc0;padding:3px 0 3px 16px;margin:2px 0}.choice-introduction>span{font:10px var(--mono);color:var(--blue)}.choice-introduction p{font-size:14px;line-height:1.85;white-space:pre-line;margin-top:8px;overflow-wrap:anywhere}.wizard-optional{border-top:1px solid #c7c4cd;padding-top:5px}.wizard-optional summary{display:flex;align-items:center;justify-content:space-between;gap:15px;list-style:none;min-height:47px;font-size:13px;cursor:pointer}.wizard-optional summary::-webkit-details-marker{display:none}.wizard-optional summary svg{width:16px;height:16px;color:var(--blue);flex:none}.wizard-optional[open]>summary svg{transform:rotate(45deg)}.bio-mode-picker{display:flex;gap:18px;flex-wrap:wrap;padding:12px 0 20px}.bio-mode-picker label{display:flex;align-items:center;gap:7px;font-size:12px;min-height:30px}.bio-mode-picker input{accent-color:var(--blue)}.custom-bio-panel .custom-bio-field{padding:15px;background:var(--sheet);border-radius:9px}.profile-wizard .feed-composition-panel>.profile-layout-picker{margin:16px 0 26px}.profile-wizard .feed-composition-panel .profile-field input{font-size:16px}.profile-wizard .feed-composition-panel .editor-section-heading h2{font-size:18px}.profile-wizard .profile-introduction p{white-space:pre-line}
+@media(max-width:370px){.profile-wizard .profile-progress{margin-bottom:23px}.wizard-intro{margin-bottom:22px}.wizard-intro h2{font-size:23px}.wizard-basics{padding:19px;gap:22px}.wizard-cover .profile-photo-picker{max-width:205px}.profile-choice-group>div{gap:7px}.profile-chip span{font-size:12px;padding:9px 12px}.profile-choice-groups{gap:22px}.profile-wizard .fixed-actions{width:calc(100% - 40px)}}
 </style>
   
 </head>
@@ -510,6 +517,22 @@ function safeProfilePhoto(value){return typeof value==='string'&&value.length<=7
 const OCCUPATIONS=['디자이너','개발자','사업가','기획자','마케터','연구원','교사','의료인','공무원','회계사','작가','영상 제작자','요리사','서비스직','프리랜서','학생','대학원생','취업 준비생','직장인','자영업'];
 const PROFILE_FIELDS=[['school','학교',40],['major','전공',40],['company','회사·활동',40],['hometown','고향',30],['interests','좋아하는 것',80],['mbti','MBTI',20],['weekend','주말의 나',80],['values','소중한 가치',80]];
 const PROFILE_LAYOUTS=[['letter','편지'],['album','앨범'],['story','이야기']];
+const PROFILE_CHOICES={
+  traits:{label:'나의 분위기',limit:2,options:['차분한','다정한','유쾌한','솔직한','호기심 많은','생각이 깊은']},
+  interests:{label:'좋아하는 시간',limit:4,options:['산책','책방','음악','영화','카페','운동','여행','요리']},
+  talk:{label:'대화할 때 나는',limit:1,options:['잘 들어주는 편','경험을 나누는 편','함께 정리하는 편','천천히 알아가는 편']}
+};
+function profileSelections(value={}){
+  return Object.fromEntries(Object.entries(PROFILE_CHOICES).map(([key,group])=>[key,Array.isArray(value?.[key])?[...new Set(value[key].filter(item=>group.options.includes(item)))].slice(0,group.limit):[]]));
+}
+function profileIntroduction(value={}){
+  if(value.bioMode==='custom'||(!value.bioMode&&value.bio))return String(value.bio??'');
+  const s=profileSelections(value.selections),lines=[];
+  if(s.traits.length)lines.push(s.traits.join(', ')+' 사람이에요');
+  if(s.interests.length)lines.push('좋아하는 건 '+s.interests.join(' · '));
+  if(s.talk.length)lines.push('대화할 때는 '+s.talk[0]+'이에요');
+  return lines.join('\n');
+}
 function profileExtras(value={}){
   const details={},visibility={};
   for(const [key,,limit] of PROFILE_FIELDS){details[key]=String(value.details?.[key]??'').slice(0,limit);visibility[key]=value.visibility?.[key]===true;}
@@ -520,7 +543,7 @@ function profileExtras(value={}){
     return {id,type:b.type,title:String(b.title??'').slice(0,40),body:String(b.body??'').slice(0,500),caption:String(b.caption??'').slice(0,80),photo:safeProfilePhoto(b.photo)};
   });
   let photos=0;for(const b of blocks)if(b.type==='photo'&&++photos>3)b.photo='';
-  return {layout:PROFILE_LAYOUTS.some(([id])=>id===value.layout)?value.layout:'letter',details,visibility,blocks};
+  return {layout:PROFILE_LAYOUTS.some(([id])=>id===value.layout)?value.layout:'letter',details,visibility,blocks,selections:profileSelections(value.selections),bioMode:value.bioMode==='custom'||(!value.bioMode&&value.bio)?'custom':'choices'};
 }
 function publicProfileDetails(value={}){return PROFILE_FIELDS.filter(([key])=>value.visibility?.[key]===true&&String(value.details?.[key]??'').trim()).map(([key,label])=>({label,value:String(value.details[key])}));}
 function validateProfile(value,member){
@@ -528,7 +551,6 @@ function validateProfile(value,member){
   if(checked.error)return checked;
   const bio=String(value.bio??'').trim(),prompt=String(value.prompt??'').trim();
   if(bio.length>160)return {error:'소개는 160자 이내로 적어 주세요.',field:'bio'};
-  if(prompt.length>80)return {error:'듣고 싶은 말은 80자 이내로 적어 주세요.',field:'prompt'};
   if(value.photo&&!safeProfilePhoto(value.photo))return {error:'사진을 다시 골라 주세요.',field:'photo'};
   for(const [key,label,limit] of PROFILE_FIELDS)if(String(value.details?.[key]??'').length>limit)return {error:label+'은 '+limit+'자 이내로 적어 주세요',field:'detail-'+key};
   if(value.blocks&&!Array.isArray(value.blocks))return {error:'피드 구성을 다시 확인해 주세요',field:'blocks'};
@@ -538,7 +560,7 @@ function validateProfile(value,member){
     if(!b||!['photo','note'].includes(b.type)||String(b.title??'').length>40||String(b.body??'').length>500||String(b.caption??'').length>80)return {error:'피드의 제목·내용 길이를 확인해 주세요',field:'blocks'};
     if(b.photo&&!safeProfilePhoto(b.photo))return {error:'피드 사진을 다시 골라 주세요',field:'blocks'};
   }
-  return {value:{member:checked.value,profile:{bio,prompt,photo:safeProfilePhoto(value.photo),...profileExtras(value)}}};
+  return {value:{member:checked.value,profile:{bio,prompt:prompt.slice(0,80),photo:safeProfilePhoto(value.photo),...profileExtras(value)}}};
 }
 function validateMember(value){
   const nickname=String(value.nickname??'').trim(),gender=value.gender,ageBand=value.ageBand,region=value.region,occupation=String(value.occupation??'').trim();
@@ -626,8 +648,9 @@ function restoreState(saved) {
   result.member=saved.member&&validateMember(saved.member).value?validateMember(saved.member).value:!Object.hasOwn(saved,'member')&&hasLegacyActivity?legacyMember:null;
   result.profile={bio:String(saved.profile?.bio??'').slice(0,160),prompt:String(saved.profile?.prompt??'').slice(0,80),photo:safeProfilePhoto(saved.profile?.photo)};
   result.profileDraft=saved.profileDraft&&typeof saved.profileDraft==='object'&&!Array.isArray(saved.profileDraft)?{nickname:String(saved.profileDraft.nickname??'').slice(0,12),region:String(saved.profileDraft.region??''),occupation:String(saved.profileDraft.occupation??''),bio:String(saved.profileDraft.bio??'').slice(0,160),prompt:String(saved.profileDraft.prompt??'').slice(0,80),photo:safeProfilePhoto(saved.profileDraft.photo)}:null;
-  if(saved.profile?.layout||saved.profile?.details||saved.profile?.blocks)Object.assign(result.profile,profileExtras(saved.profile));
-  if(result.profileDraft&&(saved.profileDraft.layout||saved.profileDraft.details||saved.profileDraft.blocks))Object.assign(result.profileDraft,profileExtras(saved.profileDraft));
+  if(saved.profile?.layout||saved.profile?.details||saved.profile?.blocks||saved.profile?.selections||saved.profile?.bioMode)Object.assign(result.profile,profileExtras(saved.profile));
+  if(result.profileDraft&&(saved.profileDraft.layout||saved.profileDraft.details||saved.profileDraft.blocks||saved.profileDraft.selections||saved.profileDraft.bioMode))Object.assign(result.profileDraft,profileExtras(saved.profileDraft));
+  if(result.profileDraft&&['basics','photos','about'].includes(saved.profileDraft.editorStep))result.profileDraft.editorStep=saved.profileDraft.editorStep;
   for(const key of ['signupDraft','replyDrafts','chatDrafts'])result[key]=saved[key]&&typeof saved[key]==='object'&&!Array.isArray(saved[key])?saved[key]:{};
   result.topics=Array.isArray(saved.topics)?[...new Set(saved.topics.filter(id=>TOPICS.some(t=>t.id===id)))]:[];
   result.skipped=Array.isArray(saved.skipped)?saved.skipped.filter(id=>typeof id==='string'):[];
@@ -933,7 +956,7 @@ function profileBlockEditors(d){
 function profileLetter(data,{label='공개된 상대 프로필',fresh=false}={}){
   const layout=PROFILE_LAYOUTS.some(([id])=>id===data.layout)?data.layout:'letter';
   const details=(data.sharedDetails??[]).map(item=>`<div><dt>${esc(item.label)}</dt><dd>${esc(item.value)}</dd></div>`).join('');
-  return `<article class="revealed-profile profile-letter-card profile-layout-${layout} ${fresh?'newly-opened':''}" aria-label="${esc(label)}"><figure class="profile-keepsake">${profilePicture(data.image,data.name,data.personId,'profile-photo')}<figcaption><div><span class="stationery-eyebrow" lang="en">hello, it's me</span><h2>${esc(data.name)}</h2></div><span class="profile-pen-sign" aria-label="사친의 펜 아이콘">${personDoodle(data.personId)}</span></figcaption></figure><div class="profile-copy"><p class="profile-facts">${esc(data.facts)}</p>${data.bio?`<section class="profile-introduction" aria-label="소개"><p>${esc(data.bio)}</p></section>`:''}${details?`<dl class="shared-profile-details">${details}</dl>`:''}${data.prompt?`<section class="profile-prompt"><span>내가 듣고 싶은 말</span><h3>${esc(data.prompt)}</h3></section>`:''}</div><div class="profile-feed">${profileFeedBlocks(data.blocks)}</div><p class="profile-letter-ending" lang="en">a little closer, at our own pace</p></article>`;
+  return `<article class="revealed-profile profile-letter-card profile-layout-${layout} ${fresh?'newly-opened':''}" aria-label="${esc(label)}"><figure class="profile-keepsake">${profilePicture(data.image,data.name,data.personId,'profile-photo')}<figcaption><div><span class="stationery-eyebrow" lang="en">hello, it's me</span><h2>${esc(data.name)}</h2></div><span class="profile-pen-sign" aria-label="사친의 펜 아이콘">${personDoodle(data.personId)}</span></figcaption></figure><div class="profile-copy"><p class="profile-facts">${esc(data.facts)}</p>${data.bio?`<section class="profile-introduction" aria-label="소개"><p>${esc(data.bio)}</p></section>`:''}${details?`<dl class="shared-profile-details">${details}</dl>`:''}</div><div class="profile-feed">${profileFeedBlocks(data.blocks)}</div><p class="profile-letter-ending" lang="en">a little closer, at our own pace</p></article>`;
 }
 function profile(c){
   if(!profilesVisible(c,viewer()))return '';
@@ -941,14 +964,14 @@ function profile(c){
   const fresh=!openedProfiles.has(c.id);openedProfiles.add(c.id);
   return `<div class="profile-open-note" role="status">${icon('check')}서로의 프로필이 열렸어요</div>`+profileLetter({...info,personId:counterpartId(c,state.concerns),facts:[age,c.otherGender==='male'?'남성':'여성',region,job].join(' · ')},{fresh});
 }
-function ownPublicProfile(member,profile){return {name:member.nickname,image:profile.photo,personId:member.id,bio:profile.bio,prompt:profile.prompt,layout:profile.layout,blocks:profile.blocks,sharedDetails:publicProfileDetails(profile),facts:[member.ageBand,member.region,member.occupation].join(' · ')};}
+function ownPublicProfile(member,profile){return {name:member.nickname,image:profile.photo,personId:member.id,bio:profileIntroduction(profile),layout:profile.layout,blocks:profile.blocks,sharedDetails:publicProfileDetails(profile),facts:[member.ageBand,member.region,member.occupation].join(' · ')};}
 function profileEditorValue(){return state.profileDraft??{...viewer(),...state.profile};}
 function editingConnection(){const c=state.connections[route().params.get('connection')];return chatAllowed(c,viewer())?c:null;}
 function editorRoute(path){const c=editingConnection();return path+(c?'?connection='+encodeURIComponent(c.id):'');}
 function editorReturn(){const c=editingConnection();return c?'/connection?id='+encodeURIComponent(c.id):'/profile';}
 function sharingPreview(c){
   const m=viewer(),p=state.profile;
-  return `<details class="sharing-preview"><summary><span>상대에게 보이는 내 정보</span>${icon('plus')}</summary><div class="sharing-preview-body"><div class="sharing-preview-person">${ownPortrait(p.photo)}<div><strong>${esc(m.nickname)}</strong><p>${publicFacts(m)} · ${m.gender==='male'?'남성':'여성'}</p></div></div>${p.bio?`<p>${esc(p.bio)}</p>`:''}${p.prompt?`<p class="sharing-prompt">${esc(p.prompt)}</p>`:''}<dl class="shared-profile-details">${publicProfileDetails(p).map(item=>`<div><dt>${esc(item.label)}</dt><dd>${esc(item.value)}</dd></div>`).join('')}</dl><div class="profile-feed">${profileFeedBlocks(p.blocks)}</div><small>${p.photo?'사진과 소개까지 함께 공개돼요':'등록한 사진이 없어, 사진 없이 공개돼요'}</small>${link('/profile/edit?connection='+encodeURIComponent(c.id),'사진·소개 수정하기 '+icon('arrow'),'sharing-edit-link')}</div></details>`;
+  return `<details class="sharing-preview"><summary><span>상대에게 보이는 내 정보</span>${icon('plus')}</summary><div class="sharing-preview-body"><div class="sharing-preview-person">${ownPortrait(p.photo)}<div><strong>${esc(m.nickname)}</strong><p>${publicFacts(m)} · ${m.gender==='male'?'남성':'여성'}</p></div></div>${profileIntroduction(p)?`<p>${esc(profileIntroduction(p))}</p>`:''}<dl class="shared-profile-details">${publicProfileDetails(p).map(item=>`<div><dt>${esc(item.label)}</dt><dd>${esc(item.value)}</dd></div>`).join('')}</dl><div class="profile-feed">${profileFeedBlocks(p.blocks)}</div><small>${p.photo?'사진과 소개까지 함께 공개돼요':'등록한 사진이 없어, 사진 없이 공개돼요'}</small>${link('/profile/edit?connection='+encodeURIComponent(c.id),'사진·소개 수정하기 '+icon('arrow'),'sharing-edit-link')}</div></details>`;
 }
 function connection(){
   const c=currentConnection(),id=c?.id,stage=revealStage(c,viewer());
@@ -980,23 +1003,54 @@ function chat(){
 }
 function me(){
   const m=viewer(),p=state.profile;
-  return shell('마이',`<p class="stationery-eyebrow my-letter-eyebrow" lang="en">${typed('my little corner','me')}</p><a class="my-profile-card my-letter-card" href="#/profile" aria-label="내 프로필 보기"><div class="my-letter-identity">${ownPortrait(p.photo)}<div><h2>${esc(m.nickname)}</h2><p>${publicFacts(m)}</p></div></div><p class="my-letter-excerpt ${p.bio?'':'is-empty'}">${esc(p.bio||'좋아하는 것부터, 나를 조금씩 소개해요')}</p><div class="my-letter-footer"><span>내 프로필 보기</span>${icon('arrow')}</div></a>${state.profileDraft?link('/profile/edit',`<span>${icon('mine')}쓰던 소개가 있어요</span><span>이어 쓰기 ${icon('arrow')}</span>`,'profile-draft-link'):''}<p class="my-letter-privacy">${icon('lock')}사진과 소개는 서로 동의한 상대에게만</p><section class="settings my-letter-settings" aria-label="내 활동과 설정">${link('/write',`<span class="settings-symbol">${icon('mine')}</span><span>고민 쓰기</span>${icon('plus')}`,'settings-row')}${link('/preferences?from=me',`<span class="settings-symbol">${icon('filter')}</span><span>관심 주제<small>${state.topics.length?state.topics.map(topic).join(' · '):'들어줄 주제 선택'}</small></span>${icon('back')}`,'settings-row')}</section>`,{screen:'my-page stationery-page',compact:true,tools:link('/mine','내 고민 관리','header-manage')});
+  return shell('마이',`<p class="stationery-eyebrow my-letter-eyebrow" lang="en">${typed('my little corner','me')}</p><a class="my-profile-card my-letter-card" href="#/profile" aria-label="내 프로필 보기"><div class="my-letter-identity">${ownPortrait(p.photo)}<div><h2>${esc(m.nickname)}</h2><p>${publicFacts(m)}</p></div></div><p class="my-letter-excerpt ${profileIntroduction(p)?'':'is-empty'}">${esc(profileIntroduction(p)||'좋아하는 것부터, 나를 조금씩 소개해요')}</p><div class="my-letter-footer"><span>내 프로필 보기</span>${icon('arrow')}</div></a>${state.profileDraft?link('/profile/edit',`<span>${icon('mine')}쓰던 소개가 있어요</span><span>이어 쓰기 ${icon('arrow')}</span>`,'profile-draft-link'):''}<p class="my-letter-privacy">${icon('lock')}사진과 소개는 서로 동의한 상대에게만</p><section class="settings my-letter-settings" aria-label="내 활동과 설정">${link('/write',`<span class="settings-symbol">${icon('mine')}</span><span>고민 쓰기</span>${icon('plus')}`,'settings-row')}${link('/preferences?from=me',`<span class="settings-symbol">${icon('filter')}</span><span>관심 주제<small>${state.topics.length?state.topics.map(topic).join(' · '):'들어줄 주제 선택'}</small></span>${icon('back')}`,'settings-row')}</section>`,{screen:'my-page stationery-page',compact:true,tools:link('/mine','내 고민 관리','header-manage')});
 }
 function ownProfile(){
   const m=viewer(),p=state.profile;
-  return shell('내 프로필',`<p class="profile-privacy own-letter-privacy">${icon('lock')}서로 동의한 상대에게, 이렇게 보여요</p>${profileLetter(ownPublicProfile(m,p),{label:'상대에게 보일 내 프로필'})}<div class="own-letter-actions">${link('/profile/edit',state.profileDraft?'쓰던 소개 이어가기':'프로필 수정하기','btn btn-primary btn-block')}${!p.bio||!p.photo?'<p>사진도 소개도, 천천히 채워도 괜찮아요</p>':''}</div>`,{back:'/me',screen:'own-profile-page stationery-page',tools:link('/profile/edit','수정','header-manage')});
+  return shell('내 프로필',`<p class="profile-privacy own-letter-privacy">${icon('lock')}서로 동의한 상대에게, 이렇게 보여요</p>${profileLetter(ownPublicProfile(m,p),{label:'상대에게 보일 내 프로필'})}<div class="own-letter-actions">${link('/profile/edit',state.profileDraft?'쓰던 소개 이어가기':'프로필 수정하기','btn btn-primary btn-block')}${!profileIntroduction(p)||!p.photo?'<p>사진도 소개도, 천천히 채워도 괜찮아요</p>':''}</div>`,{back:'/me',screen:'own-profile-page stationery-page',tools:link('/profile/edit','수정','header-manage')});
 }
 function editorPhoto(photo){return photo?`<img src="${esc(photo)}" alt="선택한 프로필 사진">`:`<span class="photo-pick-empty">${personDoodle(viewer().id)}<span>내가 편안한 순간의 사진</span></span>`;}
+function profileStep(){const step=route().params.get('step')??state.profileDraft?.editorStep;return ['basics','photos','about'].includes(step)?step:'basics';}
+function profileStepRoute(step){const base=editorRoute('/profile/edit');return base+(base.includes('?')?'&':'?')+'step='+step;}
+function profileProgress(step){
+  const steps=[['basics','기본'],['photos','사진'],['about','소개'],['review','확인']],index=steps.findIndex(([id])=>id===step);
+  return `<ol class="profile-progress" aria-label="프로필 꾸미기 단계">${steps.map(([id,label],i)=>`<li class="${i===index?'current':i<index?'done':''}" ${i===index?'aria-current="step"':''}><span>${label}</span><i aria-hidden="true"></i></li>`).join('')}</ol>`;
+}
+function wizardOccupation(value){
+  const custom=Boolean(value&&!OCCUPATIONS.includes(value));
+  return `<div class="profile-field"><span>하는 일</span>${choiceSelect('wizard-occupation','occupationChoice','하는 일',custom?'__custom__':value,[...OCCUPATIONS.map(v=>({value:v,label:v})),{value:'__custom__',label:'직접 입력'}])}<label class="wizard-custom-job" ${custom?'':'hidden'}><span class="sr-only">직업 직접 입력</span><input name="occupation" value="${custom?esc(value):''}" maxlength="24" placeholder="예: 브랜드 디자이너" ${custom?'':'disabled'}></label></div>`;
+}
+function profilePhotoStep(d){
+  const photos=d.blocks.filter(b=>b.type==='photo');
+  return `<section class="wizard-cover" aria-label="대표 사진"><label class="profile-photo-picker ${d.photo?'has-photo':''}"><span id="own-photo-slot">${editorPhoto(d.photo)}</span><span class="photo-pick-button">${icon('plus')}<span id="photo-label">${d.photo?'사진 바꾸기':'사진 고르기'}</span></span><input id="profile-photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp" aria-label="프로필 사진 선택" aria-describedby="photo-help photo-status"></label><div class="photo-pick-footer"><p id="photo-help">JPG·PNG·WebP · 8MB까지</p>${button('remove-profile-photo','사진 지우기','photo-remove',d.photo?'':'hidden')}</div></section><div class="wizard-photo-grid">${photos.map((b,i)=>`<div class="wizard-photo-item" data-block-id="${b.id}"><label class="feed-photo-picker">${b.photo?`<img src="${esc(b.photo)}" alt="추가한 사진 ${i+1}">`:`<span>${doodleSvg('sun')}사진 고르기</span>`}<input type="file" class="feed-photo-input" data-block-id="${b.id}" accept="image/jpeg,image/png,image/webp" aria-label="추가 사진 ${i+1} 선택"></label>${button('remove-profile-block',icon('close'),'photo-tile-remove',`data-id="${b.id}" aria-label="추가 사진 ${i+1} 삭제"`)}</div>`).join('')}${photos.length<3&&d.blocks.length<8?button('add-profile-photo',icon('plus')+'<span>사진 더 담기</span>','photo-tile-add'):''}</div><p id="photo-status" class="photo-status" role="status"></p>`;
+}
+function profileChoiceStep(d){
+  return `<div class="profile-choice-groups">${Object.entries(PROFILE_CHOICES).map(([key,g])=>`<fieldset class="profile-choice-group" data-choice-group="${key}"><legend>${g.label}<small>${g.limit===1?'하나만':g.limit+'개까지'}</small></legend><input type="hidden" name="choices-present-${key}" value="1"><div>${g.options.map(value=>`<label class="profile-chip"><input type="${g.limit===1?'radio':'checkbox'}" name="choice-${key}" value="${esc(value)}" ${d.selections[key].includes(value)?'checked':''} ${g.limit>1&&d.selections[key].length>=g.limit&&!d.selections[key].includes(value)?'disabled':''}><span>${esc(value)}</span></label>`).join('')}</div></fieldset>`).join('')}</div><section class="choice-introduction"><span lang="en">a little about me</span><p id="choice-introduction-text">${esc(profileIntroduction(d)||'고른 취향으로 나를 소개해요')}</p></section><details class="wizard-optional custom-bio-panel" ${d.bioMode==='custom'?'open':''}><summary>소개를 직접 쓰고 싶다면 ${icon('plus')}</summary><div class="bio-mode-picker"><label><input type="radio" name="bioMode" value="choices" ${d.bioMode!=='custom'?'checked':''}><span>선택한 내용으로</span></label><label><input type="radio" name="bioMode" value="custom" ${d.bioMode==='custom'?'checked':''}><span>직접 쓴 소개로</span></label></div><label class="profile-field custom-bio-field" ${d.bioMode==='custom'?'':'hidden'}><span class="sr-only">나라는 사람</span><textarea name="bio" aria-label="나라는 사람" rows="3" maxlength="160" placeholder="나만의 이야기가 있다면 짧게 적어요">${esc(d.bio)}</textarea></label></details><details class="wizard-optional feed-composition-panel"><summary>피드와 레이아웃 더 꾸미기 ${icon('plus')}</summary><fieldset class="profile-layout-picker"><legend>프로필 모양</legend><div>${PROFILE_LAYOUTS.map(([id,name])=>`<label><input type="radio" name="layout" value="${id}" ${d.layout===id?'checked':''}><span><i class="layout-sketch sketch-${id}" aria-hidden="true"><i></i><i></i><i></i></i>${name}</span></label>`).join('')}</div></fieldset>${profileBlockEditors(d)}</details><p id="photo-status" class="photo-status" role="status"></p>`;
+}
+function updateProfileChoiceUI(form){
+  if(!form||form.dataset.step!=='about')return;
+  for(const [key,group] of Object.entries(PROFILE_CHOICES)){
+    const inputs=[...form.querySelectorAll('[name="choice-'+key+'"]')],count=inputs.filter(i=>i.checked).length;
+    for(const input of inputs)input.disabled=group.limit>1&&!input.checked&&count>=group.limit;
+  }
+  const draft=profileEditorValue(),preview=$('#choice-introduction-text');if(preview)preview.textContent=profileIntroduction(draft)||'고른 취향으로 나를 소개해요';
+  const custom=$('.custom-bio-field');if(custom)custom.hidden=draft.bioMode!=='custom';
+}
 function profileEdit(){
-  photoTask++;const d={...profileExtras(profileEditorValue()),...profileEditorValue()};
-  const select=(name,label,values)=>`<label class="profile-field"><span>${label}</span>${choiceSelect('profile-'+name,name,label,d[name],values.map(v=>({value:v,label:v})))}</label>`;
-  return shell('프로필 꾸미기',`<form id="profile-form" class="profile-form profile-letter-editor" novalidate><p class="stationery-eyebrow" lang="en">a little world of mine</p><fieldset class="profile-layout-picker"><legend>내 프로필의 모양</legend><div>${PROFILE_LAYOUTS.map(([id,name])=>`<label><input type="radio" name="layout" value="${id}" ${d.layout===id?'checked':''}><span><i class="layout-sketch sketch-${id}" aria-hidden="true"><i></i><i></i><i></i></i>${name}</span></label>`).join('')}</div></fieldset><section class="profile-photo-section" aria-label="대표 사진"><label class="profile-photo-picker ${d.photo?'has-photo':''}"><span id="own-photo-slot">${editorPhoto(d.photo)}</span><span class="photo-pick-button">${icon('plus')}<span id="photo-label">${d.photo?'대표 사진 바꾸기':'대표 사진 올리기'}</span></span><input id="profile-photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp" aria-label="프로필 사진 선택" aria-describedby="photo-help photo-status"></label><div class="photo-pick-footer"><p id="photo-help">JPG·PNG·WebP · 8MB까지</p>${button('remove-profile-photo','사진 지우기','photo-remove',d.photo?'':'hidden')}</div><p id="photo-status" class="photo-status" role="status"></p></section><section class="profile-edit-sheet" aria-label="기본 정보"><label class="profile-field"><span>닉네임</span><input name="nickname" value="${esc(d.nickname)}" minlength="2" maxlength="12" autocomplete="nickname" required></label>${select('region','지역',['서울','경기','인천','강원','충청','전라','경상','제주','해외'])}${occupationField(d.occupation,'profile')}</section><section class="profile-edit-sheet profile-bio-sheet" aria-label="소개 작성"><label class="profile-field"><span>나라는 사람</span><textarea name="bio" aria-label="나라는 사람" rows="4" maxlength="160" placeholder="좋아하는 것, 편안해지는 순간…">${esc(d.bio)}</textarea></label><label class="profile-field profile-writing"><span>내가 듣고 싶은 말</span><textarea name="prompt" rows="3" maxlength="80" placeholder="오늘은 그냥, 네 편이 되어줄게">${esc(d.prompt)}</textarea></label></section>${profileBlockEditors(d)}${profileDetailFields(d)}<div class="profile-editor-actions fixed-actions"><p id="profile-error" class="danger" role="alert"></p><p class="profile-draft-status" id="profile-draft-status" role="status">${state.profileDraft?'쓰던 내용을 불러왔어요':'저장하기 전에 공개될 모습을 확인해요'}</p><button type="submit" class="btn btn-primary btn-block">공개될 모습 보기 ${icon('arrow')}</button></div></form>`,{back:editorReturn(),screen:'profile-edit-page stationery-page has-fixed-actions'});
+  photoTask++;const d={...profileEditorValue(),...profileExtras(profileEditorValue())},step=profileStep();
+  const copy={basics:['mug','나를 부를 이름부터','가입할 때 적은 정보예요'],photos:['sun','나다운 순간을 골라요','사진은 나중에 담아도 괜찮아요'],about:['kite','나를 닮은 것만 골라요','모두 고를 필요는 없어요']}[step];
+  let body='';
+  if(step==='basics')body=`<section class="profile-edit-sheet wizard-basics"><label class="profile-field"><span>닉네임</span><input name="nickname" value="${esc(d.nickname)}" minlength="2" maxlength="12" autocomplete="nickname" required></label>${wizardOccupation(d.occupation)}<div class="profile-field"><span>지역</span>${choiceSelect('profile-region','region','지역',d.region,['서울','경기','인천','강원','충청','전라','경상','제주','해외'].map(v=>({value:v,label:v})))}</div></section>${profileDetailFields(d)}`;
+  if(step==='photos')body=profilePhotoStep(d);
+  if(step==='about')body=profileChoiceStep(d);
+  const back=step==='basics'?editorReturn():profileStepRoute(step==='photos'?'basics':'photos');
+  return shell('프로필 꾸미기',`${profileProgress(step)}<section class="wizard-intro">${doodleSvg(copy[0])}<h2>${copy[1]}</h2><p>${copy[2]}</p></section><form id="profile-form" data-step="${step}" class="profile-form profile-letter-editor wizard-form" novalidate>${body}<div class="profile-editor-actions fixed-actions"><p id="profile-error" class="danger" role="alert"></p><p class="profile-draft-status" id="profile-draft-status" role="status">${state.profileDraft?'쓰던 내용을 불러왔어요':'프로필은 서로 동의한 상대에게만 보여요'}</p><button type="submit" class="btn btn-primary btn-block">${step==='basics'?'사진 고르기':step==='photos'?'나를 소개하기':'공개될 모습 보기'} ${icon('arrow')}</button></div></form>`,{back,screen:'profile-edit-page stationery-page has-fixed-actions profile-wizard',entry:true});
 }
 function profilePreview(){
   const result=validateProfile(profileEditorValue(),viewer());
-  if(result.error)return shell('공개될 모습',`<section class="empty-state"><h2>조금만 더 확인해 주세요</h2><p>${esc(result.error)}</p>${link(editorRoute('/profile/edit'),'계속 수정하기','btn btn-primary')}</section>`,{back:editorRoute('/profile/edit'),screen:'own-profile-page stationery-page'});
+  if(result.error)return shell('공개될 모습',`<section class="empty-state"><h2>조금만 더 확인해 주세요</h2><p>${esc(result.error)}</p>${link(profileStepRoute('about'),'계속 수정하기','btn btn-primary')}</section>`,{back:profileStepRoute('about'),screen:'own-profile-page stationery-page'});
   const hasDraft=Boolean(state.profileDraft);
-  return shell('공개될 모습',`<p class="profile-privacy own-letter-privacy">${icon('lock')}서로 공개에 동의한 상대에게만 보여요</p>${profileLetter(ownPublicProfile(result.value.member,result.value.profile),{label:'상대에게 보일 내 프로필'})}<div class="own-letter-actions fixed-actions"><p id="profile-save-error" class="danger" role="alert"></p>${hasDraft?button('save-profile',editingConnection()?'저장하고 제안으로 돌아가기':'이대로 저장하기','btn btn-primary btn-block'):link('/profile','내 프로필로','btn btn-primary btn-block')}${link(editorRoute('/profile/edit'),'계속 수정하기','quiet-link')}</div>`,{back:editorRoute('/profile/edit'),screen:'own-profile-page profile-review-page stationery-page has-fixed-actions'});
+  return shell('공개될 모습',`${profileProgress('review')}<p class="profile-privacy own-letter-privacy">${icon('lock')}서로 공개에 동의한 상대에게만 보여요</p>${profileLetter(ownPublicProfile(result.value.member,result.value.profile),{label:'상대에게 보일 내 프로필'})}<div class="own-letter-actions fixed-actions"><p id="profile-save-error" class="danger" role="alert"></p>${hasDraft?button('save-profile',editingConnection()?'저장하고 제안으로 돌아가기':'이대로 저장하기','btn btn-primary btn-block'):link('/profile','내 프로필로','btn btn-primary btn-block')}${link(profileStepRoute('about'),'계속 수정하기','quiet-link')}</div>`,{back:profileStepRoute('about'),screen:'own-profile-page profile-review-page stationery-page has-fixed-actions profile-wizard',entry:true});
 }
 function about(){return shell('사친 소개',`<section class="about-copy"><h2>내 얘기를 들어주는,<br>뜻밖의 사친</h2><p>잘 들어줄 수 있는 주제를 고르면,<br>이성의 고민이 한 장씩 도착해요</p><p>마음에 남는 답변에서 익명 대화를 시작하고,<br>서로 원할 때 프로필을 열어요</p>${link('/listen','고민 만나보기 '+icon('arrow'),'btn btn-primary')}</section>`,{back:'/me'});}
 let commitSwipe;
@@ -1072,14 +1126,17 @@ function showDialog(title,copy,confirmLabel,onConfirm){
 }
 function captureDraft(form){const data=new FormData(form);for(const key of ['category','title','body','tags'])if(data.has(key))state.draft[key]=String(data.get(key)??'');save();const status=$('.draft-state');if(status)status.textContent=state.draft.title||state.draft.body?'임시 저장됨':'';const error=$('#form-error');if(error)error.textContent='';}
 function captureProfile(form){
-  const data=new FormData(form),old=profileEditorValue();state.profileDraft={...old,...profileExtras(old)};
-  for(const key of ['nickname','region','occupation','bio','prompt'])state.profileDraft[key]=String(data.get(key)??'');
-  state.profileDraft.layout=String(data.get('layout')??old.layout??'letter');
-  for(const [key] of PROFILE_FIELDS){state.profileDraft.details[key]=String(data.get('detail-'+key)??'');state.profileDraft.visibility[key]=data.get('visible-'+key)==='on';}
-  for(const b of state.profileDraft.blocks)for(const key of ['title','body','caption'])b[key]=String(data.get('block-'+b.id+'-'+key)??b[key]??'');
+  const data=new FormData(form),old=profileEditorValue(),has=key=>data.get(key)!=null;state.profileDraft={...old,...profileExtras(old)};
+  for(const key of ['nickname','region','occupation','bio','bioMode','layout'])if(has(key))state.profileDraft[key]=String(data.get(key));
+  if(has('occupationChoice'))state.profileDraft.occupation=data.get('occupationChoice')==='__custom__'?String(data.get('occupation')??''):String(data.get('occupationChoice'));
+  for(const [key] of PROFILE_FIELDS)if(has('detail-'+key)){state.profileDraft.details[key]=String(data.get('detail-'+key));state.profileDraft.visibility[key]=data.get('visible-'+key)==='on';}
+  for(const [key,g] of Object.entries(PROFILE_CHOICES))if(has('choices-present-'+key))state.profileDraft.selections[key]=[...new Set(data.getAll('choice-'+key))].filter(item=>g.options.includes(item)).slice(0,g.limit);
+  for(const b of state.profileDraft.blocks)for(const key of ['title','body','caption'])if(has('block-'+b.id+'-'+key))b[key]=String(data.get('block-'+b.id+'-'+key));
+  if(['basics','photos','about'].includes(form.dataset?.step))state.profileDraft.editorStep=form.dataset.step;
   const saved=save(),status=$('#profile-draft-status');if(status)status.textContent=saved?'임시 저장됨 · 아직 공개되지 않아요':'저장 공간이 부족해, 이번 방문에서만 유지돼요';
   return saved;
 }
+function openAdvancedProfile(){const panel=$('.feed-composition-panel');if(panel)panel.open=true;}
 function refreshEditorPhoto(){
   const photo=state.profileDraft?.photo??'';$('#own-photo-slot').innerHTML=editorPhoto(photo);$('.profile-photo-picker')?.classList.toggle('has-photo',Boolean(photo));
   $('[data-action="remove-profile-photo"]').hidden=!photo;$('#photo-label').textContent=photo?'사진 바꾸기':'사진 올리기';
@@ -1105,12 +1162,16 @@ document.addEventListener('change',async event=>{
     const scale=Math.min(1,720/Math.max(image.naturalWidth,image.naturalHeight)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(image.naturalWidth*scale));canvas.height=Math.max(1,Math.round(image.naturalHeight*scale));const context=canvas.getContext('2d');context.fillStyle='#e1e1e1';context.fillRect(0,0,canvas.width,canvas.height);context.drawImage(image,0,0,canvas.width,canvas.height);
     let photo='';for(const quality of [.82,.72,.62,.52,.42]){photo=canvas.toDataURL('image/jpeg',quality);if(safeProfilePhoto(photo))break;}
     if(!safeProfilePhoto(photo))throw new Error('photo-too-large');
-    captureProfile(form);if(blockId){const b=state.profileDraft.blocks.find(b=>b.id===blockId);if(!b)return;b.photo=photo;save();render({keepScroll:true});toast('피드에 사진을 담았어요');}else{state.profileDraft.photo=photo;save();refreshEditorPhoto();status.textContent='사진을 담았어요';$('#profile-error').textContent='';}
+    captureProfile(form);if(blockId){const b=state.profileDraft.blocks.find(b=>b.id===blockId);if(!b)return;b.photo=photo;save();render({keepScroll:true});openAdvancedProfile();toast('피드에 사진을 담았어요');}else{state.profileDraft.photo=photo;save();refreshEditorPhoto();status.textContent='사진을 담았어요';$('#profile-error').textContent='';}
   }catch{if(form.isConnected&&task===photoTask)status.textContent='사진을 읽지 못했어요. 다른 사진을 골라 주세요';}finally{URL.revokeObjectURL(url);if(form.isConnected&&task===photoTask){submit.disabled=false;input.value='';}}
 });
 document.addEventListener('error',event=>{if(event.target.tagName==='IMG'){event.target.hidden=true;const frame=event.target.parentElement;frame?.classList.add('image-unavailable');if(frame?.classList.contains('portrait')){frame.setAttribute('role','img');frame.setAttribute('aria-label','프로필 사진을 불러오지 못했어요');frame.querySelector('.media-fallback')?.removeAttribute('aria-hidden');}}},true);
 document.addEventListener('input',event=>{
-  const profileForm=event.target.closest('#profile-form');if(profileForm&&event.target.type!=='file'){captureProfile(profileForm);$('#profile-error').textContent='';}
+  if(event.target.id==='wizard-occupation'){
+    const panel=$('.wizard-custom-job'),input=panel?.querySelector('input'),custom=event.target.value==='__custom__';
+    if(panel&&input){panel.hidden=!custom;input.disabled=!custom;if(custom)input.focus();}
+  }
+  const profileForm=event.target.closest('#profile-form');if(profileForm&&event.target.type!=='file'){captureProfile(profileForm);updateProfileChoiceUI(profileForm);$('#profile-error').textContent='';}
   if(event.target.id==='concern-title')resizeWritingTitle();
   const form=event.target.closest('#concern-form');if(form)captureDraft(form);
   if(event.target.closest('#signup-form')){state.signupDraft=Object.fromEntries(new FormData($('#signup-form')));$('#form-error').textContent='';save();}
@@ -1123,9 +1184,15 @@ document.addEventListener('submit',event=>{
   const form=event.target;event.preventDefault();const f=new FormData(form);
   if(form.id==='profile-form'){
     if(form.querySelector('[type="submit"]')?.disabled)return;
-    captureProfile(form);const result=validateProfile(state.profileDraft,viewer());
-    if(result.error){$('#profile-error').textContent=result.error;const field=form.querySelector('[name="'+result.field+'"]');(field?.closest('.choice-select')?.querySelector('button')??field)?.focus();return;}
-    state.profileDraft={...result.value.member,...result.value.profile};save();navigate(editorRoute('/profile/preview'));return;
+    captureProfile(form);const step=form.dataset?.step??profileStep();
+    const memberResult=validateMember({...viewer(),...state.profileDraft});
+    if(memberResult.error){$('#profile-error').textContent=memberResult.error;const field=form.querySelector('[name="'+memberResult.field+'"]');(field?.closest('.choice-select')?.querySelector('button')??field)?.focus();return;}
+    if(step==='basics'||step==='photos'){
+      const next=step==='basics'?'photos':'about';state.profileDraft.editorStep=next;save();navigate(profileStepRoute(next));return;
+    }
+    const result=validateProfile(state.profileDraft,viewer());
+    if(result.error){$('#profile-error').textContent=result.error;return;}
+    state.profileDraft={...result.value.member,...result.value.profile,editorStep:'about'};save();navigate(editorRoute('/profile/preview'));return;
   }
   if(form.id==='signup-form'){state.signupDraft=Object.fromEntries(f);const result=validateMember(state.signupDraft);if(result.error){$('#form-error').textContent=result.error;const field=form.querySelector('[name="'+result.field+'"]');(field?.closest('.choice-select')?.querySelector('button')??field)?.focus();save();return;}state.member=result.value;save();navigate('/preferences');}
   if(form.id==='preferences-form'){const selected=f.getAll('topics').filter(id=>TOPICS.some(t=>t.id===id));if(!selected.length){$('#form-error').textContent='주제를 하나 이상 선택해 주세요';return;}state.topics=selected;save();navigate(form.dataset.return??'/listen');}
@@ -1154,13 +1221,13 @@ document.addEventListener('click',event=>{
     if(action.startsWith('add-')){
       const type=action==='add-profile-photo'?'photo':'note';
       if(blocks.length>=8||(type==='photo'&&blocks.filter(b=>b.type==='photo').length>=3))return;
-      const block={id:crypto.randomUUID(),type,title:'',body:'',caption:'',photo:''};blocks.push(block);save();render({keepScroll:true});
+      const block={id:crypto.randomUUID(),type,title:'',body:'',caption:'',photo:''};blocks.push(block);save();render({keepScroll:true});openAdvancedProfile();
       document.querySelector('[data-block-id="'+block.id+'"]')?.scrollIntoView({behavior:'instant',block:'center'});return;
     }
     const index=blocks.findIndex(b=>b.id===id);if(index<0)return;
     if(action==='remove-profile-block')blocks.splice(index,1);
     else{const next=index+Number(target.dataset.direction);if(next<0||next>=blocks.length)return;[blocks[index],blocks[next]]=[blocks[next],blocks[index]];}
-    save();render({keepScroll:true});return;
+    save();render({keepScroll:true});openAdvancedProfile();return;
   }
 
   if(action==='save-profile'){saveOwnProfile();return;}
