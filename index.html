@@ -1076,6 +1076,16 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 @media(max-height:500px){.native-ui.is-focused .product-header{--screen-header-row:52px;padding-block:calc(4px + env(safe-area-inset-top)) 4px}}
 .native-ui.is-focused.is-compact-viewport .product-header{--screen-header-row:48px;padding-block:2px}
 
+/* While typing a letter, the header owns send and the keyboard owns the bottom. */
+.native-ui .composer-header-send[hidden],.product-app.viewport-composer>.composer-actions[hidden]{display:none!important}
+.native-ui .header-tools>button.composer-header-send{color:var(--blue);font-size:.9375rem;line-height:1.4;min-width:64px;padding:8px 10px;border:0;background:transparent;border-radius:8px;white-space:nowrap}
+.native-ui .composer-header-send:active{background:#c6c0e450}
+.native-ui.is-keyboard-open .product-header{flex-wrap:nowrap}
+.native-ui.is-keyboard-open .product-header:has(.composer-header-send) .screen-heading{flex:1;min-width:0}
+.viewport-composer.has-fixed-actions.is-keyboard-open .page{padding-bottom:16px}
+.compose-sheet>.danger:empty{display:none}
+.compose-sheet>.danger{font-size:.8125rem;line-height:1.6;margin:8px 0}
+
 /* Profile consent: one message, one preview link, one deliberate action. */
 .is-profile-private .profile-consent{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:0;max-width:420px;margin:0 auto;padding:24px 0 22px}
 .profile-consent .invitation-eyebrow{font-size:.75rem;letter-spacing:.08em;color:var(--blue);margin:0}
@@ -2079,6 +2089,8 @@ function screenHeader(title,{back,tools='',compact=false,primary=false,nav=''}={
 function shell(title,body,{back,chat=false,tools='',screen='',entry=false,compact=false}={}){
   const {path}=route();
   const showNavigation=screenNavigation(path,{entry,chat}),nav=navigationItems(path);
+  const composerForm=screen.split(' ').includes('reply-composer')?'answer-form':screen.split(' ').includes('compose-page')?'concern-form':null;
+  if(composerForm)tools=`<button type="submit" form="${composerForm}" class="composer-header-send" aria-label="${composerForm==='answer-form'?'답변':'고민'} 보내기" hidden>보내기</button>`;
   const header=screenHeader(title,{back,tools,compact,primary:showNavigation,nav});
   return `<div class="product-app native-ui ${showNavigation?'has-tabbar':'is-focused'} ${chat?'is-chat':''} ${entry?'is-entry':''} ${screen}">${header}<main class="app-main"><div class="page ${chat?'chat':''}">${body}</div></main>${showNavigation?'<nav class="tabbar" aria-label="하단 메뉴">'+nav+'</nav>':''}</div>`;
 }
@@ -2287,7 +2299,7 @@ function replyComposer(c){
 function write(){
   const d=state.draft,tab=route().params.get('tab');
   const back=route().params.get('from')==='mine'&&['received','answers'].includes(tab)?'/mine?tab='+tab:'/mine';
-  return shell('고민 쓰기',`<form id="concern-form" class="compose-form" novalidate><p class="compose-salutation" lang="en">${typed("dear, friend","write")}</p><div class="compose-sheet"><div class="compose-toolbar">${choiceSelect('concern-topic','category','고민 주제',d.category,TOPICS.map(t=>({value:t.id,label:t.name,icon:t.icon})),'주제 선택')}</div><label class="sr-only" for="concern-title">고민 제목</label><textarea id="concern-title" name="title" rows="1" placeholder="오늘, 어떤 마음인가요?" minlength="5" maxlength="80" required>${esc(d.title)}</textarea><label class="sr-only" for="concern-body">고민 내용</label><textarea id="concern-body" name="body" placeholder="잘 정리된 이야기가 아니어도 괜찮아요.\n지금 마음에 남은 일을 편하게 들려주세요" minlength="20" maxlength="2000" required>${esc(d.body)}</textarea><div class="compose-bottom"><label class="sr-only" for="concern-tags">해시태그</label><input id="concern-tags" name="tags" value="${esc(d.tags)}" placeholder="#태그 추가"></div></div><div class="compose-footer fixed-actions"><p class="form-privacy">${icon('lock')}이 주제를 선택한 이성에게만 전해져요</p><p id="form-error" class="danger" role="alert"></p><button type="submit" class="btn btn-primary btn-block">고민 보내기</button><div class="compose-browse"><p id="compose-browse-note">고민을 쓰지 않아도 괜찮아요</p><a href="#/listen" class="compose-browse-link" aria-describedby="compose-browse-note">먼저 다른 고민 들어보기</a></div></div></form>`,{back,screen:'compose-page has-fixed-actions'});
+  return shell('고민 쓰기',`<form id="concern-form" class="compose-form" novalidate><p class="compose-salutation" lang="en">${typed("dear, friend","write")}</p><div class="compose-sheet"><div class="compose-toolbar">${choiceSelect('concern-topic','category','고민 주제',d.category,TOPICS.map(t=>({value:t.id,label:t.name,icon:t.icon})),'주제 선택')}</div><label class="sr-only" for="concern-title">고민 제목</label><textarea id="concern-title" aria-describedby="form-error" name="title" rows="1" placeholder="오늘, 어떤 마음인가요?" minlength="5" maxlength="80" required>${esc(d.title)}</textarea><label class="sr-only" for="concern-body">고민 내용</label><textarea id="concern-body" aria-describedby="form-error" name="body" placeholder="잘 정리된 이야기가 아니어도 괜찮아요.\n지금 마음에 남은 일을 편하게 들려주세요" minlength="20" maxlength="2000" required>${esc(d.body)}</textarea><p id="form-error" class="danger" role="alert"></p><div class="compose-bottom"><label class="sr-only" for="concern-tags">해시태그</label><input id="concern-tags" name="tags" value="${esc(d.tags)}" placeholder="#태그 추가"></div></div><div class="compose-footer fixed-actions"><p class="form-privacy">${icon('lock')}이 주제를 선택한 이성에게만 전해져요</p><button type="submit" class="btn btn-primary btn-block">고민 보내기</button><div class="compose-browse"><p id="compose-browse-note">고민을 쓰지 않아도 괜찮아요</p><a href="#/listen" class="compose-browse-link" aria-describedby="compose-browse-note">먼저 다른 고민 들어보기</a></div></div></form>`,{back,screen:'compose-page has-fixed-actions'});
 }
 function detail(){
   const c=getConcern(route().params.get('id'));
@@ -2703,6 +2715,14 @@ function initSwipe(){
 function resizeWritingTitle(){const input=$('#concern-title');if(input){input.style.height='0px';input.style.height=Math.max(34,input.scrollHeight)+'px';}}
 // The visible viewport is the frame; only its writing area / message log scrolls.
 let composerFrame=0,composerReveal=false,chatAtEnd=true,chatResizeObserver=null,composerActionsObserver=null;
+let composerKeyboard={width:0,height:0,open:false};
+function keyboardWritingState(previous,{width,layoutHeight,visibleHeight,focused}){
+  const sameWidth=previous.width&&Math.abs(previous.width-width)<80;
+  // Some browsers resize before dispatching focus, so retain the pre-keyboard height.
+  const height=sameWidth?Math.max(previous.height,layoutHeight):layoutHeight;
+  const open=Boolean((focused||(sameWidth&&previous.open))&&height-visibleHeight>Math.max(120,height*.18));
+  return {width,height,open};
+}
 function composerViewport(layoutHeight,viewport){
   if(viewport&&Math.abs((viewport.scale??1)-1)>.02)return null;
   return {height:Math.max(1,Math.min(layoutHeight,viewport?.height??layoutHeight)),top:Math.max(0,viewport?.offsetTop??0)};
@@ -2710,14 +2730,15 @@ function composerViewport(layoutHeight,viewport){
 function composerWritingBounds(page){
   const area=page?.querySelector('.app-main');if(!area)return null;
   const bounds=area.getBoundingClientRect(),actions=page.querySelector('.composer-actions');
-  return {top:bounds.top,bottom:Math.min(bounds.bottom,actions?.getBoundingClientRect().top??bounds.bottom)};
+  return {top:bounds.top,bottom:Math.min(bounds.bottom,actions&&!actions.hidden?actions.getBoundingClientRect().top:bounds.bottom)};
 }
 function resizeLetterInput(input){
   if(!input)return;
   const viewport=window.visualViewport,height=viewport?.height??window.innerHeight??740;
-  const bounds=composerWritingBounds(input.closest?.('.viewport-composer'));
+  const page=input.closest?.('.viewport-composer'),bounds=composerWritingBounds(page);
   const available=bounds?bounds.bottom-bounds.top:height;
-  const limit=Math.max(48,Math.min(300,height*.4,available-24)),previous=input.scrollTop;
+  const error=page?.querySelector('#answer-error,#form-error'),feedback=error?.textContent?.trim()?error.getBoundingClientRect().height+24:0;
+  const limit=Math.max(48,page?.classList.contains('is-keyboard-open')?available-80-feedback:Math.min(300,height*.4,available-24)),previous=input.scrollTop;
   input.style.height='auto';input.style.height=Math.min(limit,Math.max(Math.min(210,limit),input.scrollHeight))+'px';
   input.style.overflowY=input.scrollHeight>input.clientHeight?'auto':'hidden';
   input.scrollTop=input===document.activeElement&&input.selectionEnd===input.value.length?input.scrollHeight:previous;
@@ -2729,23 +2750,30 @@ function revealComposerInput(page){
   if(!input?.matches?.('#concern-title,#concern-body,#concern-tags,#answer-body')||!area)return;
   const bounds=composerWritingBounds(page),rect=input.getBoundingClientRect(),bottom=bounds.bottom-12;
   const addressSpace=input.id==='answer-body'&&rect.height+52<bounds.bottom-bounds.top?40:0,top=bounds.top+10+addressSpace;
-  const delta=rect.height>bottom-top?rect.top-top:rect.bottom>bottom?rect.bottom-bottom:rect.top<top?rect.top-top:0;
+  const error=page.querySelector('#answer-error,#form-error'),feedback=error?.textContent?.trim()?error.getBoundingClientRect():null;
+  const end=feedback&&feedback.top>=rect.top&&feedback.bottom-rect.top<=bottom-top?Math.max(rect.bottom,feedback.bottom):rect.bottom;
+  const delta=rect.height>bottom-top?rect.top-top:end>bottom?end-bottom:rect.top<top?rect.top-top:0;
   if(Math.abs(delta)>1)area.scrollTop+=delta;
 }
 function syncComposerViewport({reveal=false}={}){
   if($('dialog[open]'))return;
   const page=$('.compose-page,.reply-composer,.is-chat');
   document.documentElement?.classList.toggle('has-composer-viewport',Boolean(page));
-  if(!page)return;
+  if(!page){composerKeyboard={width:0,height:0,open:false};return;}
   const frame=composerViewport(window.innerHeight,window.visualViewport);if(!frame)return;
   const log=$('#chat-messages'),follow=chatAtEnd;
+  const headerSend=page.querySelector('.composer-header-send');
+  const focused=Boolean(document.activeElement?.matches?.('#concern-title,#concern-body,#concern-tags,#answer-body'));
+  composerKeyboard=headerSend?keyboardWritingState(composerKeyboard,{width:window.innerWidth,layoutHeight:window.innerHeight,visibleHeight:frame.height,focused}):{width:0,height:0,open:false};
   page.classList.add('viewport-composer');
+  page.classList.toggle('is-keyboard-open',composerKeyboard.open);
+  if(headerSend)headerSend.hidden=!composerKeyboard.open;
   page.classList.toggle('is-compact-viewport',frame.height<320);
   page.style.setProperty('--composer-height',frame.height+'px');page.style.setProperty('--composer-top',frame.top+'px');
   // Outside the scrolling form, while retaining native form submission semantics.
   const footer=page.querySelector('.fixed-actions');
   if(footer&&footer.parentElement!==page){const form=footer.closest('form');footer.querySelector('[type="submit"]')?.setAttribute('form',form.id);page.append(footer);}
-  if(footer){footer.classList.add('composer-actions');page.style.setProperty('--composer-actions-height',footer.getBoundingClientRect().height+'px');}
+  if(footer){footer.classList.add('composer-actions');footer.hidden=composerKeyboard.open;page.style.setProperty('--composer-actions-height',footer.getBoundingClientRect().height+'px');}
   resizeReplyInput();resizeChatInput();
   if(log&&follow)log.scrollTop=log.scrollHeight;
   if(reveal)revealComposerInput(page);
@@ -2898,13 +2926,13 @@ document.addEventListener('submit',event=>{
   if(form.id==='signup-form'){state.signupDraft=Object.fromEntries(f);const result=validateMember(state.signupDraft);if(result.error){$('#form-error').textContent=result.error;const field=form.querySelector('[name="'+result.field+'"]');(field?.closest('.choice-select')?.querySelector('button')??field)?.focus();save();return;}state.member=result.value;save();navigate(entryDestination()==='/write'?'/preferences?next=%2Fwrite':'/preferences');}
   if(form.id==='preferences-form'){const selected=f.getAll('topics').filter(id=>TOPICS.some(t=>t.id===id));if(!selected.length){$('#form-error').textContent='주제를 하나 이상 선택해 주세요';return;}state.topics=selected;save();navigate(form.dataset.return??'/listen');}
   if(form.id==='concern-form'){
-    captureDraft(form);const result=validateDraft(state.draft);if(result.error){$('#form-error').textContent=result.error;(!state.draft.category?form.querySelector('[data-choice]'):state.draft.title.trim().length<5?$('#concern-title'):$('#concern-body'))?.focus();return;}
+    captureDraft(form);const result=validateDraft(state.draft);if(result.error){const error=$('#form-error'),field=!state.draft.category?form.querySelector('[data-choice]'):state.draft.title.trim().length<5?$('#concern-title'):$('#concern-body');error.textContent=result.error;field?.after(error);field?.focus();scheduleComposerViewport(true);return;}
     const id='local-'+crypto.randomUUID(),previousDraft=state.draft;state.concerns.push({id,createdAt:new Date().toISOString(),...result.value,own:true,authorId:viewer().id,authorGender:viewer().gender,ageBand:viewer().ageBand,occupation:viewer().occupation,region:viewer().region});state.draft=initialState().draft;
     if(!save()){state.concerns.pop();state.draft=previousDraft;return;}
     noticeSeen.delete('story-restored');navigate('/concern?id='+id);toast('고민을 보냈어요');
   }
   if(form.id==='answer-form'){
-    const body=String(f.get('body')).trim(),c=getConcern(form.dataset.id);if(!canRespond(c,viewer())||!eligible(c))return;if(body.length<20||body.length>2000){const error=$('#answer-error');if(error){error.textContent='답변은 20~2,000자로 적어 주세요';$('#answer-body')?.setAttribute('aria-invalid','true');$('#answer-body')?.focus();}else toast('답변은 20~2,000자로 적어 주세요');return;}
+    const body=String(f.get('body')).trim(),c=getConcern(form.dataset.id);if(!canRespond(c,viewer())||!eligible(c))return;if(body.length<20||body.length>2000){const error=$('#answer-error');if(error){error.textContent='답변은 20~2,000자로 적어 주세요';$('#answer-body')?.setAttribute('aria-invalid','true');$('#answer-body')?.focus();scheduleComposerViewport(true);}else toast('답변은 20~2,000자로 적어 주세요');return;}
     if(state.answers.some(a=>a.concernId===c.id))return;
     const draft=state.replyDrafts[c.id];delete state.replyDrafts[c.id];
     state.answers.push({concernId:c.id,body,authorId:viewer().id,authorGender:viewer().gender,chatConsent:true});
@@ -3049,7 +3077,11 @@ window.visualViewport?.addEventListener('scroll',()=>scheduleComposerViewport())
 document.addEventListener('focusin',()=>scheduleComposerViewport(true));
 document.addEventListener('focusout',()=>scheduleComposerViewport());
 // Preserve the input and keyboard while a send tap submits the message.
-document.addEventListener('pointerdown',event=>{if(event.target.closest?.('#chat-form [type="submit"]')&&document.activeElement?.id==='chat-message')event.preventDefault();});
+document.addEventListener('pointerdown',event=>{
+  const chatSend=event.target.closest?.('#chat-form [type="submit"]')&&document.activeElement?.id==='chat-message';
+  const letterSend=event.target.closest?.('.composer-header-send')&&document.activeElement?.matches?.('#concern-title,#concern-body,#concern-tags,#answer-body');
+  if((event.button===0||event.button===undefined)&&(chatSend||letterSend))event.preventDefault();
+});
 document.fonts?.ready.then(()=>{resizeWritingTitle();resizeReplyInput();resizeProfileText();syncComposerViewport();});
 startApp();
 

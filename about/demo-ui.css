@@ -1064,6 +1064,16 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 @media(max-height:500px){.native-ui.is-focused .product-header{--screen-header-row:52px;padding-block:calc(4px + env(safe-area-inset-top)) 4px}}
 .native-ui.is-focused.is-compact-viewport .product-header{--screen-header-row:48px;padding-block:2px}
 
+/* While typing a letter, the header owns send and the keyboard owns the bottom. */
+.native-ui .composer-header-send[hidden],.product-app.viewport-composer>.composer-actions[hidden]{display:none!important}
+.native-ui .header-tools>button.composer-header-send{color:var(--blue);font-size:.9375rem;line-height:1.4;min-width:64px;padding:8px 10px;border:0;background:transparent;border-radius:8px;white-space:nowrap}
+.native-ui .composer-header-send:active{background:#c6c0e450}
+.native-ui.is-keyboard-open .product-header{flex-wrap:nowrap}
+.native-ui.is-keyboard-open .product-header:has(.composer-header-send) .screen-heading{flex:1;min-width:0}
+.viewport-composer.has-fixed-actions.is-keyboard-open .page{padding-bottom:16px}
+.compose-sheet>.danger:empty{display:none}
+.compose-sheet>.danger{font-size:.8125rem;line-height:1.6;margin:8px 0}
+
 /* Profile consent: one message, one preview link, one deliberate action. */
 .is-profile-private .profile-consent{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:0;max-width:420px;margin:0 auto;padding:24px 0 22px}
 .profile-consent .invitation-eyebrow{font-size:.75rem;letter-spacing:.08em;color:var(--blue);margin:0}
