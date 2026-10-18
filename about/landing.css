@@ -40,3 +40,5 @@
 
 .hero h1{font-size:clamp(2.25rem,4.3vw,3.875rem);letter-spacing:-.055em}.hero .underlined{max-width:100%;white-space:normal}
 @media(max-width:600px){.hero h1{font-size:clamp(2rem,8.7vw,3.25rem)}}
+.screen-demo figcaption{flex-wrap:wrap;gap:0 12px}.demo-controls{flex-wrap:wrap;gap:0 14px}.screen-demo [data-demo-stage]{min-height:36px;display:flex;align-items:center}.editor-showcase{background:var(--paper)}.editor-showcase .screen-demo{max-width:410px}
+.screen-copy .eyebrow:not([lang]){font-family:'Gowun Dodum',sans-serif;letter-spacing:.015em}

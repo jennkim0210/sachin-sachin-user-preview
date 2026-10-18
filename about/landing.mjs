@@ -36,13 +36,15 @@ copy.addEventListener('click',async()=>{
 });
 
 // Playback lives in isolated display documents. No account or draft state is accessed.
-const demonstrations=[...document.querySelectorAll('[data-demo]')].map(figure=>({figure,frame:figure.querySelector('iframe'),pause:figure.querySelector('[data-demo-pause]'),replay:figure.querySelector('[data-demo-replay]'),visible:false,ready:false,playing:true,complete:false}));
+const demoLabels={chat:'예시 대화',profile:'프로필 공개 예시',editor:'프로필 작성 예시'};
+const demonstrations=[...document.querySelectorAll('[data-demo]')].map(figure=>({figure,frame:figure.querySelector('iframe'),pause:figure.querySelector('[data-demo-pause]'),replay:figure.querySelector('[data-demo-replay]'),finish:figure.querySelector('[data-demo-finish]'),stage:figure.querySelector('[data-demo-stage]'),visible:false,ready:false,playing:true,complete:false}));
 function sendDemo(d,command){d.frame.contentWindow?.postMessage({type:'sachin-demo',command},location.origin);}
 function syncDemo(d){sendDemo(d,d.visible&&!document.hidden?'visible':'hidden');}
 for(const d of demonstrations){
  d.pause.hidden=motion.matches;d.replay.hidden=motion.matches;
  d.pause.addEventListener('click',()=>{d.playing=!d.playing;sendDemo(d,d.playing?'play':'pause');});
  d.replay.addEventListener('click',()=>{d.playing=true;sendDemo(d,'restart');});
+ d.finish?.addEventListener('click',()=>sendDemo(d,'finish'));
 }
 const screenObserver=new IntersectionObserver(entries=>{for(const entry of entries){const d=demonstrations.find(item=>item.figure===entry.target);d.visible=entry.isIntersecting;syncDemo(d);}},{threshold:.15});
 demonstrations.forEach(d=>screenObserver.observe(d.figure));
@@ -51,7 +53,8 @@ window.addEventListener('message',event=>{
  const d=demonstrations.find(item=>item.frame.contentWindow===event.source);if(!d)return;
  d.playing=event.data.playing;d.complete=event.data.complete;
  d.pause.disabled=d.complete;d.pause.textContent=d.complete?'재생 완료':d.playing?'일시정지':'계속 보기';
- d.pause.setAttribute('aria-label',(d.figure.dataset.demo==='chat'?'예시 대화':'프로필 공개 예시')+' '+d.pause.textContent);
+ d.pause.setAttribute('aria-label',demoLabels[d.figure.dataset.demo]+' '+d.pause.textContent);
+ if(d.stage&&typeof event.data.stage==='string')d.stage.textContent='예시 · '+event.data.stage;
  if(event.data.ready){d.ready=true;syncDemo(d);}
 });
 document.addEventListener('visibilitychange',()=>demonstrations.forEach(syncDemo));
