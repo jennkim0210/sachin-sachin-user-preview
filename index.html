@@ -503,6 +503,30 @@
 .product-app :is(textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"],input[type="number"],[contenteditable="true"]){caret-color:var(--blue)}
 .product-app :is(textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"],input[type="number"],[contenteditable="true"]):is(:focus,:focus-visible){outline:none;box-shadow:none}
 .is-chat .chat-input:focus-within{border-color:#c5c3cc;box-shadow:none}
+
+/* Soft rectangular controls, quiet panels and lightly rounded paper corners. */
+:root{--radius-control:12px;--radius-field:10px;--radius-panel:16px;--radius-dock:20px;--radius-postcard:7px 10px 8px 6px}
+.tabbar{border-radius:var(--radius-dock)}
+.tabbar a{border-radius:var(--radius-control)}
+.btn,.card-primary,.card-secondary,
+.full-welcome .welcome-start,.intro-controls .intro-next,.intro-back,
+.profile-wizard .fixed-actions .btn,.postcard-reader .reader-actions .btn,
+.conversation-home .arrival-actions .card-primary,
+.conversation-home .compact-card-actions .card-primary{border-radius:var(--radius-control)}
+.icon-button,.back,.deck-undo,.is-chat .send-btn,.photo-pick-button,
+.choice-trigger,.profile-edit-grid .choice-trigger,.profile-letter-editor .choice-trigger,
+.join-sheet .choice-trigger,.compose-toolbar .choice-trigger,.choice-option,.job-chip{border-radius:var(--radius-field)}
+.join-gender span,.join-sheet .join-gender span,.interest>span,
+.profile-chip span,.profile-layout-picker label>span{border-radius:var(--radius-control)}
+.compose-sheet,.story-context,.full-story,.join-sheet,.profile-edit-sheet,.feed-block-editor,
+.my-profile-card.my-letter-card,.revealed-profile.profile-letter-card,
+.sent-answer-page .answer-card,.received-answers-page .answer-card,
+.is-chat .chat-input{border-radius:var(--radius-panel)}
+.card-reply textarea,.reply-form textarea,.conversation-home .card-reply textarea,
+.custom-bio-panel .custom-bio-field{border-radius:var(--radius-field)}
+.choice-dialog,.native-dialog{border-radius:var(--radius-dock)}
+.conversation-home .concern-card.sachin-postcard,.letter-underlay,
+.postcard-reader .full-story{border-radius:var(--radius-postcard)}
 </style>
   
 </head>
