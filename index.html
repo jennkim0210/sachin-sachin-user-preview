@@ -498,6 +498,11 @@
 .inbox-page .chat-empty{min-height:min(580px,calc(100dvh - 200px));padding:20px 0 36px}
 .chat-empty .chat-empty-art{width:min(100%,360px);height:auto;max-height:255px;margin:0 auto 26px}
 @media(max-width:370px){.chat-empty .chat-empty-art{max-height:200px;margin-bottom:23px}.chat-empty h2{font-size:20px}}
+
+/* Text entry uses the native blue caret, without an extra focus rectangle. */
+.product-app :is(textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"],input[type="number"],[contenteditable="true"]){caret-color:var(--blue)}
+.product-app :is(textarea,input:not([type]),input[type="text"],input[type="search"],input[type="email"],input[type="url"],input[type="tel"],input[type="password"],input[type="number"],[contenteditable="true"]):is(:focus,:focus-visible){outline:none;box-shadow:none}
+.is-chat .chat-input:focus-within{border-color:#c5c3cc;box-shadow:none}
 </style>
   
 </head>
