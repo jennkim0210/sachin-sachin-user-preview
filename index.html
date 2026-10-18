@@ -609,15 +609,14 @@
 /* My is a quiet hub: identity, letters, then grouped service settings. */
 .my-hub .app-main{margin-top:8px}.my-hub .page{padding-bottom:20px}
 .my-identity{padding:8px 2px 24px}.my-identity-line{display:flex;align-items:center;gap:17px}
-.my-identity-line>div:last-child{min-width:0}.my-identity h2{font-size:25px;line-height:1.4;overflow-wrap:anywhere}
+.my-identity-copy{min-width:0;flex:1}.my-identity h2{font-size:25px;line-height:1.4;overflow-wrap:anywhere}
 .my-identity p{font-size:12px;color:var(--muted);margin-top:7px;word-break:keep-all}
 .my-identity .portrait,.my-identity .own-photo,.my-identity .own-portrait,.my-identity .anonymous-avatar{width:66px;height:72px;flex:0 0 66px;border-radius:var(--radius-panel);overflow:hidden;background:#d3cde0}
 .my-identity .portrait img{width:100%;height:100%;object-fit:cover}
 .my-identity .pen-doodle{width:33px;height:42px;color:var(--blue)}
-.my-profile-actions{display:flex;gap:10px;margin-top:19px}
-.my-profile-actions a{display:flex;align-items:center;justify-content:center;min-height:42px;font-size:13px;border-radius:var(--radius-control);flex:1}
-.my-profile-edit{background:var(--sheet);border:1px solid var(--line);color:var(--blue)}.my-profile-view{color:var(--muted)}
-.my-profile-actions a:active{background:#d3cde050}
+.my-profile-edit{display:flex;align-items:center;justify-content:center;width:44px;height:44px;flex:0 0 44px;border-radius:var(--radius-control);background:var(--sheet);border:1px solid var(--line);color:var(--blue)}
+.my-profile-edit .ui-pen{width:23px;height:23px}
+.my-profile-edit:active{background:#d3cde050}
 .story-hub-entry{position:relative;display:flex;align-items:center;gap:14px;padding:17px 18px;background:var(--sheet);border:1px solid var(--line);border-radius:var(--radius-panel);color:var(--ink)}
 .story-hub-entry>div{flex:1;min-width:0}.story-hub-entry h2{font-size:20px;line-height:1.5;margin:0 0 4px}.story-hub-entry p{font-size:11px;color:var(--muted)}
 .story-hub-drawing{display:flex;align-items:center;color:var(--blue);flex:none}.story-hub-drawing .pen-doodle{width:27px;height:33px}
@@ -659,7 +658,7 @@
 .service-draft-list{margin-top:20px}.service-draft-list a{display:block;border-bottom:1px solid var(--line);padding:18px 0 23px}.draft-state{font-size:11px;color:#7a688b}.service-draft-list h2{font-size:21px;margin:13px 0 11px}.service-draft-list p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;line-height:1.9;color:var(--muted);overflow-wrap:anywhere}.service-draft-list .text-link{font-size:12px;margin-top:13px}
 .policy-note{font-size:12px;color:#746b7d;line-height:1.9;padding:20px 0 10px}.policy-copy section{padding:23px 0}
 @media(max-width:650px){.story-hub-page.has-tabbar .story-fab-wrap{bottom:var(--dock);padding-top:16px;padding-bottom:0;background:none}.story-hub-tabs{top:65px}.my-hub .app-main{margin-top:5px}.story-fab-wrap{padding-inline:20px}.my-identity{padding-bottom:22px}.my-hub .service-section{margin-top:23px}}
-@media(max-width:370px),(max-height:700px) and (max-width:650px){.story-hub-tabs{top:60px}.my-identity h2{font-size:24px}.my-identity p{font-size:11px}.my-identity-line{gap:13px}.my-identity{padding-top:5px}.my-profile-actions{margin-top:15px}.story-hub-entry{padding:18px}.my-hub .service-section{margin-top:20px}.story-hub-tabs{gap:5px}.story-hub-tabs a{font-size:13px}.service-row strong{font-size:15px}.story-fab-wrap{padding-inline:16px}.service-intro h2{font-size:23px}}
+@media(max-width:370px),(max-height:700px) and (max-width:650px){.story-hub-tabs{top:60px}.my-identity h2{font-size:24px}.my-identity p{font-size:11px}.my-identity-line{gap:13px}.my-identity{padding-top:5px}.story-hub-entry{padding:18px}.my-hub .service-section{margin-top:20px}.story-hub-tabs{gap:5px}.story-hub-tabs a{font-size:13px}.service-row strong{font-size:15px}.story-fab-wrap{padding-inline:16px}.service-intro h2{font-size:23px}}
 @media(prefers-reduced-motion:reduce){.pen-switch i,.pen-switch i:after{transition:none}}
 .received-answers-page .answer-card{scroll-margin-top:90px}.received-answers-page .answer-card:focus{outline:none}
 /* Editable profile: the same page is both the composition surface and the result. */
@@ -671,6 +670,13 @@
 .canvas-done{min-height:40px;padding:9px 16px;border-radius:var(--radius-control,12px);background:var(--blue);color:var(--sheet);font:inherit;font-size:14px;white-space:nowrap}
 .canvas-done:disabled{opacity:.45}
 .canvas-privacy.profile-privacy{font-size:11px;line-height:1.6;margin:4px 0 20px;display:flex;align-items:center;justify-content:center;gap:7px;color:#727078}
+.profile-edit-page .canvas-privacy{margin-bottom:4px}
+.profile-preview-entry{display:flex;justify-content:flex-end;margin:0 0 12px}
+.profile-preview-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 0 8px 8px;border:0;background:none;color:var(--blue);font-size:13px;line-height:1.6}
+.profile-preview-link .ui-pen{width:16px;height:16px;flex:0 0 16px}
+.profile-preview-link:active{opacity:.7}
+.profile-preview-note{font-size:14px;line-height:1.7;text-align:center;margin:4px 0 20px}
+.profile-preview-note span{display:block;margin-top:5px;font-size:11px;color:var(--muted);word-break:keep-all}
 .canvas-privacy svg{flex:0 0 13px;width:13px;height:15px}
 .revealed-profile.profile-letter-card.profile-canvas{padding:0;background:var(--sheet);border:1px solid #d0cfd2;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px #30264904}
 .profile-canvas .canvas-cover{position:relative;margin:0;overflow:hidden;min-height:0}
@@ -1972,7 +1978,7 @@ function ownPublicProfile(member,profile){return profileDisclosure(member,profil
 function profileEditorValue(){return state.profileDraft??{...viewer(),...state.profile};}
 function editingConnection(){const c=state.connections[route().params.get('connection')];return chatAllowed(c,viewer())?c:null;}
 function editorRoute(path){const c=editingConnection();return path+(c?'?connection='+encodeURIComponent(c.id):'');}
-function editorReturn(){const c=editingConnection();return c?'/connection?id='+encodeURIComponent(c.id):'/profile';}
+function editorReturn(){const c=editingConnection();return c?'/connection?id='+encodeURIComponent(c.id):'/me';}
 function sharingPreview(c){
   return link('/profile?connection='+encodeURIComponent(c.id),ownPortrait(state.profile.photo)+'<span><strong>공개할 내 프로필</strong><small>사진 · 글 · 공개 정보 확인</small></span>'+icon('back'),'sharing-profile-link');
 }
@@ -2014,8 +2020,7 @@ function serviceSection(title,body){return `<section class="service-section"><h2
 function me(){
   const m=viewer(),p=state.profile,hasBio=Boolean(profileIntroduction(p)),hasPhoto=Boolean(p.photo);
   const next=[m.ageBand,m.region,m.occupation].filter(Boolean).join(' · ');
-  const profileAction='프로필 수정';
-  return shell('마이',`<section class="my-identity" aria-label="내 프로필"><div class="my-identity-line">${ownPortrait(p.photo)}<div><h2>${esc(m.nickname)}</h2><p>${esc(next)}</p></div></div><div class="my-profile-actions">${link('/profile/edit',profileAction,'my-profile-edit')}${link('/profile','프로필 보기','my-profile-view').replace('class="my-profile-view"','class="my-profile-view" aria-label="내 프로필 보기"')}</div></section>${serviceSection('이용 관리',serviceRow('/settings/notifications','알림 설정',{symbol:'bell'})+serviceRow('/billing','결제 관리',{symbol:'coin'}))}${serviceSection('도움과 설정',serviceRow('/support','고객센터',{symbol:'headphones'})+serviceRow('/settings','설정',{note:'관심 주제 · 계정 · 개인정보',symbol:'settings'}))}<footer class="my-service-footer">${link('/legal?doc=terms','이용약관','')}${link('/legal?doc=privacy','개인정보처리방침','')}</footer>`,{compact:true,screen:'my-page my-hub'});
+  return shell('마이',`<section class="my-identity" aria-label="내 프로필"><div class="my-identity-line">${ownPortrait(p.photo)}<div class="my-identity-copy"><h2>${esc(m.nickname)}</h2><p>${esc(next)}</p></div><a class="my-profile-edit" href="#/profile/edit" aria-label="프로필 편집" title="프로필 편집">${icon('edit')}</a></div></section>${serviceSection('이용 관리',serviceRow('/settings/notifications','알림 설정',{symbol:'bell'})+serviceRow('/billing','결제 관리',{symbol:'coin'}))}${serviceSection('도움과 설정',serviceRow('/support','고객센터',{symbol:'headphones'})+serviceRow('/settings','설정',{note:'관심 주제 · 계정 · 개인정보',symbol:'settings'}))}<footer class="my-service-footer">${link('/legal?doc=terms','이용약관','')}${link('/legal?doc=privacy','개인정보처리방침','')}</footer>`,{compact:true,screen:'my-page my-hub'});
 }
 function settings(){
   return shell('설정',`${serviceSection('나에게 맞게',serviceRow('/preferences?from=settings','관심 주제',{note:state.topics.map(topic).join(' · ')}))}${serviceSection('계정과 개인정보',serviceRow('/settings/account','계정 관리')+serviceRow('/settings/privacy','안전과 프로필 공개'))}${serviceSection('서비스 정보',serviceRow('/about?from=settings','사친사친 소개')+serviceRow('/legal','약관 및 정책'))}`,{back:'/me',screen:'service-page'});
@@ -2083,10 +2088,12 @@ function ensureProfileDraft(){
 }
 function profileEdit(){
   photoTask++;const d=ensureProfileDraft();
-  return shell('내 프로필',`<p class="profile-privacy canvas-privacy">${icon('lock')}사진과 소개는 서로 동의한 상대에게만</p><form id="profile-form" class="profile-canvas-form" novalidate><input type="hidden" name="bioMode" value="custom">${profileLetter({...ownPublicProfile({...viewer(),nickname:d.nickname,region:d.region,occupation:d.occupation},d),blocks:d.blocks,draft:d},{label:'직접 편집하는 내 프로필',editing:true})}<p id="photo-status" class="photo-status" role="status"></p><p id="profile-save-error" class="danger" role="alert"></p></form><p class="profile-self-reported">직업·학력 등은 본인이 작성한 정보예요</p>`,{back:editorReturn(),tools:'<button type="submit" form="profile-form" class="canvas-done" id="profile-done">완료</button>',screen:'profile-edit-page stationery-page canvas-page'});
+  return shell('프로필 편집',`<p class="profile-privacy canvas-privacy">${icon('lock')}사진과 소개는 서로 동의한 상대에게만</p><div class="profile-preview-entry">${button('preview-profile','상대방에게 어떻게 보이나요? '+icon('arrow'),'profile-preview-link')}</div><form id="profile-form" class="profile-canvas-form" novalidate><input type="hidden" name="bioMode" value="custom">${profileLetter({...ownPublicProfile({...viewer(),nickname:d.nickname,region:d.region,occupation:d.occupation},d),blocks:d.blocks,draft:d},{label:'직접 편집하는 내 프로필',editing:true})}<p id="photo-status" class="photo-status" role="status"></p><p id="profile-save-error" class="danger" role="alert"></p></form><p class="profile-self-reported">직업·학력 등은 본인이 작성한 정보예요</p>`,{back:editorReturn(),tools:'<button type="submit" form="profile-form" class="canvas-done" id="profile-done">완료</button>',screen:'profile-edit-page stationery-page canvas-page'});
 }
-// Historical bookmarks and unfinished drafts open the same live editor.
-function profilePreview(){return profileEdit();}
+function profilePreview(){
+  const d=ensureProfileDraft(),preview=ownPublicProfile({...viewer(),nickname:d.nickname,region:d.region,occupation:d.occupation},d);
+  return shell('프로필 미리보기',`<p class="profile-preview-note">상대방에게는 이렇게 보여요<span>편집 중인 내용이에요. ‘완료’를 누르면 저장돼요.</span></p>${profileLetter(preview,{label:'상대에게 보일 프로필 미리보기'})}<p class="profile-self-reported">사진과 소개는 서로 동의한 상대에게만 보여요</p>`,{tools:`<a class="icon-button" href="#${editorRoute('/profile/edit')}" aria-label="미리보기 닫기">${icon('close')}</a>`,screen:'profile-preview-page stationery-page canvas-page'});
+}
 function resizeProfileText(){for(const input of document.querySelectorAll?.('[data-profile-autosize]')??[]){input.style.height='0px';input.style.height=input.scrollHeight+'px';}}
 function closeProfilePanel(){document.querySelector('dialog.profile-panel')?.close();}
 function profilePanel(title,body){
@@ -2275,7 +2282,7 @@ function captureProfile(form){
   return save();
 }
 function saveOwnProfile(){
-  if(!['/profile/edit','/profile/preview'].includes(route().path)||!state.profileDraft)return;
+  if(route().path!=='/profile/edit'||!state.profileDraft)return;
   const result=validateProfile(state.profileDraft,viewer());
   if(result.error){$('#profile-save-error').textContent=result.error;return;}
   const previous={member:state.member,profile:state.profile,draft:state.profileDraft};state.member=result.value.member;state.profile=result.value.profile;state.profileDraft=null;
@@ -2417,6 +2424,12 @@ document.addEventListener('click',event=>{
     closeProfilePanel();render({keepScroll:true});
     if(focusId){const block=document.querySelector('[data-block-id="'+focusId+'"]');block?.scrollIntoView({behavior:'instant',block:'center'});block?.querySelector('textarea,input')?.focus({preventScroll:true});}
     return;
+  }
+  if(action==='preview-profile'){
+    const form=$('#profile-form');if(route().path!=='/profile/edit'||!form)return;
+    if($('#profile-done')?.disabled){toast('사진 준비가 끝나면 미리볼 수 있어요');return;}
+    if(!captureProfile(form)){$('#profile-save-error').textContent='임시저장 공간이 부족해요. 사진을 지우고 다시 시도해 주세요';return;}
+    noticeSeen.add('profile-restored');navigate(editorRoute('/profile/preview'));return;
   }
   if(action==='save-profile'){const form=$('#profile-form');if(form)captureProfile(form);saveOwnProfile();return;}
   if(action==='remove-profile-photo'){
