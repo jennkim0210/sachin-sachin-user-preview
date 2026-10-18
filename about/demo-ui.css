@@ -1101,8 +1101,12 @@ html,body{height:100%;overflow:hidden;scroll-behavior:auto}body{margin:0}
 .demo-document .product-header{position:sticky;top:0}
 .demo-document a,.demo-document button,.demo-document input,.demo-document textarea{pointer-events:none}
 .demo-document .chat-body{scrollbar-width:none;overscroll-behavior:auto}
-.demo-document .message-row.is-arriving{animation:demo-arrive .18s ease-out both}
-.demo-document[data-kind="proposal"] #app>.product-app{animation:demo-arrive .18s ease-out both}
+.demo-document .message-row.is-arriving{animation:demo-arrive .42s cubic-bezier(.22,1,.36,1) both}
+.demo-document .chat-body{overflow-anchor:none}
+.demo-document .chat-input textarea{height:calc(3.3em + 16px)!important;min-height:0;max-height:none;overflow:hidden}
+.demo-document[data-kind="proposal"] #app{position:relative;min-height:100%}
+.demo-document[data-kind="proposal"] #app>.product-app{animation:demo-arrive .6s cubic-bezier(.22,1,.36,1) both}
+.demo-document[data-kind="proposal"] #app>.demo-outgoing{position:absolute!important;inset:0!important;z-index:2;height:100%;min-height:100%;pointer-events:none;animation:demo-leave .46s ease-in-out both}
 .demo-document .profile-self-reported,.demo-document .profile-actions{display:none}
 .demo-document .profile-canvas.newly-opened{animation:none}
 .demo-document .connection-profile-page{padding-bottom:24px}
@@ -1116,4 +1120,5 @@ html,body{height:100%;overflow:hidden;scroll-behavior:auto}body{margin:0}
 .demo-document .canvas-photo>img,.demo-document .canvas-photo-upload>img{aspect-ratio:3/4;max-height:none;object-position:center}
 .demo-document .own-letter-actions{display:none}
 @keyframes demo-arrive{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+@keyframes demo-leave{from{opacity:1}to{opacity:0}}
 @media(prefers-reduced-motion:reduce){.demo-document *{animation:none!important;transition:none!important}}

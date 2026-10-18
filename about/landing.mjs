@@ -51,7 +51,7 @@ for(const d of demonstrations){
  for(const button of d.figure.querySelectorAll('[data-demo-profile]'))button.addEventListener('click',()=>sendDemo(d,'profile-'+button.dataset.demoProfile));
 }
 if('IntersectionObserver' in window){
- const screenObserver=new IntersectionObserver(entries=>{for(const entry of entries){const d=demonstrations.find(item=>item.figure===entry.target);d.visible=entry.isIntersecting;syncDemo(d);}},{rootMargin:'-80px 0px -10% 0px',threshold:.12});
+ const screenObserver=new IntersectionObserver(entries=>{for(const entry of entries){const d=demonstrations.find(item=>item.figure===entry.target);d.visible=entry.isIntersecting;syncDemo(d);}},{rootMargin:'0px 0px -5% 0px',threshold:.08});
  demonstrations.forEach(d=>screenObserver.observe(d.figure));
 }else{demonstrations.forEach(d=>{d.visible=true;syncDemo(d);});}
 window.addEventListener('message',event=>{
@@ -76,8 +76,8 @@ function showProfiles(){
 for(const button of profileButtons)button.addEventListener('click',()=>{selectedProfile=button.dataset.profileView;showProfiles();});
 compactProfiles.addEventListener('change',showProfiles);showProfiles();
 
-// Animate each actual screen as it arrives, not a tall section containing it.
-// Elements remain visible without JS, reduced motion, or observer support.
+// Animate each actual screen before it enters, without resetting visible content.
+// Existing in-view content, reduced motion and no-JS remain fully readable.
 const arrivals=[...document.querySelectorAll('.hero-copy,.hero-art,.section-heading,.story-toolbar,.letter-pair>article,.screen-copy,.screen-demo,.profile-gallery-heading,.profile-view-switch,.disclosed-profiles,.finished-profile,.faq-section,.start-inner')];
 const fields=[...document.querySelectorAll('.float-field')];
 const effects=document.getElementById('motion-toggle');let decorationsPaused=false;
@@ -85,8 +85,11 @@ function syncEffects(){document.body.classList.toggle('effects-paused',decoratio
 effects.hidden=false;effects.addEventListener('click',()=>{decorationsPaused=!decorationsPaused;syncEffects();});
 document.addEventListener('visibilitychange',syncEffects);motion.addEventListener('change',syncEffects);syncEffects();
 if('IntersectionObserver' in window){
- const arrivalsObserver=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){entry.target.classList.add('has-arrived');arrivalsObserver.unobserve(entry.target);}},{rootMargin:'0px 0px -7% 0px',threshold:.06});
- for(const element of arrivals){element.classList.add('arrives');arrivalsObserver.observe(element);}
+ const arrivalsObserver=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){entry.target.classList.add('has-arrived');arrivalsObserver.unobserve(entry.target);}},{rootMargin:'0px 0px 56px 0px',threshold:0});
+ // Read positions together before any class writes to avoid repeated layout work.
+ const prepared=arrivals.map(element=>({element,ready:motion.matches||element.getBoundingClientRect().top<innerHeight+56}));
+ for(const {element,ready} of prepared){element.classList.add('arrives');if(ready)element.classList.add('has-arrived');else arrivalsObserver.observe(element);}
+ document.addEventListener('focusin',event=>{const element=event.target.closest('.arrives');if(element){element.classList.add('has-arrived');arrivalsObserver.unobserve(element);}});
  const sceneObserver=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){startScene();sceneObserver.disconnect();}},{threshold:.25});sceneObserver.observe(scene);
- const fieldObserver=new IntersectionObserver(entries=>{for(const entry of entries)entry.target.classList.toggle('is-visible',entry.isIntersecting);});fields.forEach(field=>fieldObserver.observe(field));
+ const fieldObserver=new IntersectionObserver(entries=>{for(const entry of entries)entry.target.classList.toggle('is-visible',entry.isIntersecting);},{rootMargin:'160px 0px'});fields.forEach(field=>fieldObserver.observe(field));
 }else{startScene();fields.forEach(field=>field.classList.add('is-visible'));}
