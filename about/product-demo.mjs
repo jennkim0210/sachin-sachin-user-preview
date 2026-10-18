@@ -1,4 +1,4 @@
-import {demoDuration,demoStep} from './demo-sequence.mjs?v=20261018-keyboard-writing';
+import {demoDuration,demoStep} from './demo-sequence.mjs?v=20261018-gentle-stories';
 const kind=document.body.dataset.kind,app=document.querySelector('#app'),reduced=matchMedia('(prefers-reduced-motion: reduce)'),scroller=document.querySelector('#demo-scroll');
 const duration=demoDuration[kind];
 let elapsed=0,playing=true,visible=parent===window,complete=false,last=0,screen='',stage='',profileView='peer';

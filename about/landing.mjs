@@ -1,7 +1,7 @@
 const examples={
- daily:{topic:'일상',title:'주말에 아무것도 안 하면,\n괜히 뒤처지는 기분이에요.',body:'평일에는 쉬고 싶다가도, 막상 쉬는 날엔 마음이 조급해져요. 다들 쉬는 시간을 어떻게 보내나요?',reply:'저도 그랬어요. 요즘은 주말에 해야 할 일 대신, 하고 싶은 일 하나만 적어요. 오늘은 창문 열고 노래 듣기. 그 정도여도 꽤 괜찮은 하루더라고요.'},
- work:{topic:'직장',title:'잘하고 있는 건지,\n가끔은 잘 모르겠어요.',body:'일은 열심히 하는데 제가 제대로 하고 있는지 모르겠어요. 작은 실수 하나에도 하루 종일 마음이 쓰이네요.',reply:'퇴근할 때 오늘 해낸 일 하나만 적어보면 어때요? 저도 실수한 것만 생각했는데, 적고 보니 꽤 많은 일을 하고 있더라고요. 오늘도 애썼어요.'},
- people:{topic:'인간관계',title:'오래된 친구에게,\n먼저 연락하기가 어려워요.',body:'별일 없이 연락하던 사이였는데 어느새 몇 달이 지났어요. 다시 말을 걸면 어색할까 봐 망설이고 있어요.',reply:'저는 얼마 전에 “이거 보니까 네 생각 났어” 하고 사진을 보냈어요. 친구도 연락할까 고민 중이었다더라고요. 반가운 마음은 생각보다 잘 전해져요.'}
+ daily:{topic:'일상',title:'쉬는 날에도\n자꾸 일 생각이 나요',body:'주말에는 쉬고 싶은데 업무 메신저를 계속 확인하게 돼요 집에서도 마음 편히 쉬기가 어렵네요 다들 어떻게 일을 내려놓나요?',reply:'저도 그랬어요 요즘은 금요일에 월요일 할 일을 적어두고 퇴근해요 집에서는 업무 알림을 끄고 잠깐 걷고요 어떤 순간에 일 생각이 가장 많이 나요?'},
+ work:{topic:'직장',title:'부탁받은 일을\n거절하기 어려워요',body:'제 일도 밀려 있는데 부탁을 받으면 일단 알겠다고 해요 결국 야근하게 되고요 관계가 불편해지지 않게 말하고 싶어요',reply:'저는 바로 답하기 전에 제 일정을 먼저 확인해요 “오늘은 어렵고 목요일이면 가능해요”처럼 가능한 시간을 같이 말하니 한결 덜 부담스럽더라고요'},
+ people:{topic:'인간관계',title:'친구에게 서운한 마음을\n어떻게 말할까요?',body:'친구가 약속을 자주 바꾸는데 괜찮다고만 했어요 계속 마음에 남아서 이야기하고 싶은데 괜히 다투게 될까 봐 망설여져요',reply:'저도 참다가 한꺼번에 말해서 후회한 적 있어요 “그날 기다리면서 서운했어 다음엔 미리 알려줄래?”처럼 한 가지 일부터 이야기하니 서로 듣기 편했어요'}
 };
 const tabs=[...document.querySelectorAll('[data-story]')],panel=document.getElementById('story-panel');
 function selectStory(tab){
@@ -27,7 +27,10 @@ function playScene(){
  motionTimer=setTimeout(()=>{scene.classList.remove('is-playing');scene.classList.add('is-complete');},2200);
 }
 replay.hidden=false;replay.addEventListener('click',playScene);motion.addEventListener('change',playScene);
-const art=scene.querySelector('img');if(art.complete)playScene();else art.addEventListener('load',playScene,{once:true});
+// Begin the drawing only when its illustration reaches the viewport.
+let sceneSeen=false;
+const art=scene.querySelector('img');
+function startScene(){if(sceneSeen)return;sceneSeen=true;if(art.complete)playScene();else art.addEventListener('load',playScene,{once:true});}
 const copy=document.getElementById('copy-link'),status=document.getElementById('share-status'),url=document.querySelector('link[rel=canonical]').href;
 copy.hidden=false;
 copy.addEventListener('click',async()=>{
@@ -47,8 +50,10 @@ for(const d of demonstrations){
  d.finish?.addEventListener('click',()=>sendDemo(d,'finish'));
  for(const button of d.figure.querySelectorAll('[data-demo-profile]'))button.addEventListener('click',()=>sendDemo(d,'profile-'+button.dataset.demoProfile));
 }
-const screenObserver=new IntersectionObserver(entries=>{for(const entry of entries){const d=demonstrations.find(item=>item.figure===entry.target);d.visible=entry.isIntersecting;syncDemo(d);}},{threshold:.15});
-demonstrations.forEach(d=>screenObserver.observe(d.figure));
+if('IntersectionObserver' in window){
+ const screenObserver=new IntersectionObserver(entries=>{for(const entry of entries){const d=demonstrations.find(item=>item.figure===entry.target);d.visible=entry.isIntersecting;syncDemo(d);}},{rootMargin:'-80px 0px -10% 0px',threshold:.12});
+ demonstrations.forEach(d=>screenObserver.observe(d.figure));
+}else{demonstrations.forEach(d=>{d.visible=true;syncDemo(d);});}
 window.addEventListener('message',event=>{
  if(event.origin!==location.origin||event.data?.type!=='sachin-demo-status')return;
  const d=demonstrations.find(item=>item.frame.contentWindow===event.source);if(!d)return;
@@ -70,3 +75,18 @@ function showProfiles(){
 }
 for(const button of profileButtons)button.addEventListener('click',()=>{selectedProfile=button.dataset.profileView;showProfiles();});
 compactProfiles.addEventListener('change',showProfiles);showProfiles();
+
+// Animate each actual screen as it arrives, not a tall section containing it.
+// Elements remain visible without JS, reduced motion, or observer support.
+const arrivals=[...document.querySelectorAll('.hero-copy,.hero-art,.section-heading,.story-toolbar,.letter-pair>article,.screen-copy,.screen-demo,.profile-gallery-heading,.profile-view-switch,.disclosed-profiles,.finished-profile,.faq-section,.start-inner')];
+const fields=[...document.querySelectorAll('.float-field')];
+const effects=document.getElementById('motion-toggle');let decorationsPaused=false;
+function syncEffects(){document.body.classList.toggle('effects-paused',decorationsPaused||document.hidden||motion.matches);effects.setAttribute('aria-pressed',String(!decorationsPaused));effects.textContent=decorationsPaused?'배경 효과 켜기':'배경 효과 멈추기';effects.hidden=motion.matches;}
+effects.hidden=false;effects.addEventListener('click',()=>{decorationsPaused=!decorationsPaused;syncEffects();});
+document.addEventListener('visibilitychange',syncEffects);motion.addEventListener('change',syncEffects);syncEffects();
+if('IntersectionObserver' in window){
+ const arrivalsObserver=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){entry.target.classList.add('has-arrived');arrivalsObserver.unobserve(entry.target);}},{rootMargin:'0px 0px -7% 0px',threshold:.06});
+ for(const element of arrivals){element.classList.add('arrives');arrivalsObserver.observe(element);}
+ const sceneObserver=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){startScene();sceneObserver.disconnect();}},{threshold:.25});sceneObserver.observe(scene);
+ const fieldObserver=new IntersectionObserver(entries=>{for(const entry of entries)entry.target.classList.toggle('is-visible',entry.isIntersecting);});fields.forEach(field=>fieldObserver.observe(field));
+}else{startScene();fields.forEach(field=>field.classList.add('is-visible'));}

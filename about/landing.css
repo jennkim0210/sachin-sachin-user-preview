@@ -38,7 +38,7 @@
 @media(max-width:650px){.hero{padding-bottom:30px}.screen-section{padding-block:52px}.screen-grid{display:flex;flex-direction:column;gap:34px}.screen-copy{width:100%;max-width:390px;align-self:center}.screen-copy h2{font-size:2.25rem;line-height:1.45}.screen-copy .eyebrow{margin-bottom:15px}.screen-copy>p:not(.eyebrow){font-size:1rem;margin-top:15px}.screen-copy>.button{margin-top:23px;min-height:50px;font-size:.9375rem}.screen-demo{width:100%;max-width:390px}.device-window{border-radius:19px;box-shadow:none}.device-window iframe{height:650px}.profile-showcase .device-window{box-shadow:none}.screen-demo figcaption{font-size:.625rem;margin-top:8px}.demo-controls{gap:14px}.demo-controls button{font-size:.625rem}.faq-section{padding-block:45px}.faq-section h2{font-size:1.75rem}.faq-section h2 br{display:none}.faq-list{margin-top:20px}.stories-section{padding-bottom:38px}.story-after{margin-top:20px}.start-section{padding-block:50px}}
 @media(max-width:360px){.screen-copy h2{font-size:2rem}.device-window iframe{height:620px}.screen-demo figcaption{gap:8px}.demo-controls{gap:12px}}
 
-.hero h1{font-size:clamp(2.25rem,4.3vw,3.875rem);letter-spacing:-.055em}.hero .underlined{max-width:100%;white-space:normal}
+.hero h1{font-size:clamp(2.25rem,4.1vw,3.5rem);letter-spacing:-.055em}.hero .underlined{max-width:100%;white-space:normal}
 @media(max-width:600px){.hero h1{font-size:clamp(2rem,8.7vw,3.25rem)}}
 .screen-demo figcaption{flex-wrap:wrap;gap:0 12px}.demo-controls{flex-wrap:wrap;gap:0 14px}.screen-demo [data-demo-stage]{min-height:36px;display:flex;align-items:center}.editor-showcase{background:#dcd8e7}.editor-showcase .screen-demo{max-width:410px}
 .screen-copy .eyebrow:not([lang]){font-family:'Gowun Dodum',sans-serif;letter-spacing:.015em}
@@ -92,3 +92,28 @@
  .disclosed-profile .canvas-fact{grid-template-columns:74px minmax(0,1fr);gap:10px;font-size:.75rem}
 }
 @media(max-width:360px){.disclosed-profile{padding:16px}.disclosed-profile .canvas-note-body{font-size:.875rem}.disclosed-profile .canvas-note-title{font-size:1rem}.disclosed-profile .canvas-fact{grid-template-columns:64px minmax(0,1fr);gap:8px}}
+
+/* Quiet hand-drawn movement lives behind the readable product surfaces. */
+.stories-section,.screen-section,.profile-gallery{position:relative;isolation:isolate;overflow:clip}
+.stories-section>.wrap,.screen-section>.wrap,.profile-gallery>.wrap{position:relative;z-index:1}
+.float-field{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;color:var(--blue)}
+.floating-ink{position:absolute;display:block;opacity:0;animation:ink-drift 12s linear infinite;animation-play-state:paused}
+.floating-ink svg{width:100%;height:100%;overflow:visible}
+.ink-0{width:112px;height:126px;left:2%;top:38%;animation-delay:-2s;--lean:-12deg}
+.ink-1{width:66px;height:76px;right:3%;top:67%;animation-delay:-8s;--lean:15deg}
+.ink-2{width:46px;height:54px;left:43%;top:79%;animation-delay:-5s;--lean:9deg}
+.ink-3{width:90px;height:106px;right:10%;top:29%;animation-delay:-10s;--lean:-7deg}
+.float-field.is-visible .floating-ink{animation-play-state:running}
+.effects-paused .floating-ink{animation-play-state:paused!important}
+.motion-toggle{font-size:.75rem;min-height:44px;padding:8px 0;color:var(--muted);text-decoration:underline;text-underline-offset:5px}
+@keyframes ink-drift{0%{opacity:0;transform:translate3d(0,100px,0) rotate(var(--lean))}15%,75%{opacity:.12}100%{opacity:0;transform:translate3d(22px,-180px,0) rotate(6deg)}}
+@keyframes screen-arrives{from{opacity:0;translate:0 24px}to{opacity:1;translate:0 0}}
+.arrives.has-arrived{animation:screen-arrives .48s cubic-bezier(.22,.7,.25,1) both}
+/* Do not hide content awaiting JS: a visitor can always read fast or use Find. */
+.letter-pair>.reply-letter.has-arrived{animation-delay:.08s}
+@media(max-width:650px){
+ .hero h1{font-size:clamp(1.9rem,7.8vw,2.8rem);letter-spacing:-.065em}
+ .screen-copy h2{font-size:clamp(1.85rem,7.3vw,2.25rem)}
+ .ink-0{width:74px;height:86px;left:-18px;top:20%}.ink-1{right:-12px;top:49%}.ink-2{left:16%;top:91%}.ink-3{width:70px;height:82px;right:4%;top:8%}
+}
+@media(prefers-reduced-motion:reduce){.arrives.has-arrived{animation:none}.float-field{display:none}.motion-toggle{display:none}}

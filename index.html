@@ -814,8 +814,9 @@
 /* A single viewport frame keeps writing, replies and chat above the software keyboard. */
 html.has-composer-viewport,html.has-composer-viewport body{height:100%;overflow:hidden;overscroll-behavior:none}
 .product-app.viewport-composer{position:fixed;inset:auto 0;top:var(--composer-top,0px);height:var(--composer-height,100dvh);min-height:0;padding-bottom:0;display:flex;flex-direction:column;overflow:hidden}
+.product-app.viewport-composer{overflow:clip}
 .viewport-composer .product-header{flex:none;position:relative;top:auto}
-.viewport-composer:not(.is-chat) .app-main{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:auto;scroll-padding:12px 0;margin-top:0;padding-top:8px}
+.viewport-composer:not(.is-chat) .app-main{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;overflow-anchor:none;scroll-behavior:auto;scroll-padding:12px 0;margin-top:0;padding-top:8px}
 .viewport-composer.has-fixed-actions .page{padding-bottom:calc(var(--composer-actions-height,160px) + max(10px,env(safe-area-inset-bottom)) + 16px)}
 /* One inset action panel floats above the writing canvas, without a footer strip. */
 .product-app.viewport-composer>.composer-actions{position:absolute;inset:auto auto max(10px,env(safe-area-inset-bottom)) 50%;transform:translateX(-50%);z-index:24;display:flex;flex-direction:column;width:calc(100% - 32px);max-width:462px;margin:0!important;padding:12px;gap:8px;border:1px solid #c9c5d0;border-radius:22px;background:#ececeaf5;box-shadow:0 5px 22px #28203b18;backdrop-filter:blur(12px)}
@@ -828,6 +829,8 @@ html.has-composer-viewport,html.has-composer-viewport body{height:100%;overflow:
 .viewport-composer>.composer-actions .compose-browse p{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 .viewport-composer>.composer-actions .compose-browse-link{border:0;min-height:44px;padding:6px 8px;font-size:.84375rem}
 .viewport-composer .compose-form #concern-body,.viewport-composer .reply-letter textarea{min-height:0;max-height:none;resize:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#bcb7cc transparent}
+.viewport-composer .compose-form #concern-title{min-height:0;max-height:none;resize:none;overflow-y:auto;overscroll-behavior:contain}
+.viewport-composer:not(.is-chat) :is(.compose-sheet,.reply-letter,textarea){overflow-anchor:none;scroll-behavior:auto}
 .viewport-composer #concern-tags{font-size:16px;min-height:28px}
 .viewport-composer textarea,.viewport-composer input{scroll-margin:12px 0;caret-color:var(--blue)}
 .viewport-composer.is-chat .app-main{overflow:hidden}
@@ -1232,23 +1235,23 @@ const SAMPLES = [
   {id:'relationship-1',category:'relationship',title:'친한 사이에도 혼자 있을 시간이 필요하다고 말해도 될까요?',body:'소중한 친구지만 매일 연락하는 건 조금 버거워요. 마음이 멀어진 건 아닌데 어떻게 전하면 좋을까요? 상대가 서운하지 않았으면 좋겠어요.',tags:['관계의거리','내속도'],answers:2},
   {id:'career-1',category:'career',title:'새로운 시작이 늦은 건 아닐까요?',body:'좋아하던 일을 다시 배워보고 싶어요. 지금 하던 일을 잘 이어가는 것과 다른 길을 찾는 것 사이에서 고민 중이에요. 비슷한 선택을 한 분의 이야기가 궁금해요.',tags:['새로운시작','내속도'],answers:1},
   {id:'family-1',category:'family',title:'부모님께 독립하고 싶다는 말을 꺼내기가 어려워요.',body:'함께 사는 시간이 편하면서도 이제는 혼자 생활을 꾸려보고 싶어요. 걱정하실까 봐 계속 미루고 있어요. 마음을 어떻게 전하면 좋을까요?',tags:['새로운시작','관계의거리'],answers:0},
-  {id:'daily-1',category:'daily',title:'주말을 혼자 보내도 잘 보낸 하루라고 느끼고 싶어요.',body:'일정이 없는 주말이면 괜히 누군가와 비교하게 돼요. 혼자서도 편안하고 기분 좋게 시간을 보내는 작은 습관이 있다면 나눠 주세요.',tags:['일상나누기','내속도'],answers:2},
+  {id:'daily-1',category:'daily',title:'쉬는 날에도 자꾸 일 생각이 나요.',body:'주말에는 쉬고 싶은데 업무 메신저를 계속 확인하게 돼요. 집에서도 마음 편히 쉬기가 어렵네요. 다들 어떻게 일을 내려놓나요?',tags:['일상나누기','내속도'],answers:2},
   {id:'daily-2',category:'daily',title:'좋은 노래를 들으면, 보내줄 사람이 생각나요?',body:'우연히 발견한 노래가 너무 좋아서 누군가에게 보내고 싶었어요. 사소한 걸 같이 좋아해 줄 사람이 있으면 좋겠다는 생각이 드는 저녁이네요.',tags:['일상나누기','마음알아가기'],answers:1},
-  {"id":"breakup-1","category":"breakup","title":"괜찮아진 줄 알았는데, 익숙한 노래에 마음이 멈춰요.","body":"헤어진 뒤로 잘 지내고 있다고 생각했어요. 그런데 같이 듣던 노래가 나오면 그때로 돌아간 것 같아요. 이런 마음을 누군가에게 편하게 말하고 싶어요.","tags":["이별후","남은마음"],"answers":0},
+  {"id":"breakup-1","category":"breakup","title":"헤어진 사람을 떠올릴 때면 다시 연락하고 싶어요.","body":"헤어진 지 두 달이 됐는데 같이 가던 곳을 지나면 연락하고 싶어져요. 다시 만나고 싶은 건지 익숙해서 그런 건지 모르겠어요. 비슷한 경험이 있다면 듣고 싶어요.","tags":["이별후","남은마음"],"answers":0},
   {"id":"marriage-1","category":"marriage","title":"결혼을 생각하는 속도가 서로 달라요.","body":"함께 있는 건 좋은데 미래 이야기를 꺼내면 조금 다른 곳을 보는 느낌이에요. 서두르게 하고 싶지는 않지만 제 마음도 솔직하게 전하고 싶어요. 어떻게 대화를 시작하면 좋을까요?","tags":["서로의속도","미래이야기"],"answers":0},
-  {"id":"study-1","category":"study","title":"공부한 만큼 결과가 나오지 않아 자신감이 줄어요.","body":"열심히 준비한 시험인데 기대했던 결과와 거리가 있었어요. 다시 책을 펴려고 하면 괜히 마음부터 작아져요. 비슷한 시간을 지나온 분의 이야기를 듣고 싶어요.","tags":["시험준비","다시시작"],"answers":0},
+  {"id":"study-1","category":"study","title":"공부한 만큼 결과가 나오지 않아 자신감이 줄어요.","body":"열심히 준비한 시험인데 기대했던 결과와 거리가 있었어요. 다시 공부하려니 자신이 없고 무엇부터 바꿔야 할지도 모르겠어요. 기대보다 성적이 낮았을 때 어떻게 다시 시작했나요?","tags":["시험준비","다시시작"],"answers":0},
   {"id":"money-1","category":"money","title":"친구들과 만날 때, 지출 이야기를 꺼내기 어려워요.","body":"친구들을 만나는 건 좋지만 요즘 약속 비용이 조금 부담돼요. 분위기를 깨는 사람처럼 보일까 봐 말하지 못하고 있어요. 편하게 제 상황을 전하려면 어떻게 하면 좋을까요?","tags":["생활비","솔직한마음"],"answers":0},
   {"id":"selfesteem-1","category":"selfesteem","title":"다른 사람의 좋은 소식에 자꾸 저를 비교하게 돼요.","body":"축하하는 마음은 진심인데 혼자 돌아오는 길에는 제 모습이 작게 느껴져요. 남의 속도보다 제 하루를 바라보고 싶은데 쉽지 않네요. 여러분은 어떤 마음으로 지내나요?","tags":["비교하는마음","나의속도"],"answers":0},
   {"id":"loneliness-1","category":"loneliness","title":"오늘 어땠냐는 말 한마디가 듣고 싶은 저녁이에요.","body":"사람들을 만나고 집에 돌아왔는데도 이상하게 허전해요. 특별한 이야기가 없어도 편하게 하루를 나눌 사람이 있었으면 해요. 이런 저녁을 보내는 분도 있나요?","tags":["안부","혼자인저녁"],"answers":0},
-  {"id":"burnout-1","category":"burnout","title":"좋아하던 일인데, 요즘은 시작하는 것부터 무거워요.","body":"한동안 쉼 없이 달려왔더니 작은 일에도 마음의 힘이 많이 드는 느낌이에요. 잠깐 멈추고 싶다는 말을 꺼내는 것도 어렵네요. 비슷했던 순간에 어떤 마음이었는지 듣고 싶어요.","tags":["잠깐멈춤","마음의여유"],"answers":0},
+  {"id":"burnout-1","category":"burnout","title":"좋아하던 일인데, 요즘은 시작하는 것부터 무거워요.","body":"몇 달째 야근이 이어졌고 주말에도 일을 생각해요. 쉬고 싶은데 맡은 일을 미루는 것 같아 말을 못 꺼내겠어요. 업무량이 버거울 때 어떻게 이야기했나요?","tags":["잠깐멈춤","마음의여유"],"answers":0},
   {"id":"health-1","category":"health","title":"몸을 돌보느라 약속을 줄였더니 마음도 허전해요.","body":"요즘은 제 컨디션을 먼저 생각하며 지내고 있어요. 만나자는 연락을 자주 거절하다 보니 가까운 사람들과 멀어질까 걱정돼요. 미안한 마음을 어떻게 이야기하면 좋을까요?","tags":["나돌보기","관계의거리"],"answers":0},
-  {"id":"future-1","category":"future","title":"아직 일어나지 않은 일을 자꾸 걱정하게 돼요.","body":"잠들기 전에 앞으로의 생활을 상상하다 보면 생각이 길어져요. 당장 정할 수 없는 일까지 미리 답을 찾고 있는 것 같아요. 오늘의 마음에 조금 더 머물고 싶어요.","tags":["미래걱정","오늘의마음"],"answers":0},
+  {"id":"future-1","category":"future","title":"아직 일어나지 않은 일을 자꾸 걱정하게 돼요.","body":"잠들기 전에 앞으로의 생활을 상상하다 보면 생각이 길어져요. 당장 정할 수 없는 일까지 미리 답을 찾고 있는 것 같아요. 걱정을 정리하거나 잠들기 전에 해보는 습관이 있나요?","tags":["미래걱정","오늘의마음"],"answers":0},
   {"id":"etc-1","category":"etc","title":"어디서부터 말해야 할지 모르겠는 마음도 괜찮을까요?","body":"큰일이 있었던 건 아닌데 며칠째 마음에 뭔가 남아 있어요. 이름을 붙이기 어려운 기분이라 말할 타이밍을 놓치게 되네요. 정리되지 않은 이야기부터 나눠보고 싶어요.","tags":["말해보기","복잡한마음"],"answers":0},
 ].map((c,i)=>({...c,authorId:'sample-'+c.id,authorGender:'female',ageBand:i%3===1?'30대':'20대',occupation:c.category==='career'?'취업 준비생':i%4===3?'프리랜서':'직장인',region:i%3===2?'경기':'서울'}));
 const DEMO_USER = {id:'preview-user',gender:'male'};
-const MY_SAMPLE = {id:'my-first',authorId:DEMO_USER.id,authorGender:DEMO_USER.gender,category:'relationship',title:'괜찮은 척하는 게 익숙해진 것 같아요.',body:'친구들 앞에서는 항상 이야기를 들어주는 편이에요. 그런데 막상 제 마음을 말하려면 별일 아닌 것 같아서 웃고 넘기게 돼요.\n\n누군가에게 기대고 싶다는 말을 어떻게 시작하면 좋을까요?',tags:['마음알아가기','관계의거리'],own:true,answers:2};
+const MY_SAMPLE = {id:'my-first',authorId:DEMO_USER.id,authorGender:DEMO_USER.gender,category:'relationship',title:'괜찮은 척하는 게 익숙해진 것 같아요.',body:'친구들 앞에서는 항상 이야기를 들어주는 편이에요. 그런데 막상 제 이야기를 하려면 분위기가 무거워질까 봐 웃고 넘기게 돼요.\n\n누군가에게 기대고 싶다는 말을 어떻게 시작하면 좋을까요?',tags:['마음알아가기','관계의거리'],own:true,answers:2};
 const SAMPLE_ANSWERS = [
-  {id:'answer-a',alias:'익명의 답변 01',body:'저도 늘 들어주는 쪽이었어요. 그래서인지 힘들다는 말도 잘해야 할 것 같더라고요.\n\n어느 날 친구에게 “해결해 주지 않아도 돼. 오늘은 그냥 내 얘기 좀 들어줄래?”라고 말했어요. 생각보다 가볍게 시작해도 괜찮았어요.\n\n당신의 마음도 충분히 들어줄 만한 이야기예요.'},
+  {id:'answer-a',alias:'익명의 답변 01',body:'저도 늘 들어주는 쪽이었어요. 그래서인지 힘들다는 말도 잘해야 할 것 같더라고요.\n\n어느 날 친구에게 “해결해 주지 않아도 돼. 오늘은 그냥 내 얘기 좀 들어줄래?”라고 말했어요. 짧게 부탁하고 나니 말문이 트였어요.\n\n편하게 연락할 수 있는 친구 한 명부터 떠올려보면 어때요?'},
   {id:'answer-b',alias:'익명의 답변 02',body:'늘 괜찮은 사람일 필요는 없다고 생각해요. 가장 편한 한 사람에게 작은 이야기부터 해보면 어떨까요? 오늘 유난히 피곤했다는 말부터요. 그 정도 시작으로도 괜찮아요.'},
 ].map(a=>({...a,alias:'익명의 사친',authorId:'sample-'+a.id,authorGender:'female',chatConsent:true}));
 const DEFAULT_NOTIFICATION_SETTINGS={answers:true,chats:true,messages:true,profiles:true,service:true};
@@ -1889,11 +1892,11 @@ function toast(message,{href='',label='이어서 쓰기',title='',drawing='',dur
 }
 const REPLY_THANKS=[
   '마음을 내어 들어줘서 고마워요',
-  '당신의 한마디가 작은 위로가 되길 바라요',
-  '함께 고민해 준 마음까지 닿기를 바라요',
-  '혼자가 아니라는 마음을 건넸어요',
-  '다정하게 머물러 준 시간, 고마워요',
-  '당신의 답장이 잠시 쉴 틈이 되길 바라요',
+  '답변을 보냈어요 함께 고민해 줘서 고마워요',
+  '이야기를 읽고 경험을 나눠줘서 고마워요',
+  '상대가 답변을 선택하면 대화할 수 있어요',
+  '시간 내어 답변해 줘서 고마워요',
+  '내 고민에서 보낸 답변을 다시 볼 수 있어요',
   '한 사람의 이야기를 소중히 들어주셨네요'
 ];
 let replyThanksRemaining=[],lastReplyThanks='';
@@ -2114,7 +2117,7 @@ function listeningScene(){
     '<g class="speech-bubble" mask="url(#splash-incoming)">'+handInk(incoming,'splash-unravel-to-ear')+'</g>'+
     hearts.map((h,i)=>'<g class="splash-heart" data-heart="'+(i+1)+'" mask="url(#splash-heart-'+i+')">'+handInk(h.path,'splash-heart-from-ear-'+i)+'</g>').join('')+'</svg></div></div>';
 }
-function launchSplash(){return '<div class="brand-splash" role="status" aria-label="사친사친을 열고 있어요" data-splash-scene="listening" style="--splash-out-delay:'+(splashDuration()-200)+'ms">'+listeningScene()+'<div class="splash-wordmark splash-signature" aria-hidden="true">'+quoteMark()+'<span class="brand-name" lang="en"><span>sachin</span><span>sachin</span></span>'+quoteMark('close')+'</div>'+(state.member?'':'<p aria-hidden="true">고민 하나로 시작하는, 뜻밖의 사친</p>')+'</div>';}
+function launchSplash(){return '<div class="brand-splash" role="status" aria-label="사친사친을 열고 있어요" data-splash-scene="listening" style="--splash-out-delay:'+(splashDuration()-200)+'ms">'+listeningScene()+'<div class="splash-wordmark splash-signature" aria-hidden="true">'+quoteMark()+'<span class="brand-name" lang="en"><span>sachin</span><span>sachin</span></span>'+quoteMark('close')+'</div>'+(state.member?'':'<p aria-hidden="true">고민으로 시작하는 편안한 대화</p>')+'</div>';}
 function finishLaunch(){clearTimeout(launchTimer);clearTimeout(launchWatchdog);launchImageCleanup?.();launchImageCleanup=null;launchPending=false;render();}
 function prepareSplash(){
   const art=$('.splash-listeners');let started=false;
@@ -2299,7 +2302,7 @@ function replyComposer(c){
 function write(){
   const d=state.draft,tab=route().params.get('tab');
   const back=route().params.get('from')==='mine'&&['received','answers'].includes(tab)?'/mine?tab='+tab:'/mine';
-  return shell('고민 쓰기',`<form id="concern-form" class="compose-form" novalidate><p class="compose-salutation" lang="en">${typed("dear, friend","write")}</p><div class="compose-sheet"><div class="compose-toolbar">${choiceSelect('concern-topic','category','고민 주제',d.category,TOPICS.map(t=>({value:t.id,label:t.name,icon:t.icon})),'주제 선택')}</div><label class="sr-only" for="concern-title">고민 제목</label><textarea id="concern-title" aria-describedby="form-error" name="title" rows="1" placeholder="오늘, 어떤 마음인가요?" minlength="5" maxlength="80" required>${esc(d.title)}</textarea><label class="sr-only" for="concern-body">고민 내용</label><textarea id="concern-body" aria-describedby="form-error" name="body" placeholder="잘 정리된 이야기가 아니어도 괜찮아요.\n지금 마음에 남은 일을 편하게 들려주세요" minlength="20" maxlength="2000" required>${esc(d.body)}</textarea><p id="form-error" class="danger" role="alert"></p><div class="compose-bottom"><label class="sr-only" for="concern-tags">해시태그</label><input id="concern-tags" name="tags" value="${esc(d.tags)}" placeholder="#태그 추가"></div></div><div class="compose-footer fixed-actions"><p class="form-privacy">${icon('lock')}이 주제를 선택한 이성에게만 전해져요</p><button type="submit" class="btn btn-primary btn-block">고민 보내기</button><div class="compose-browse"><p id="compose-browse-note">고민을 쓰지 않아도 괜찮아요</p><a href="#/listen" class="compose-browse-link" aria-describedby="compose-browse-note">먼저 다른 고민 들어보기</a></div></div></form>`,{back,screen:'compose-page has-fixed-actions'});
+  return shell('고민 쓰기',`<form id="concern-form" class="compose-form" novalidate><p class="compose-salutation" lang="en">${typed("dear, friend","write")}</p><div class="compose-sheet"><div class="compose-toolbar">${choiceSelect('concern-topic','category','고민 주제',d.category,TOPICS.map(t=>({value:t.id,label:t.name,icon:t.icon})),'주제 선택')}</div><label class="sr-only" for="concern-title">고민 제목</label><textarea id="concern-title" aria-describedby="form-error" name="title" rows="1" placeholder="요즘 어떤 고민이 있나요?" minlength="5" maxlength="80" required>${esc(d.title)}</textarea><label class="sr-only" for="concern-body">고민 내용</label><textarea id="concern-body" aria-describedby="form-error" name="body" placeholder="어떤 일이 있었는지 편하게 적어주세요\n어떤 점이 고민인지 함께 알려주면 좋아요" minlength="20" maxlength="2000" required>${esc(d.body)}</textarea><p id="form-error" class="danger" role="alert"></p><div class="compose-bottom"><label class="sr-only" for="concern-tags">해시태그</label><input id="concern-tags" name="tags" value="${esc(d.tags)}" placeholder="#태그 추가"></div></div><div class="compose-footer fixed-actions"><p class="form-privacy">${icon('lock')}이 주제를 선택한 이성에게만 전해져요</p><button type="submit" class="btn btn-primary btn-block">고민 보내기</button><div class="compose-browse"><p id="compose-browse-note">고민을 쓰지 않아도 괜찮아요</p><a href="#/listen" class="compose-browse-link" aria-describedby="compose-browse-note">먼저 다른 고민 들어보기</a></div></div></form>`,{back,screen:'compose-page has-fixed-actions'});
 }
 function detail(){
   const c=getConcern(route().params.get('id'));
@@ -2640,7 +2643,7 @@ function syncProfileToolbar({reveal=false}={}){
   if(Math.abs(delta)>1)window.scrollTo({top:window.scrollY+delta,behavior:'instant'});
 }
 
-function about(){return shell('사친사친 소개',`<section class="about-copy"><h2>내 얘기를 들어주는,<br>뜻밖의 사친</h2><p>잘 들어줄 수 있는 주제를 고르면,<br>이성의 고민이 한 장씩 도착해요</p><p>마음에 남는 답변에서 익명 대화를 시작하고,<br>서로 원할 때 프로필을 열어요</p>${link('/listen','고민 만나보기','btn btn-primary')}<p><a href="./about/" class="text-link">사친사친 소개 자세히 보기</a></p></section>`,{back:route().params.get('from')==='settings'?'/settings':'/me'});}
+function about(){return shell('사친사친 소개',`<section class="about-copy"><h2>작은 고민도<br>진지하게 들어드려요</h2><p>잘 들어줄 수 있는 주제를 고르면,<br>이성의 고민이 한 장씩 도착해요</p><p>마음에 남는 답변에서 익명 대화를 시작하고,<br>서로 원할 때 프로필을 열어요</p>${link('/listen','고민 만나보기','btn btn-primary')}<p><a href="./about/" class="text-link">사친사친 소개 자세히 보기</a></p></section>`,{back:route().params.get('from')==='settings'?'/settings':'/me'});}
 // The full letter stays in the card; only its reading surface scrolls.
 let postcardReadingCleanup;
 function initPostcardReading(){
@@ -2712,7 +2715,7 @@ function initSwipe(){
   anchor.addEventListener('keydown',event=>{if(event.target===anchor&&(event.key==='ArrowLeft'||event.key==='ArrowRight')){event.preventDefault();finish(event.key==='ArrowLeft'?'previous':'next');}},{signal});
   swipeCleanup=()=>{controller.abort();clearTimeout(timer);commitSwipe=null;};
 }
-function resizeWritingTitle(){const input=$('#concern-title');if(input){input.style.height='0px';input.style.height=Math.max(34,input.scrollHeight)+'px';}}
+function resizeWritingTitle(){const input=$('#concern-title');if(input){input.style.height='3.1em';input.style.overflowY='auto';}}
 // The visible viewport is the frame; only its writing area / message log scrolls.
 let composerFrame=0,composerReveal=false,chatAtEnd=true,chatResizeObserver=null,composerActionsObserver=null;
 let composerKeyboard={width:0,height:0,open:false};
@@ -2738,10 +2741,15 @@ function resizeLetterInput(input){
   const page=input.closest?.('.viewport-composer'),bounds=composerWritingBounds(page);
   const available=bounds?bounds.bottom-bounds.top:height;
   const error=page?.querySelector('#answer-error,#form-error'),feedback=error?.textContent?.trim()?error.getBoundingClientRect().height+24:0;
-  const limit=Math.max(48,page?.classList.contains('is-keyboard-open')?available-80-feedback:Math.min(300,height*.4,available-24)),previous=input.scrollTop;
-  input.style.height='auto';input.style.height=Math.min(limit,Math.max(Math.min(210,limit),input.scrollHeight))+'px';
-  input.style.overflowY=input.scrollHeight>input.clientHeight?'auto':'hidden';
-  input.scrollTop=input===document.activeElement&&input.selectionEnd===input.value.length?input.scrollHeight:previous;
+  const typing=page?.classList.contains('is-keyboard-open');
+  const limit=Math.max(48,typing?available-80-feedback:Math.min(210,height*.4,available-24));
+  const nextHeight=Math.round(limit)+'px';
+  // A letter is a stable editor, not an auto-growing chat composer. Never collapse
+  // it to measure content: that changes scroll anchoring and makes the page jump.
+  if(input.style.height===nextHeight)return;
+  const previous=input.scrollTop,atEnd=input.scrollHeight-input.clientHeight-previous<2;
+  input.style.height=nextHeight;input.style.overflowY='auto';
+  input.scrollTop=atEnd&&input===document.activeElement&&input.selectionEnd===input.value.length?input.scrollHeight:previous;
 }
 function resizeReplyInput(){resizeLetterInput($('#answer-body'));resizeLetterInput($('#concern-body'));}
 function nearChatEnd(log){return !log||log.scrollHeight-log.clientHeight-log.scrollTop<64;}
@@ -2818,7 +2826,7 @@ function render({keepScroll=false,focus=null}={}){
   const needsMember=!state.member&&!['/home','/about','/legal'].includes(path);
   $('#app').innerHTML=needsMember?signup():(pages[path]??home)();
   const pageTitle=$('#app h1')?.textContent??'사친사친';
-  document.title=path==='/home'?'사친사친 · 고민 하나로 시작하는, 뜻밖의 사친':pageTitle.includes('사친사친')?pageTitle:pageTitle+' · 사친사친';
+  document.title=path==='/home'?'사친사친 · 고민으로 시작하는 편안한 대화':pageTitle.includes('사친사친')?pageTitle:pageTitle+' · 사친사친';
   if(!keepScroll)window.scrollTo({top:0,behavior:'instant'});
   const section=path==='/home'&&['approach','experience','privacy','start'].includes(params.get('section'))?$('#landing-'+params.get('section')):null;
   const heading=section?.querySelector('h2')??$('#app h1');heading?.setAttribute('tabindex','-1');if(focus)$(focus)?.focus({preventScroll:true});else if(!keepScroll)heading?.focus({preventScroll:true});section?.scrollIntoView({behavior:'instant',block:'start'});
@@ -2887,12 +2895,12 @@ document.addEventListener('input',event=>{
   const supportForm=event.target.closest('#support-form');
   if(supportForm){state.supportDraft=supportDraft({...Object.fromEntries(new FormData(supportForm)),savedAt:state.supportDraft.savedAt});save();$('#support-error').textContent='';}
   const profileForm=event.target.closest('#profile-form');if(profileForm&&event.target.type!=='file'){queueDraftNotice(captureProfile(profileForm));resizeProfileText();$('#profile-save-error').textContent='';}
-  if(event.target.id==='concern-title')resizeWritingTitle();
-  const form=event.target.closest('#concern-form');if(form){queueDraftNotice(captureDraft(form));resizeReplyInput();}
+  const form=event.target.closest('#concern-form');if(form)queueDraftNotice(captureDraft(form));
   if(event.target.closest('#signup-form')){state.signupDraft=Object.fromEntries(new FormData($('#signup-form')));$('#form-error').textContent='';save();}
-  const reply=event.target.closest('#answer-form');if(reply){state.replyDrafts[reply.dataset.id]=event.target.value;queueDraftNotice(save());const error=$('#answer-error');if(error)error.textContent='';event.target.removeAttribute('aria-invalid');resizeReplyInput();}
+  const reply=event.target.closest('#answer-form');if(reply){state.replyDrafts[reply.dataset.id]=event.target.value;queueDraftNotice(save());const error=$('#answer-error');if(error)error.textContent='';event.target.removeAttribute('aria-invalid');}
   const chat=event.target.closest('#chat-form');if(chat){state.chatDrafts[chat.dataset.id]=event.target.value;save();resizeChatInput();chat.querySelector('[type="submit"]').disabled=!event.target.value.trim();}
-  if(event.target.matches?.('#concern-title,#concern-body,#concern-tags,#answer-body'))scheduleComposerViewport(true);
+  // Native textarea scrolling follows the caret, including Korean IME input.
+  // Page layout and focus reveal run only for viewport/focus/validation changes.
   if(event.target.closest('#preferences-form'))$('#preferences-form button[type="submit"]').disabled=!$('#preferences-form input:checked');
   if(event.target.id==='reveal-consent')$('[data-action="request-reveal"]').disabled=!event.target.checked;
 });

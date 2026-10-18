@@ -802,8 +802,9 @@
 /* A single viewport frame keeps writing, replies and chat above the software keyboard. */
 html.has-composer-viewport,html.has-composer-viewport body{height:100%;overflow:hidden;overscroll-behavior:none}
 .product-app.viewport-composer{position:fixed;inset:auto 0;top:var(--composer-top,0px);height:var(--composer-height,100dvh);min-height:0;padding-bottom:0;display:flex;flex-direction:column;overflow:hidden}
+.product-app.viewport-composer{overflow:clip}
 .viewport-composer .product-header{flex:none;position:relative;top:auto}
-.viewport-composer:not(.is-chat) .app-main{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:auto;scroll-padding:12px 0;margin-top:0;padding-top:8px}
+.viewport-composer:not(.is-chat) .app-main{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;overflow-anchor:none;scroll-behavior:auto;scroll-padding:12px 0;margin-top:0;padding-top:8px}
 .viewport-composer.has-fixed-actions .page{padding-bottom:calc(var(--composer-actions-height,160px) + max(10px,env(safe-area-inset-bottom)) + 16px)}
 /* One inset action panel floats above the writing canvas, without a footer strip. */
 .product-app.viewport-composer>.composer-actions{position:absolute;inset:auto auto max(10px,env(safe-area-inset-bottom)) 50%;transform:translateX(-50%);z-index:24;display:flex;flex-direction:column;width:calc(100% - 32px);max-width:462px;margin:0!important;padding:12px;gap:8px;border:1px solid #c9c5d0;border-radius:22px;background:#ececeaf5;box-shadow:0 5px 22px #28203b18;backdrop-filter:blur(12px)}
@@ -816,6 +817,8 @@ html.has-composer-viewport,html.has-composer-viewport body{height:100%;overflow:
 .viewport-composer>.composer-actions .compose-browse p{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 .viewport-composer>.composer-actions .compose-browse-link{border:0;min-height:44px;padding:6px 8px;font-size:.84375rem}
 .viewport-composer .compose-form #concern-body,.viewport-composer .reply-letter textarea{min-height:0;max-height:none;resize:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#bcb7cc transparent}
+.viewport-composer .compose-form #concern-title{min-height:0;max-height:none;resize:none;overflow-y:auto;overscroll-behavior:contain}
+.viewport-composer:not(.is-chat) :is(.compose-sheet,.reply-letter,textarea){overflow-anchor:none;scroll-behavior:auto}
 .viewport-composer #concern-tags{font-size:16px;min-height:28px}
 .viewport-composer textarea,.viewport-composer input{scroll-margin:12px 0;caret-color:var(--blue)}
 .viewport-composer.is-chat .app-main{overflow:hidden}
