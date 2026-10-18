@@ -996,6 +996,59 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
   .conversation-home.is-browsing .arrival-intro.arrival-note{display:none}
   .conversation-home.is-browsing .deck-swipe-guide{display:none}
 }
+
+/* Conversation room: quiet fixed chrome, paper bubbles, a single message scroller. */
+.native-ui.is-chat .product-header{height:68px;min-height:60px;max-width:570px;padding:0 16px;gap:12px;border-bottom:1px solid #c9c7cc}
+.native-ui.is-chat .screen-heading{gap:10px;flex:1;min-width:0}
+.native-ui.is-chat .screen-heading h1{font-size:1.125rem;line-height:1.5;color:var(--ink)}
+.native-ui.is-chat .back,.native-ui.is-chat .header-tools .icon-button{width:44px;height:44px;flex:0 0 44px;color:var(--ink)}
+.native-ui.is-chat .header-tools svg{width:25px;height:25px}
+.native-ui.is-chat .app-main{max-width:570px;padding:0 20px}
+.native-ui.is-chat .chat-context{width:100%;margin:0;padding:12px 0;gap:14px;border:0;border-bottom:1px solid #c9c7cc;border-radius:0;background:transparent;text-align:left;color:var(--ink);min-height:68px}
+.native-ui.is-chat .chat-context>span{gap:3px;white-space:normal}
+.native-ui.is-chat .chat-context small{font-size:.6875rem;line-height:1.5;color:var(--muted)}
+.native-ui.is-chat .chat-context>span>span{font-size:.8125rem;line-height:1.6;color:var(--ink)}
+.native-ui.is-chat .chat-context>svg{width:18px;height:18px;color:var(--muted);flex:none}
+.chat-log-frame{position:relative;display:flex;flex-direction:column;flex:1;min-height:0}
+.native-ui.is-chat .chat-body{gap:0;padding:22px 0 24px;scroll-padding-block:20px;outline:none}
+.native-ui.is-chat .chat-body:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.chat-date{width:100%;text-align:center;margin:3px 0 24px;font-size:.6875rem;line-height:1.6;color:var(--muted);flex:none}
+.chat-date:not(:first-child){margin-top:24px}
+.native-ui.is-chat .message-row{gap:7px;align-items:flex-end;margin:0;position:relative}
+.native-ui.is-chat .message-row.group-start{margin-top:18px}
+.native-ui.is-chat .chat-date+.message-row,.native-ui.is-chat .message-row:first-child{margin-top:0}
+.native-ui.is-chat .message-row.is-continuation{margin-top:5px}
+.native-ui.is-chat .message-row .msg{max-width:min(79%,26rem);min-width:0;padding:10px 14px;font-family:var(--sans);font-size:1rem;line-height:1.7;letter-spacing:-.015em;box-shadow:none;border:1px solid transparent;border-radius:15px;white-space:pre-wrap;word-break:keep-all;overflow-wrap:anywhere}
+.native-ui.is-chat .message-row .msg.theirs{background:#f0efec;border-color:#d1cfd3;color:var(--ink);border-radius:4px 15px 15px 15px}
+.native-ui.is-chat .message-row .msg.mine{background:#cbc3e9;color:#281477;border-color:#beb4e0;border-radius:15px 4px 15px 15px;order:2}
+.native-ui.is-chat .message-row.is-continuation .msg{border-top-left-radius:15px;border-top-right-radius:15px}
+.native-ui.is-chat .message-time{flex:0 1 auto;min-width:0;max-width:21%;padding-bottom:3px;font:400 .625rem/1.5 var(--sans);color:#626068;white-space:normal;overflow-wrap:anywhere}
+.native-ui.is-chat .outgoing .message-time{order:1;text-align:right}
+.chat-welcome{width:100%;padding:40px 12px 20px;text-align:center;line-height:1.9}
+.chat-welcome p{font-size:1rem;color:var(--blue);margin:0 0 9px}
+.chat-welcome span{font-size:.8125rem;color:var(--muted)}
+.native-ui.is-chat .chat-reveal-note{margin:0 0 20px;padding:10px 12px;font-size:.75rem;background:#d6d1e7;border:0;border-radius:8px}
+.native-ui.is-chat .chat-reveal-note small{font-size:.6875rem}
+.native-ui.is-chat .chat-input{margin:0 0 max(12px,env(safe-area-inset-bottom));padding:6px 6px 6px 14px;gap:4px;border-radius:8px;border:1px solid #bcb9c4;background:var(--sheet);box-shadow:0 -8px 0 var(--paper)}
+.native-ui.is-chat .chat-input:focus-within{border-color:#8b7bb9;box-shadow:0 -8px 0 var(--paper)}
+.native-ui.is-chat .chat-input textarea{font-family:var(--sans);font-size:1rem;line-height:1.65;letter-spacing:0;min-height:42px;padding:8px 0;max-height:120px;border-radius:0}
+.native-ui.is-chat .send-btn{width:auto;min-width:48px;height:auto;min-height:44px;padding:8px;align-self:flex-end;border:0;border-radius:5px;background:transparent;color:var(--blue);font:inherit;font-size:.875rem;line-height:1.5}
+.native-ui.is-chat .send-btn:disabled{background:transparent;color:#76727e;opacity:.7}
+.native-ui.is-chat .send-btn:not(:disabled):hover{background:#d9d3ec}
+.chat-latest{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);max-width:calc(100% - 20px);min-height:44px;padding:10px 18px;border:1px solid #bbb2d1;border-radius:24px;background:var(--sheet);box-shadow:0 3px 14px #24242412;color:var(--blue);font-size:.75rem;white-space:nowrap}
+.chat-latest[hidden]{display:none}
+.chat-menu-actions{display:flex;flex-direction:column;gap:0}
+.chat-menu-item{display:flex;flex-direction:column;align-items:flex-start;text-align:left;justify-content:center;width:100%;min-height:58px;padding:14px 0;border:0;border-bottom:1px solid #d4d0db;background:transparent;color:var(--ink);font-size:1rem;line-height:1.6}
+.chat-menu-item small{font-size:.75rem;line-height:1.7;color:var(--muted);margin-top:4px}
+.chat-menu-item.chat-leave{color:#984c54;border-bottom:0;margin-top:8px}
+.chat-story-content section+section{margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
+.chat-story-label{font-size:.75rem;line-height:1.6;color:var(--blue)}
+.chat-story-content h3{font-size:1.125rem;line-height:1.7;font-weight:400;margin:10px 0 12px}
+.chat-story-content p{white-space:pre-wrap;overflow-wrap:anywhere;font-size:1rem;line-height:1.9;margin-top:12px}
+@media(max-width:370px){.native-ui.is-chat .product-header{padding-inline:8px;gap:6px}.native-ui.is-chat .app-main{padding-inline:14px}.native-ui.is-chat .screen-heading{gap:4px}.native-ui.is-chat .message-row .msg{padding:9px 11px;max-width:78%}}
+@media(max-height:500px){.native-ui.is-chat .product-header{height:52px;min-height:48px}.native-ui.is-chat .chat-context{min-height:50px;padding-block:7px}.native-ui.is-chat .chat-context small{display:none}.native-ui.is-chat .chat-body{padding-top:12px}.native-ui.is-chat .chat-input{margin-bottom:max(6px,env(safe-area-inset-bottom))}}
+.native-ui.is-chat.is-compact-viewport .product-header{height:48px;min-height:44px}
+.native-ui.is-chat.is-compact-viewport .chat-context{display:none}
 </style>
   
 </head>
@@ -1978,9 +2031,9 @@ function shell(title,body,{back,chat=false,tools='',screen='',entry=false,compac
   const showNavigation=Boolean(state.member)&&!entry&&!chat&&tabs.some(([href])=>href===path);
   const active=path;
   const nav=tabs.map(([href,label,symbol])=>`<a href="#${href}" ${href===active?'class="active" aria-current="page"':''}>${icon(symbol)}<span>${label}</span></a>`).join('');
-  const bell=state.member&&path!=='/notifications'?notificationButton():'';
+  const bell=state.member&&!chat&&path!=='/notifications'?notificationButton():'';
   const headingBell=showNavigation?'':bell;
-  const heading=compact?`<div class="screen-heading brand-heading">${headerBrand()}<h1 class="sr-only" tabindex="-1">${esc(title)}</h1>${headingBell}</div>`:`<div class="screen-heading">${back?link(esc(back),icon('back'),'back').replace('class="back"','class="back" aria-label="뒤로"'):''}${chat?personAvatar(currentConnection()):''}<h1 tabindex="-1">${esc(title)}</h1>${headingBell}</div>`;
+  const heading=compact?`<div class="screen-heading brand-heading">${headerBrand()}<h1 class="sr-only" tabindex="-1">${esc(title)}</h1>${headingBell}</div>`:`<div class="screen-heading">${back?link(esc(back),icon('back'),'back').replace('class="back"','class="back" aria-label="뒤로"'):''}<h1 tabindex="-1">${esc(title)}</h1>${headingBell}</div>`;
   return `<div class="product-app native-ui ${showNavigation?'has-tabbar':'is-focused'} ${chat?'is-chat':''} ${entry?'is-entry':''} ${screen}"><header class="product-header">${heading}${showNavigation?'<nav aria-label="주 메뉴">'+nav+'</nav>':''}<div class="header-tools">${tools}${showNavigation?bell:''}</div></header><main class="app-main"><div class="page ${chat?'chat':''}">${body}</div></main>${showNavigation?'<nav class="tabbar" aria-label="하단 메뉴">'+nav+'</nav>':''}</div>`;
 }
 
@@ -2259,22 +2312,52 @@ function connection(){
   }
   return shell(stage==='open'?'상대 프로필':'프로필 공개',body,{back:route().params.get('from')==='notifications'?notificationInboxRoute():chatLink,tools:stage==='open'?link('/profile?connection='+encodeURIComponent(id),'내 공개 프로필','shared-profile-own-link'):'',screen:'connection-profile-page stationery-page '+(stage==='open'?'is-profile-open canvas-page':'is-profile-private')});
 }
+function chatOpeningAnswer(c){return c.answerId==='sent'?state.answers.find(a=>a.concernId===c.concernId):ownAnswers(getConcern(c.concernId)).find(a=>a.id===c.answerId);}
 function chatRevealNotice(c){
   const stage=revealStage(c,viewer());
   if(!['waiting','invited'].includes(stage))return '';
-  const label=stage==='invited'?'프로필 공개 제안':'공개 동의 대기';
-  return link('/connection?id='+encodeURIComponent(c.id),icon('lock')+'<span>'+label+'</span><small>'+(stage==='invited'?'확인하기':'제안 보기')+'</small>'+icon('arrow'),'chat-reveal-note');
+  return link('/connection?id='+encodeURIComponent(c.id),'<span>'+(stage==='invited'?'프로필 공개 제안이 왔어요':'공개 동의 대기 중이에요')+'</span><small>'+(stage==='invited'?'확인하기':'제안 보기')+'</small>','chat-reveal-note');
+}
+function chatDate(value){const date=new Date(value);return value&&Number.isFinite(date.getTime())?date:null;}
+function chatDay(value){const date=chatDate(value);return date?date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate():'';}
+function chatTime(m){const date=chatDate(m.createdAt);return date?date.toLocaleTimeString('ko-KR',{hour:'numeric',minute:'2-digit'}):/^(?:(?:오전|오후|AM|PM)\s*)?\d{1,2}:\d{2}(?:\s*(?:AM|PM))?$/i.test(m.time??'')?m.time:'';}
+function chatGrouped(a,b){
+  if(!a||!b||a.mine!==b.mine||chatDay(a.createdAt)!==chatDay(b.createdAt))return false;
+  const before=chatDate(a.createdAt),after=chatDate(b.createdAt);
+  return before&&after?after-before>=0&&after-before<180000:Boolean(chatTime(a))&&chatTime(a)===chatTime(b);
 }
 function chatMessages(c){
   const messages=state.messages.filter(m=>m.connectionId===c.id);
-  const openingAnswer=c.answerId==='sent'?state.answers.find(a=>a.concernId===c.concernId):ownAnswers(getConcern(c.concernId)).find(a=>a.id===c.answerId);
-  return `${chatRevealNotice(c)}${openingAnswer?`<details class="chat-origin"><summary>마음이 닿은 답변 ${icon('plus')}</summary><p>${esc(openingAnswer.body)}</p></details>`:''}${messages.map((m,i)=>`<div class="message-row ${m.mine?'outgoing':'incoming'} ${i>0&&messages[i-1].mine===m.mine?'is-continuation':''}">${m.mine?'':i===0||messages[i-1].mine?`<span class="message-avatar">${personAvatar(c)}</span>`:'<span class="message-avatar-spacer" aria-hidden="true"></span>'}<div class="msg ${m.mine?'mine':'theirs'}">${esc(m.body)}<small>${/^(오전|오후|AM|PM|\d)/.test(m.time??'')?esc(m.time):''}</small></div></div>`).join('')}`;
+  if(!messages.length)return `${chatRevealNotice(c)}<div class="chat-welcome"><p>이야기를 이어가 볼까요?</p><span>마음에 닿았던 답변에서<br>우리 둘의 대화가 시작돼요.</span></div>`;
+  return `${chatRevealNotice(c)}${messages.map((m,i)=>{
+    const date=chatDate(m.createdAt),day=chatDay(m.createdAt),start=!chatGrouped(messages[i-1],m),end=!chatGrouped(m,messages[i+1]),time=chatTime(m);
+    const divider=date&&day!==chatDay(messages[i-1]?.createdAt)?`<div class="chat-date"><time datetime="${esc(m.createdAt)}">${esc(date.toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'long'}))}</time></div>`:'';
+    return `${divider}<div class="message-row ${m.mine?'outgoing':'incoming'} ${start?'group-start':'is-continuation'} ${end?'group-end':''}" aria-label="${m.mine?'내 메시지':esc(personName(c))+'의 메시지'}"><div class="msg ${m.mine?'mine':'theirs'}">${esc(m.body)}</div>${end&&time?`<time class="message-time" ${date?`datetime="${esc(m.createdAt)}"`:''}>${esc(time)}</time>`:''}</div>`;
+  }).join('')}`;
 }
 function chat(){
   const c=currentConnection();
-  if(!chatAllowed(c,viewer()))return shell('채팅방',empty('열린 채팅방이 없어요','',link('/connections','채팅방으로')),{back:'/connections'});
-  return shell(personName(c),`<a class="chat-context" href="#/concern?id=${encodeURIComponent(c.concernId)}&fromChat=${encodeURIComponent(c.id)}" aria-label="이 대화의 고민 보기">${icon('mine')}<span><span>${esc(getConcern(c.concernId)?.title??'함께 나눈 이야기')}</span></span>${icon('arrow')}</a><div class="chat-body" id="chat-messages" role="log" aria-live="polite" aria-label="대화 내용">${chatMessages(c)}</div><form id="chat-form" class="chat-input" data-id="${esc(c.id)}"><label class="sr-only" for="chat-message">메시지</label><textarea id="chat-message" name="body" rows="1" maxlength="1000" required placeholder="편하게 이야기해요">${esc(state.chatDrafts[c.id]??'')}</textarea><button type="submit" class="send-btn" aria-label="메시지 보내기" ${String(state.chatDrafts[c.id]??'').trim()?'':'disabled'}>${icon('send')}</button></form>`,{back:route().params.get('from')==='notifications'?notificationInboxRoute():'/connections',chat:true,tools:link('/connection?id='+encodeURIComponent(c.id),icon(profilesVisible(c,viewer())?'me':'lock')+'<span>프로필</span>','chat-profile-link').replace('class="chat-profile-link"','class="chat-profile-link" aria-label="'+(profilesVisible(c,viewer())?'상대 프로필 보기':'프로필 공개 제안')+'"')+button('ask-close',icon('exit'),'icon-button',`data-id="${esc(c.id)}" aria-label="채팅방 나가기"`)});
+  if(!chatAllowed(c,viewer()))return shell('채팅방',empty('열린 채팅방이 없어요','',link('/connections','채팅방으로')),{back:'/connections',chat:true});
+  const context=button('chat-story',`<span><small>대화가 시작된 고민</small><span>${esc(getConcern(c.concernId)?.title??'함께 나눈 이야기')}</span></span>${icon('chevron')}`,'chat-context',`data-id="${esc(c.id)}" aria-label="고민과 답변 다시 보기" aria-haspopup="dialog"`);
+  return shell(personName(c),`${context}<div class="chat-log-frame"><div class="chat-body" id="chat-messages" role="log" aria-live="polite" aria-relevant="additions text" aria-label="대화 내용" tabindex="0">${chatMessages(c)}</div>${button('latest-messages','새 메시지 · 아래로','chat-latest','id="chat-latest" hidden')}</div><form id="chat-form" class="chat-input" data-id="${esc(c.id)}"><label class="sr-only" for="chat-message">메시지</label><textarea id="chat-message" name="body" rows="1" maxlength="1000" required placeholder="메시지 입력" enterkeyhint="enter">${esc(state.chatDrafts[c.id]??'')}</textarea><button type="submit" class="send-btn" aria-label="메시지 보내기" ${String(state.chatDrafts[c.id]??'').trim()?'':'disabled'}>전송</button></form>`,{back:route().params.get('from')==='notifications'?notificationInboxRoute():'/connections',chat:true,tools:button('chat-menu',icon('more'),'icon-button',`data-id="${esc(c.id)}" aria-label="대화 메뉴" aria-haspopup="dialog"`)});
 }
+function chatMenuContent(c){
+  const stage=revealStage(c,viewer()),label=stage==='open'?'상대 프로필 보기':stage==='invited'?'프로필 공개 제안 확인':stage==='waiting'?'보낸 공개 제안 보기':'프로필 공개 제안';
+  return `<header><h2 id="chat-menu-title" tabindex="-1">대화 메뉴</h2><button type="button" class="icon-button" data-modal-close aria-label="닫기">${icon('close')}</button></header><div class="modal-scroll chat-menu-actions">${link('/connection?id='+encodeURIComponent(c.id),`<span>${label}</span><small>${stage==='open'?'서로에게 공개한 사진과 소개':'프로필은 서로 동의한 뒤에 열려요'}</small>`,'chat-menu-item')}${button('chat-story','고민과 답변 다시 보기','chat-menu-item',`data-id="${esc(c.id)}"`)}${button('ask-close','채팅방 나가기','chat-menu-item chat-leave',`data-id="${esc(c.id)}"`)}</div>`;
+}
+function showChatMenu(c){
+  if(!chatAllowed(c,viewer()))return;
+  const dialog=document.createElement('dialog');dialog.className='native-dialog chat-menu-dialog';dialog.setAttribute('aria-labelledby','chat-menu-title');dialog.innerHTML=chatMenuContent(c);showAppModal(dialog);
+}
+function chatStoryContent(c){
+  const concern=getConcern(c.concernId),answer=chatOpeningAnswer(c);
+  return `<header><h2 id="chat-story-title" tabindex="-1">대화가 시작된 이야기</h2><button type="button" class="icon-button" data-modal-close aria-label="닫기">${icon('close')}</button></header><div class="modal-scroll chat-story-content"><section><span class="chat-story-label">고민</span><h3>${esc(concern?.title??'함께 나눈 이야기')}</h3><p>${esc(concern?.body??'')}</p></section>${answer?`<section><span class="chat-story-label">마음이 닿은 답변</span><p>${esc(answer.body)}</p></section>`:''}</div><footer class="modal-footer">${link('/concern?id='+encodeURIComponent(c.concernId)+'&fromChat='+encodeURIComponent(c.id),'고민 전체 보기','btn btn-outline btn-block')}</footer>`;
+}
+function showChatStory(c){
+  if(!chatAllowed(c,viewer()))return;
+  const dialog=document.createElement('dialog');dialog.className='native-dialog chat-story-dialog';dialog.setAttribute('aria-labelledby','chat-story-title');dialog.innerHTML=chatStoryContent(c);showAppModal(dialog);
+}
+
 function serviceRow(href,title,{note='',symbol='',value=''}={}){
   return `<a class="service-row" href="#${esc(href)}">${symbol?`<span class="service-row-mark">${doodleSvg(symbol)}</span>`:''}<span class="service-row-copy"><strong>${esc(title)}</strong>${note?`<small>${esc(note)}</small>`:''}</span>${value?`<span class="service-row-value">${esc(value)}</span>`:''}<span class="service-chevron">${icon('back')}</span></a>`;
 }
@@ -2622,13 +2705,14 @@ function initComposerViewport(){
   const reading=()=>{userScrollUntil=Date.now()+2000;};
   for(const type of ['wheel','touchstart','touchmove','pointerdown','keydown'])log.addEventListener(type,reading,{passive:true});
   log.addEventListener('pointermove',event=>{if(event.buttons)reading();},{passive:true});
-  log.addEventListener('scroll',()=>{changed();if(Date.now()<userScrollUntil)chatAtEnd=nearChatEnd(log);else if(chatAtEnd)log.scrollTop=log.scrollHeight;},{passive:true});
+  log.addEventListener('scroll',()=>{changed();if(Date.now()<userScrollUntil)chatAtEnd=nearChatEnd(log);else if(chatAtEnd)log.scrollTop=log.scrollHeight;const latest=$('#chat-latest');if(latest&&nearChatEnd(log))latest.hidden=true;},{passive:true});
   if(typeof ResizeObserver!=='undefined'){chatResizeObserver=new ResizeObserver(()=>{if(changed()&&chatAtEnd)log.scrollTop=log.scrollHeight;});chatResizeObserver.observe(log);for(const child of log.children)chatResizeObserver.observe(child);}
 }
 function refreshChatLog({bottom=false}={}){
   const log=$('#chat-messages'),c=currentConnection();if(!log||!chatAllowed(c,viewer()))return false;
-  const follow=bottom||nearChatEnd(log),top=log.scrollTop,open=log.querySelector('.chat-origin')?.open;
-  log.innerHTML=chatMessages(c);if(open&&log.querySelector('.chat-origin'))log.querySelector('.chat-origin').open=true;
+  const follow=bottom||nearChatEnd(log),top=log.scrollTop,previousCount=log.querySelectorAll?.('.message-row').length??0;
+  log.innerHTML=chatMessages(c);
+  const latest=$('#chat-latest');if(latest){const count=log.querySelectorAll('.message-row').length;if(follow)latest.hidden=true;else if(count>previousCount)latest.hidden=false;}
   log.scrollTop=follow?log.scrollHeight:top;chatAtEnd=follow;
   if(chatResizeObserver){chatResizeObserver.disconnect();chatResizeObserver.observe(log);for(const child of log.children)chatResizeObserver.observe(child);}
   return true;
@@ -2860,7 +2944,10 @@ document.addEventListener('click',event=>{
     const message=action==='cancel-reveal'?'공개 제안을 취소했어요':action==='decline-reveal'?'지금은 대화만 이어가요':action==='prefer-friends'||action==='demo-friends'?'사친으로 이어가고 싶은 마음을 전했어요':profilesVisible(state.connections[id],viewer())?'서로의 프로필이 열렸어요':'프로필 공개를 제안했어요';
     toast(message);
   }
-  if(action==='ask-close')showDialog('채팅방을 나갈까요?','나가면 이 대화와 상대의 프로필을 다시 열 수 없어요','나가기',()=>{state.connections[id]=transition(state.connections[id],'close',viewer());save();navigate('/connections');});
+  if(action==='chat-menu'){showChatMenu(state.connections[id]);return;}
+  if(action==='chat-story'){showChatStory(state.connections[id]);return;}
+  if(action==='latest-messages'){const log=$('#chat-messages');if(log){chatAtEnd=true;log.scrollTop=log.scrollHeight;}target.hidden=true;return;}
+  if(action==='ask-close'&&chatAllowed(state.connections[id],viewer()))showDialog('채팅방을 나갈까요?','나가면 이 대화와 상대의 프로필을 다시 열 수 없어요','나가기',()=>{const previous=state.connections[id];state.connections[id]=transition(previous,'close',viewer());if(!save()){state.connections[id]=previous;return;}navigate('/connections');});
   if(action==='demo-reply'&&chatAllowed(state.connections[id],viewer())){state.messages.push({id:crypto.randomUUID(),createdAt:new Date().toISOString(),connectionId:id,mine:false,body:'이야기해 줘서 고마워요. 오늘은 조금 덜 무거운 마음이었으면 좋겠어요',time:'예시 응답'});save();render();}
   if(action==='ask-reset')showDialog('체험 기록을 초기화할까요?','이 브라우저의 고민, 답변, 채팅과 관심 주제가 지워져요','초기화',()=>{state=initialState();save();navigate('/listen');});
 });
