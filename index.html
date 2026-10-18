@@ -816,12 +816,17 @@ html.has-composer-viewport,html.has-composer-viewport body{height:100%;overflow:
 .product-app.viewport-composer{position:fixed;inset:auto 0;top:var(--composer-top,0px);height:var(--composer-height,100dvh);min-height:0;padding-bottom:0;display:flex;flex-direction:column;overflow:hidden}
 .viewport-composer .product-header{flex:none;position:relative;top:auto}
 .viewport-composer:not(.is-chat) .app-main{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:auto;scroll-padding:12px 0;margin-top:0;padding-top:8px}
-.viewport-composer.has-fixed-actions .page{padding-bottom:24px}
-.viewport-composer>.fixed-actions{position:relative;inset:auto;transform:none;flex:none;width:calc(100% - 40px);max-width:462px;margin:0 auto!important;padding:10px 0 max(12px,env(safe-area-inset-bottom));box-shadow:none;gap:8px}
+.viewport-composer.has-fixed-actions .page{padding-bottom:calc(var(--composer-actions-height,160px) + max(10px,env(safe-area-inset-bottom)) + 16px)}
+/* One inset action panel floats above the writing canvas, without a footer strip. */
+.product-app.viewport-composer>.composer-actions{position:absolute;inset:auto auto max(10px,env(safe-area-inset-bottom)) 50%;transform:translateX(-50%);z-index:24;display:flex;flex-direction:column;width:calc(100% - 32px);max-width:462px;margin:0!important;padding:12px;gap:8px;border:1px solid #c9c5d0;border-radius:22px;background:#ececeaf5;box-shadow:0 5px 22px #28203b18;backdrop-filter:blur(12px)}
 .viewport-composer>.fixed-actions .form-privacy{margin:0;font-size:10px;line-height:1.6}
 .viewport-composer>.fixed-actions .danger:empty{display:none}
 .viewport-composer>.fixed-actions .danger{font-size:12px;margin:0}
 .viewport-composer>.fixed-actions .btn{min-height:52px}
+.viewport-composer>.composer-actions .form-privacy{justify-content:center;text-align:center;font-size:.65625rem}
+.viewport-composer>.composer-actions .compose-browse{margin:0;gap:0}
+.viewport-composer>.composer-actions .compose-browse p{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.viewport-composer>.composer-actions .compose-browse-link{border:0;min-height:44px;padding:6px 8px;font-size:.84375rem}
 .viewport-composer .compose-form #concern-body,.viewport-composer .reply-letter textarea{min-height:0;max-height:none;resize:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#bcb7cc transparent}
 .viewport-composer #concern-tags{font-size:16px;min-height:28px}
 .viewport-composer textarea,.viewport-composer input{scroll-margin:12px 0;caret-color:var(--blue)}
@@ -833,9 +838,9 @@ html.has-composer-viewport,html.has-composer-viewport body{height:100%;overflow:
 .viewport-composer .app-main::-webkit-scrollbar,.viewport-composer textarea::-webkit-scrollbar,.viewport-composer .chat-body::-webkit-scrollbar{display:none}
 .viewport-composer.is-compact-viewport .chat-context,.viewport-composer.is-compact-viewport>.fixed-actions .form-privacy{display:none}
 .viewport-composer.is-compact-viewport .product-header{height:46px}
-.viewport-composer.is-compact-viewport>.fixed-actions{padding-block:6px}
+.product-app.viewport-composer.is-compact-viewport>.composer-actions{padding:8px;gap:4px;bottom:6px;border-radius:18px}
 .viewport-composer.is-compact-viewport>.fixed-actions .btn{min-height:44px!important}
-@media(max-height:500px){.viewport-composer .product-header{height:52px}.viewport-composer>.fixed-actions .btn{min-height:46px}.viewport-composer>.fixed-actions{padding-top:6px;padding-bottom:8px}.viewport-composer .chat-context{padding-block:7px;margin-block:4px}}
+@media(max-height:500px){.viewport-composer .product-header{height:52px}.viewport-composer>.fixed-actions .btn{min-height:46px}.product-app.viewport-composer>.composer-actions{padding:8px;gap:4px}.viewport-composer .chat-context{padding-block:7px;margin-block:4px}}
 
 
 /* Headers and actions belong to the modal frame; only the middle pane scrolls. */
@@ -2699,15 +2704,21 @@ function initSwipe(){
 }
 function resizeWritingTitle(){const input=$('#concern-title');if(input){input.style.height='0px';input.style.height=Math.max(34,input.scrollHeight)+'px';}}
 // The visible viewport is the frame; only its writing area / message log scrolls.
-let composerFrame=0,composerReveal=false,chatAtEnd=true,chatResizeObserver=null;
+let composerFrame=0,composerReveal=false,chatAtEnd=true,chatResizeObserver=null,composerActionsObserver=null;
 function composerViewport(layoutHeight,viewport){
   if(viewport&&Math.abs((viewport.scale??1)-1)>.02)return null;
   return {height:Math.max(1,Math.min(layoutHeight,viewport?.height??layoutHeight)),top:Math.max(0,viewport?.offsetTop??0)};
 }
+function composerWritingBounds(page){
+  const area=page?.querySelector('.app-main');if(!area)return null;
+  const bounds=area.getBoundingClientRect(),actions=page.querySelector('.composer-actions');
+  return {top:bounds.top,bottom:Math.min(bounds.bottom,actions?.getBoundingClientRect().top??bounds.bottom)};
+}
 function resizeLetterInput(input){
   if(!input)return;
   const viewport=window.visualViewport,height=viewport?.height??window.innerHeight??740;
-  const available=input.closest?.('.viewport-composer')?.querySelector('.app-main')?.clientHeight??height;
+  const bounds=composerWritingBounds(input.closest?.('.viewport-composer'));
+  const available=bounds?bounds.bottom-bounds.top:height;
   const limit=Math.max(48,Math.min(300,height*.4,available-24)),previous=input.scrollTop;
   input.style.height='auto';input.style.height=Math.min(limit,Math.max(Math.min(210,limit),input.scrollHeight))+'px';
   input.style.overflowY=input.scrollHeight>input.clientHeight?'auto':'hidden';
@@ -2718,8 +2729,8 @@ function nearChatEnd(log){return !log||log.scrollHeight-log.clientHeight-log.scr
 function revealComposerInput(page){
   const input=document.activeElement,area=page.querySelector('.app-main');
   if(!input?.matches?.('#concern-title,#concern-body,#concern-tags,#answer-body')||!area)return;
-  const bounds=area.getBoundingClientRect(),rect=input.getBoundingClientRect(),bottom=bounds.bottom-12;
-  const addressSpace=input.id==='answer-body'&&rect.height+52<bounds.height?40:0,top=bounds.top+10+addressSpace;
+  const bounds=composerWritingBounds(page),rect=input.getBoundingClientRect(),bottom=bounds.bottom-12;
+  const addressSpace=input.id==='answer-body'&&rect.height+52<bounds.bottom-bounds.top?40:0,top=bounds.top+10+addressSpace;
   const delta=rect.height>bottom-top?rect.top-top:rect.bottom>bottom?rect.bottom-bottom:rect.top<top?rect.top-top:0;
   if(Math.abs(delta)>1)area.scrollTop+=delta;
 }
@@ -2736,6 +2747,7 @@ function syncComposerViewport({reveal=false}={}){
   // Outside the scrolling form, while retaining native form submission semantics.
   const footer=page.querySelector('.fixed-actions');
   if(footer&&footer.parentElement!==page){const form=footer.closest('form');footer.querySelector('[type="submit"]')?.setAttribute('form',form.id);page.append(footer);}
+  if(footer){footer.classList.add('composer-actions');page.style.setProperty('--composer-actions-height',footer.getBoundingClientRect().height+'px');}
   resizeReplyInput();resizeChatInput();
   if(log&&follow)log.scrollTop=log.scrollHeight;
   if(reveal)revealComposerInput(page);
@@ -2746,7 +2758,9 @@ function scheduleComposerViewport(reveal=false){
   composerFrame=window.requestAnimationFrame(()=>{composerFrame=0;const focus=composerReveal;composerReveal=false;syncComposerViewport({reveal:focus});});
 }
 function initComposerViewport(){
-  chatResizeObserver?.disconnect();chatAtEnd=true;syncComposerViewport();
+  chatResizeObserver?.disconnect();composerActionsObserver?.disconnect();chatAtEnd=true;syncComposerViewport();
+  const actions=$('.viewport-composer>.composer-actions');
+  if(actions&&typeof ResizeObserver!=='undefined'){composerActionsObserver=new ResizeObserver(()=>scheduleComposerViewport(true));composerActionsObserver.observe(actions);}
   const log=$('#chat-messages');if(!log)return;
   let height=log.clientHeight,total=log.scrollHeight,userScrollUntil=0;
   const changed=()=>{const resized=height!==log.clientHeight||total!==log.scrollHeight;height=log.clientHeight;total=log.scrollHeight;return resized;};
