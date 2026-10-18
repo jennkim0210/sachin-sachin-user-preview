@@ -907,11 +907,13 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 
 .profile-edit-page textarea{overscroll-behavior:contain}
 
-/* One persistent bell belongs beside the home mark or the current page title. */
+/* Primary destinations share one trailing bell; focused screens retain their actions. */
 .native-ui .product-header{display:flex;align-items:center;gap:10px}
+/* Match the viewport-aligned dock even when a classic page scrollbar appears. */
+.native-ui.has-tabbar .product-header{width:min(100vw,1120px);max-width:none;margin-left:max(0px,calc((100vw - 1120px)/2));margin-right:0}
 .native-ui .screen-heading{min-width:0;flex:1;gap:8px}
 .native-ui .screen-heading h1{min-width:0;flex:0 1 auto}
-.native-ui .screen-heading .notification-trigger{width:44px;height:44px;min-height:44px;flex:0 0 44px}
+.native-ui .notification-trigger{width:44px;height:44px;min-height:44px;flex:0 0 44px}
 .native-ui .header-tools{flex:0 0 auto;margin-left:auto}
 .native-ui .brand-heading .wordmark.brand-motion{flex:0 1 226px}
 .notification-settings-link{display:flex;align-items:center;min-height:44px;font-size:13px;color:var(--blue);white-space:nowrap}
@@ -1977,8 +1979,9 @@ function shell(title,body,{back,chat=false,tools='',screen='',entry=false,compac
   const active=path;
   const nav=tabs.map(([href,label,symbol])=>`<a href="#${href}" ${href===active?'class="active" aria-current="page"':''}>${icon(symbol)}<span>${label}</span></a>`).join('');
   const bell=state.member&&path!=='/notifications'?notificationButton():'';
-  const heading=compact?`<div class="screen-heading brand-heading">${headerBrand()}<h1 class="sr-only" tabindex="-1">${esc(title)}</h1>${bell}</div>`:`<div class="screen-heading">${back?link(esc(back),icon('back'),'back').replace('class="back"','class="back" aria-label="뒤로"'):''}${chat?personAvatar(currentConnection()):''}<h1 tabindex="-1">${esc(title)}</h1>${bell}</div>`;
-  return `<div class="product-app native-ui ${showNavigation?'has-tabbar':'is-focused'} ${chat?'is-chat':''} ${entry?'is-entry':''} ${screen}"><header class="product-header">${heading}${showNavigation?'<nav aria-label="주 메뉴">'+nav+'</nav>':''}<div class="header-tools">${tools}</div></header><main class="app-main"><div class="page ${chat?'chat':''}">${body}</div></main>${showNavigation?'<nav class="tabbar" aria-label="하단 메뉴">'+nav+'</nav>':''}</div>`;
+  const headingBell=showNavigation?'':bell;
+  const heading=compact?`<div class="screen-heading brand-heading">${headerBrand()}<h1 class="sr-only" tabindex="-1">${esc(title)}</h1>${headingBell}</div>`:`<div class="screen-heading">${back?link(esc(back),icon('back'),'back').replace('class="back"','class="back" aria-label="뒤로"'):''}${chat?personAvatar(currentConnection()):''}<h1 tabindex="-1">${esc(title)}</h1>${headingBell}</div>`;
+  return `<div class="product-app native-ui ${showNavigation?'has-tabbar':'is-focused'} ${chat?'is-chat':''} ${entry?'is-entry':''} ${screen}"><header class="product-header">${heading}${showNavigation?'<nav aria-label="주 메뉴">'+nav+'</nav>':''}<div class="header-tools">${tools}${showNavigation?bell:''}</div></header><main class="app-main"><div class="page ${chat?'chat':''}">${body}</div></main>${showNavigation?'<nav class="tabbar" aria-label="하단 메뉴">'+nav+'</nav>':''}</div>`;
 }
 
 const INTRO_STORIES=[
