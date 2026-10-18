@@ -905,6 +905,40 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 @media(max-width:370px){.profile-edit-toolbar{padding-inline:16px}.profile-order-panel>.modal-scroll{padding-inline:16px}.profile-order-panel>header,.profile-order-panel>.modal-footer{padding-inline:20px}}
 
 .profile-edit-page textarea{overscroll-behavior:contain}
+
+/* One persistent bell belongs beside the home mark or the current page title. */
+.native-ui .product-header{display:flex;align-items:center;gap:10px}
+.native-ui .screen-heading{min-width:0;flex:1;gap:8px}
+.native-ui .screen-heading h1{min-width:0;flex:0 1 auto}
+.native-ui .screen-heading .notification-trigger{width:44px;height:44px;min-height:44px;flex:0 0 44px}
+.native-ui .header-tools{flex:0 0 auto;margin-left:auto}
+.native-ui .brand-heading .wordmark.brand-motion{flex:0 1 226px}
+.notification-settings-link{display:flex;align-items:center;min-height:44px;font-size:13px;color:var(--blue);white-space:nowrap}
+.notification-tabs{display:flex;border-bottom:1px solid var(--line);gap:22px}
+.notification-tabs>a{display:flex;align-items:center;gap:6px;min-height:52px;padding:10px 1px;font-size:17px;color:var(--muted);border-bottom:2px solid transparent}
+.notification-tabs>a.active{color:var(--blue);border-bottom-color:var(--blue)}
+.notification-tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#d3cde5;color:var(--blue);font-size:11px;line-height:1}
+.notification-list-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:62px;padding:10px 0}
+.notification-list-heading>p{font-size:11px;line-height:1.7;color:var(--muted);word-break:keep-all;flex:1}
+.notification-read-all{flex:none}
+.notification-list{border-top:0}
+.notification-row{min-height:0;padding:20px 0;gap:10px}
+.notification-copy{gap:8px}
+.notification-copy .notification-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;font-size:11px;line-height:1.5;color:#79717f;overflow:visible}
+.notification-meta>time{margin-left:auto;white-space:nowrap;font-size:10px}
+.notification-copy strong{font-size:16px;line-height:1.6;font-weight:400;word-break:keep-all;overflow-wrap:anywhere}
+.notification-copy .notification-excerpt{font-size:13px;line-height:1.7}
+.notification-copy .notification-destination{display:block;color:var(--blue);font-size:12px;line-height:1.6;margin-top:2px}
+.notification-unread{margin-top:5px;flex:0 0 5px}
+.notification-row.is-unread strong{color:var(--blue)}
+.notification-empty{padding-top:clamp(50px,12dvh,95px)}
+.notification-empty>h2{font-size:20px;line-height:1.6;word-break:keep-all}
+.notification-preference-note{font-size:12px;line-height:1.8;color:var(--muted);margin-top:22px}
+.service-notice-article{padding:16px 0 30px}.service-notice-kind{font-size:12px;color:var(--blue);margin-bottom:12px}.service-notice-article>h2{font-size:27px;font-weight:400;line-height:1.6;word-break:keep-all;overflow-wrap:anywhere}.service-notice-article>time{display:block;font-size:12px;color:var(--muted);margin:18px 0 24px;padding-bottom:24px;border-bottom:1px solid var(--line)}.service-notice-body{font-size:16px;line-height:1.95;overflow-wrap:anywhere}.service-notice-body>p{white-space:pre-wrap;margin:0 0 22px}
+@media(max-width:600px){.is-chat .chat-profile-link span{display:none}.is-chat .chat-profile-link{width:40px;min-width:40px;padding:8px;justify-content:center}.native-ui.is-chat .screen-heading{gap:6px}.is-chat .screen-heading .anonymous-avatar,.is-chat .screen-heading .avatar-photo{width:26px;height:26px;flex-basis:26px}}
+@media(max-width:370px){.native-ui .product-header{gap:6px}.notification-tabs{gap:20px}.notification-tabs>a{font-size:16px}.notification-list-heading{gap:8px}.notification-list-heading>p{font-size:10px}.notification-copy strong{font-size:15px}}
+
+.notification-copy .notification-answer-preview{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.7;padding-left:9px;border-left:1px solid #bdb3cf;color:#736a80}
 </style>
   
 </head>
@@ -1055,7 +1089,7 @@ const SAMPLE_ANSWERS = [
   {id:'answer-a',alias:'익명의 답변 01',body:'저도 늘 들어주는 쪽이었어요. 그래서인지 힘들다는 말도 잘해야 할 것 같더라고요.\n\n어느 날 친구에게 “해결해 주지 않아도 돼. 오늘은 그냥 내 얘기 좀 들어줄래?”라고 말했어요. 생각보다 가볍게 시작해도 괜찮았어요.\n\n당신의 마음도 충분히 들어줄 만한 이야기예요.'},
   {id:'answer-b',alias:'익명의 답변 02',body:'늘 괜찮은 사람일 필요는 없다고 생각해요. 가장 편한 한 사람에게 작은 이야기부터 해보면 어떨까요? 오늘 유난히 피곤했다는 말부터요. 그 정도 시작으로도 괜찮아요.'},
 ].map(a=>({...a,alias:'익명의 사친',authorId:'sample-'+a.id,authorGender:'female',chatConsent:true}));
-const DEFAULT_NOTIFICATION_SETTINGS={answers:true,chats:true,messages:true,profiles:true};
+const DEFAULT_NOTIFICATION_SETTINGS={answers:true,chats:true,messages:true,profiles:true,service:true};
 function notificationSettings(value={}){return Object.fromEntries(Object.entries(DEFAULT_NOTIFICATION_SETTINGS).map(([key,fallback])=>[key,typeof value?.[key]==='boolean'?value[key]:fallback]));}
 function supportDraft(value={}){return {category:['usage','account','payment','safety','feedback'].includes(value?.category)?value.category:'usage',body:String(value?.body??'').slice(0,2000),email:String(value?.email??'').slice(0,120),savedAt:typeof value?.savedAt==='string'?value.savedAt:''};}
 function initialState() { return {version:3, member:null, profile:{bio:'',prompt:'',photo:''}, profileDraft:null, signupDraft:{}, replyDrafts:{}, chatDrafts:{}, topics:[], skipped:[], concerns:[], answers:[], connections:{}, messages:[], helpfulAnswers:{}, notificationReads:{}, notificationSettings:{...DEFAULT_NOTIFICATION_SETTINGS}, supportDraft:supportDraft(), draft:{category:'',title:'',body:'',tags:''}}; }
@@ -1268,29 +1302,38 @@ function restoreState(saved) {
 function notificationFeed(state,receivedAnswers=[],viewer=state.member){
   if(!viewer)return [];
   const items=[],own=new Map(state.concerns.filter(c=>c.own&&c.authorId===viewer.id).map(c=>[c.id,c]));
-  const push=item=>items.push({...item,read:state.notificationReads?.[item.id]===true});
+  const seen=new Set();const push=item=>{if(seen.has(item.id))return;seen.add(item.id);items.push({...item,channel:"activity",read:state.notificationReads?.[item.id]===true});};
   for(const answer of receivedAnswers){
     const concern=own.get(answer.concernId);
     if(!concern||!oppositeGender(viewer.gender,answer.authorGender))continue;
-    push({id:'answer:'+concern.id+':'+answer.id,type:'answer',concernId:concern.id,personId:answer.authorId,title:'새 답변이 도착했어요',copy:concern.title,at:answer.createdAt??concern.answersReceivedAt??'',href:'/concern?id='+encodeURIComponent(concern.id)+'&from=notifications'});
+    push({id:'answer:'+concern.id+':'+answer.id,type:'answer',concernId:concern.id,personId:answer.authorId,title:'내 고민에 새 답변이 도착했어요',copy:concern.title,preview:String(answer.body??'').trim().slice(0,180),at:answer.createdAt??concern.answersReceivedAt??'',href:'/concern?id='+encodeURIComponent(concern.id)+'&answer='+encodeURIComponent(answer.id)+'&from=notifications'});
   }
   for(const connection of Object.values(state.connections)){
     if(!chatAllowed(connection,viewer))continue;
     const id=connection.id,personId=counterpartId(connection,state.concerns),query=encodeURIComponent(id);
     const context=state.concerns.find(c=>c.id===connection.concernId)??SAMPLES.find(c=>c.id===String(connection.concernId).replace(/^male-/,''));
-    if(connection.answerId==='sent')push({id:'chat:'+id,type:'chat',connectionId:id,personId,title:'채팅방이 열렸어요',copy:context?.title??'당신의 답변에서 이야기가 이어졌어요',at:connection.openedAt??'',href:'/chat?id='+query+'&from=notifications'});
-    let latest;
-    state.messages.forEach((message,index)=>{if(message.connectionId===id&&message.mine===false)latest={...message,key:message.id??index};});
-    if(latest)push({id:'message:'+id+':'+latest.key,type:'message',connectionId:id,personId,title:'새 메시지가 도착했어요',copy:latest.body,at:latest.createdAt??'',href:'/chat?id='+query+'&from=notifications'});
+    if(connection.answerId==='sent')push({id:'chat:'+id,type:'chat',connectionId:id,personId,title:'내 답변으로 채팅방이 열렸어요',copy:context?.title??'당신의 답변에서 이야기가 이어졌어요',at:connection.openedAt??'',href:'/chat?id='+query+'&from=notifications'});
+    const incoming=state.messages.map((message,index)=>({...message,key:message.id??index})).filter(message=>message.connectionId===id&&message.mine===false),latest=incoming.at(-1);
+    const lastRead=incoming.findLastIndex(message=>state.notificationReads?.['message:'+id+':'+message.key]===true),unreadCount=incoming.length-lastRead-1;
+    if(latest)push({unreadCount,id:'message:'+id+':'+latest.key,type:'message',connectionId:id,personId,title:'새 메시지가 도착했어요',copy:latest.body,at:latest.createdAt??'',href:'/chat?id='+query+'&from=notifications'});
     const stage=revealStage(connection,viewer),revision=Number(connection.revealRevision)||0;
     if(stage==='invited'||stage==='open')push({id:(stage==='open'?'profile:':'reveal:')+id+':'+revision,type:stage==='open'?'profile':'reveal',connectionId:id,personId,title:stage==='open'?'서로의 프로필이 열렸어요':'프로필 공개 제안이 왔어요',copy:stage==='open'?'사진과 소개로 조금 더 알아가요':'서로 동의하면 사진과 소개가 열려요',at:connection.revealUpdatedAt??'',href:'/connection?id='+query+'&from=notifications'});
   }
   const priority={answer:1,chat:2,message:3,reveal:4,profile:5};
   return items.sort((a,b)=>(Date.parse(b.at)||0)-(Date.parse(a.at)||0)||priority[b.type]-priority[a.type]);
 }
+// Published service content is supplied by the service, never by member drafts.
+// Keep empty until there is an actual announcement to publish.
+const SERVICE_NOTICES=[];
+function serviceNoticeFeed(state,notices=SERVICE_NOTICES,now=Date.now()){
+  if(!state.member||!Array.isArray(notices))return [];
+  const seen=new Set();
+  return notices.filter(n=>n&&typeof n.id==='string'&&/^[a-zA-Z0-9-]{1,80}$/.test(n.id)&&['notice','maintenance','update'].includes(n.kind)&&typeof n.title==='string'&&n.title.trim()&&typeof n.body==='string'&&n.body.trim()&&Number.isFinite(Date.parse(n.publishedAt))&&Date.parse(n.publishedAt)<=now&&n.published!==false).filter(n=>{if(seen.has(n.id))return false;seen.add(n.id);return true;}).map(n=>({id:'service:'+n.id,noticeId:n.id,channel:'service',type:'service',kind:n.kind,title:n.title.trim().slice(0,120),copy:String(n.summary??n.body).trim().slice(0,180),body:n.body.slice(0,20000),at:n.publishedAt,read:state.notificationReads?.['service:'+n.id]===true,href:'/notice?id='+encodeURIComponent(n.id)+'&from=notifications'})).sort((a,b)=>Date.parse(b.at)-Date.parse(a.at));
+}
+
 // Preferences affect unread arrival signals, not the user's activity history.
 function shouldSignalNotification(item,settings){
-  const group={answer:'answers',chat:'chats',message:'messages',reveal:'profiles',profile:'profiles'}[item.type];
+  const group={answer:'answers',chat:'chats',message:'messages',reveal:'profiles',profile:'profiles',service:'service'}[item.type];
   return Boolean(group&&notificationSettings(settings)[group]);
 }
 // A horizontal commitment is required; a vertical read/scroll never dismisses a card.
@@ -1746,25 +1789,62 @@ function ownAnswers(c){return c?.id===MY_SAMPLE.id || c?.mockAnswers ? SAMPLE_AN
 function connectionKey(concernId,answerId){return `${concernId}_${answerId}`;}
 function currentConnection(){return state.connections[route().params.get('id')];}
 function allConnections(){return Object.values(state.connections);}
+let notificationVisit=null;
 function activity(){return notificationFeed(state,state.concerns.flatMap(c=>ownAnswers(c).map(a=>({...a,concernId:c.id}))),viewer());}
+function allNotifications(){return [...activity(),...serviceNoticeFeed(state)];}
+function notificationChannel(){return route().params.get('tab')==='service'?'service':'activity';}
+function notificationReturn(){
+  const value=route().params.get('return')??notificationVisit?.returnTo??'/listen';
+  return typeof value==='string'&&value.length<700&&!/[#<>"'\\]/.test(value)&&/^\/(?:listen|mine|connections|me|write|concern|chat|connection|profile(?:\/edit|\/preview)?|settings(?:\/notifications|\/privacy|\/account)?|preferences|billing(?:\/history)?|support(?:\/write|\/history|\/notices)?|legal|about|notice)(?:\?|$)/.test(value)?value:'/listen';
+}
+function notificationInboxRoute(channel='activity',returnTo=notificationReturn()){
+  return '/notifications?'+new URLSearchParams({tab:channel,return:returnTo});
+}
 function readNotifications(ids){
-  const pending=ids.filter(id=>state.notificationReads[id]!==true);if(!pending.length)return;
-  for(const id of pending)state.notificationReads[id]=true;save();
+  const pending=ids.filter(id=>state.notificationReads[id]!==true);if(!pending.length)return true;
+  const previous={...state.notificationReads};for(const id of pending)state.notificationReads[id]=true;
+  if(!save()){state.notificationReads=previous;return false;}return true;
 }
 function readPageNotifications(path,params){
   const id=params.get('id');
-  readNotifications(activity().filter(item=>path==='/concern'?item.type==='answer'&&item.concernId===id:path==='/chat'?['chat','message'].includes(item.type)&&item.connectionId===id:path==='/connection'?['reveal','profile'].includes(item.type)&&item.connectionId===id:false).map(item=>item.id));
+  readNotifications(allNotifications().filter(item=>path==='/concern'?item.type==='answer'&&item.concernId===id:path==='/chat'?['chat','message'].includes(item.type)&&item.connectionId===id:path==='/connection'?['reveal','profile'].includes(item.type)&&item.connectionId===id:path==='/notice'?item.type==='service'&&item.noticeId===id:false).map(item=>item.id));
 }
 function notificationButton(){
-  const unread=activity().some(item=>!item.read&&shouldSignalNotification(item,state.notificationSettings));
-  return `<a href="#/notifications" class="icon-button notification-trigger" aria-label="${unread?'알림, 읽지 않은 소식 있음':'알림'}">${icon('bell')}${unread?'<span class="notification-dot" aria-hidden="true"></span>':''}</a>`;
+  const unread=allNotifications().some(item=>!item.read&&shouldSignalNotification(item,state.notificationSettings));
+  const returnTo=location.hash.slice(1)||'/listen';
+  return `<a href="#${esc(notificationInboxRoute('activity',returnTo))}" data-action="open-notifications" class="icon-button notification-trigger" aria-label="${unread?'알림, 읽지 않은 소식 있음':'알림'}">${icon('bell')}${unread?'<span class="notification-dot" aria-hidden="true"></span>':''}</a>`;
+}
+const NOTIFICATION_KINDS={answer:['받은 답변','답변 확인'],chat:['대화 시작','채팅방 열기'],message:['새 메시지','메시지 확인'],reveal:['프로필 공개 제안','제안 확인'],profile:['프로필 공개 완료','프로필 보기']};
+const SERVICE_KINDS={notice:'공지',maintenance:'점검 안내',update:'업데이트'};
+function notificationTime(at,now=Date.now()){
+  const date=new Date(at),time=date.getTime();if(!at||!Number.isFinite(time))return '';
+  const minutes=Math.max(0,Math.floor((now-time)/60000));
+  return minutes<1?'방금':minutes<60?minutes+'분 전':minutes<1440?Math.floor(minutes/60)+'시간 전':date.toLocaleDateString('ko-KR',{year:'numeric',month:'numeric',day:'numeric'});
+}
+function notificationRows(items,{serviceList=false}={}){
+  return `<ul class="notification-list" aria-label="${serviceList?'서비스 공지':'도착한 알림'}">${items.map(item=>{
+    const kind=item.type==='service'?SERVICE_KINDS[item.kind]:NOTIFICATION_KINDS[item.type][0],action=item.type==='service'?'자세히 보기':NOTIFICATION_KINDS[item.type][1];
+    const when=notificationTime(item.at),href=serviceList?'/notice?id='+encodeURIComponent(item.noticeId)+'&from=notices':item.href+'&return='+encodeURIComponent(notificationReturn());
+    return `<li><a class="notification-row ${item.read?'is-read':'is-unread'}" href="#${esc(href)}" data-action="read-notification" data-id="${esc(item.id)}"><span class="notification-copy"><span class="notification-meta"><span>${esc(kind)}${item.type==='message'&&item.unreadCount>1?' · '+item.unreadCount+'개':''}</span>${when?`<time datetime="${esc(item.at)}" title="${esc(new Date(item.at).toLocaleString('ko-KR'))}">${esc(when)}</time>`:''}</span><strong>${esc(item.title)}</strong><span class="notification-excerpt">${esc(item.copy)}</span>${item.preview?`<span class="notification-answer-preview">${esc(item.preview)}</span>`:''}<span class="notification-destination">${action}</span></span>${item.read?'':'<span class="notification-unread"><span class="sr-only">읽지 않음</span></span>'}</a></li>`;
+  }).join('')}</ul>`;
 }
 function notifications(){
-  const items=activity(),unread=items.some(item=>!item.read);
-  const tools=unread?button('read-all-notifications','모두 읽음','notification-read-all'):'';
-  const body=items.length?`<ul class="notification-list" aria-label="도착한 알림">${items.map(item=>`<li><a class="notification-row ${item.read?'is-read':'is-unread'}" href="#${esc(item.href)}" data-action="read-notification" data-id="${esc(item.id)}"><span class="notification-mark" aria-hidden="true">${personDoodle(item.personId??item.id)}</span><span class="notification-copy"><strong>${esc(item.title)}</strong><span>${esc(item.copy)}</span></span>${item.read?'':'<span class="notification-unread"><span class="sr-only">읽지 않음</span></span>'}</a></li>`).join('')}</ul>`:`<section class="letter-empty notification-empty">${doodleSvg('envelope')}<h2>아직 도착한 알림이 없어요</h2><p>새 답변과 연결 소식을 여기에 모아둘게요</p></section>`;
-  return shell('알림',body,{back:'/listen',tools,screen:'notifications-page'});
+  const channel=notificationChannel(),all=allNotifications(),items=all.filter(item=>item.channel===channel),unread=items.filter(item=>!item.read).length;
+  const tabs=[['activity','활동'],['service','서비스 소식']].map(([key,label])=>{const count=all.filter(item=>item.channel===key&&!item.read).length;return `<a href="#${esc(notificationInboxRoute(key))}" ${channel===key?'aria-current="page" class="active"':''}>${label}${count?`<span class="notification-tab-count"><span class="sr-only">읽지 않음 </span>${count>99?'99+':count}</span>`:''}</a>`;}).join('');
+  const intro=channel==='activity'?'내 고민과 대화에 도착한 소식이에요':'사친사친의 공지·점검·업데이트를 전해요';
+  const body=items.length?notificationRows(items):`<section class="letter-empty notification-empty">${doodleSvg('envelope')}<h2>${channel==='activity'?'아직 도착한 알림이 없어요':'아직 새로운 서비스 소식이 없어요'}</h2><p>${channel==='activity'?'내 고민에 답변이 오거나 대화가 시작되면<br>여기에 알려드릴게요':'공지사항과 점검, 업데이트 소식을<br>여기에 모아둘게요'}</p></section>`;
+  return shell('알림',`<nav class="notification-tabs" aria-label="알림 종류">${tabs}</nav><div class="notification-list-heading"><p>${intro}</p>${unread?button('read-all-notifications','모두 읽음','notification-read-all',`aria-label="${channel==='activity'?'활동':'서비스 소식'} 알림 모두 읽음"`):''}</div>${body}`,{back:notificationReturn(),tools:link('/settings/notifications?from=notifications&tab='+channel+'&return='+encodeURIComponent(notificationReturn()),'설정','notification-settings-link'),screen:'notifications-page'});
 }
+function serviceNotices(){
+  const items=serviceNoticeFeed(state);
+  return shell('공지사항',items.length?notificationRows(items,{serviceList:true}):`<section class="letter-empty service-empty">${doodleSvg('megaphone')}<h2>등록된 공지사항이 없어요</h2><p>공지·점검·업데이트 소식을 여기에 모아둘게요</p></section>`,{back:'/support',screen:'service-page'});
+}
+function serviceNoticeDetail(){
+  const item=serviceNoticeFeed(state).find(item=>item.noticeId===route().params.get('id')),back=route().params.get('from')==='notices'?'/support/notices':notificationInboxRoute('service');
+  if(!item)return shell('서비스 소식',`<section class="letter-empty service-empty"><h2>지금은 볼 수 없는 소식이에요</h2><p>삭제되었거나 아직 공개되지 않은 소식이에요</p>${link(esc(back),'목록으로','text-link')}</section>`,{back,screen:'service-page'});
+  return shell('서비스 소식',`<article class="service-notice-article"><p class="service-notice-kind">${SERVICE_KINDS[item.kind]}</p><h2>${esc(item.title)}</h2><time datetime="${esc(item.at)}">${esc(new Date(item.at).toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'}))}</time><div class="service-notice-body">${item.body.split(/\n\s*\n/).map(text=>`<p>${esc(text)}</p>`).join('')}</div></article>`,{back,screen:'service-page notice-detail-page'});
+}
+
 const viewer=()=>state.member??DEMO_USER;
 const sampleConcerns=()=>SAMPLES.concat(SAMPLES.map(c=>({...c,id:'male-'+c.id,authorId:'male-'+c.authorId,authorGender:'male'})));
 const duo=()=>"<svg class=\"flower-drawing\" viewBox=\"0 0 80 110\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M39 40c-7 10-17 4-13-3-10 1-12-9-3-12-8-7-1-15 6-11 0-10 11-12 14-3 6-8 16-2 11 6 11-2 14 9 5 13 8 6 2 16-7 12-1 10-11 11-13-2Z\"/><path d=\"M37 24c-6 0-7 10-1 11 7 2 11-11 1-11ZM40 46c-2 17 3 35 0 55M40 81c-11 0-17-8-20-16 10 1 18 6 20 16ZM41 69c3-10 11-13 20-14-4 9-11 14-20 14ZM28 101l-5-1-1-5-2 6-12-1M48 101l7-3 2 3 5-2 7 2\"/></svg>";
@@ -1842,7 +1922,8 @@ function shell(title,body,{back,chat=false,tools='',screen='',entry=false,compac
   const showNavigation=Boolean(state.member)&&!entry&&!chat&&tabs.some(([href])=>href===path);
   const active=path;
   const nav=tabs.map(([href,label,symbol])=>`<a href="#${href}" ${href===active?'class="active" aria-current="page"':''}>${icon(symbol)}<span>${label}</span></a>`).join('');
-  const heading=compact?`${headerBrand()}<h1 class="sr-only" tabindex="-1">${esc(title)}</h1>`:`<div class="screen-heading">${back?link(back,icon('back'),'back').replace('class="back"','class="back" aria-label="뒤로"'):''}${chat?personAvatar(currentConnection()):''}<h1 tabindex="-1">${esc(title)}</h1></div>`;
+  const bell=state.member&&path!=='/notifications'?notificationButton():'';
+  const heading=compact?`<div class="screen-heading brand-heading">${headerBrand()}<h1 class="sr-only" tabindex="-1">${esc(title)}</h1>${bell}</div>`:`<div class="screen-heading">${back?link(esc(back),icon('back'),'back').replace('class="back"','class="back" aria-label="뒤로"'):''}${chat?personAvatar(currentConnection()):''}<h1 tabindex="-1">${esc(title)}</h1>${bell}</div>`;
   return `<div class="product-app native-ui ${showNavigation?'has-tabbar':'is-focused'} ${chat?'is-chat':''} ${entry?'is-entry':''} ${screen}"><header class="product-header">${heading}${showNavigation?'<nav aria-label="주 메뉴">'+nav+'</nav>':''}<div class="header-tools">${tools}</div></header><main class="app-main"><div class="page ${chat?'chat':''}">${body}</div></main>${showNavigation?'<nav class="tabbar" aria-label="하단 메뉴">'+nav+'</nav>':''}</div>`;
 }
 
@@ -2026,8 +2107,7 @@ function listen(){
   const c=deck.current;
 
   if(c?.id!==discovery.id)discovery={id:c?.id??null,expanded:false,reply:false,sent:false};
-  const tools=notificationButton();
-  const options={tools,screen:'deck-page text-deck conversation-home',compact:true};
+  const options={screen:'deck-page text-deck conversation-home',compact:true};
   if(!c)return shell('홈',`<div class="deck-end-card" data-concern=""><div class="card-open deck-empty" tabindex="0" aria-label="모든 고민을 만났어요, 왼쪽으로 밀면 이전 고민"><span class="empty-art">${doodleSvg('envelope')}</span><h2>오늘 도착한 고민을<br>모두 만났어요</h2>${deck.previous?'<p class="deck-return-hint">← 왼쪽으로 밀면 이전 고민</p>':''}${link('/me','마이페이지로','btn btn-primary')}</div></div>`,options);
   const id=esc(c.id);
   const response=`<div class="card-actions arrival-actions compact-card-actions" role="group" aria-label="고민에 답하기 또는 넘기기">${button('skip-card','넘기기','card-secondary',`data-id="${id}" aria-label="넘기기"`)}${button('reply-card',`<span>${state.replyDrafts[c.id]?'답변 이어쓰기':'답변하기'}</span>`,'card-primary',`data-id="${id}"`)}</div>`;
@@ -2051,11 +2131,11 @@ function detail(){
   const c=getConcern(route().params.get('id'));
   const fromChat=state.connections[route().params.get('fromChat')];
   const from=route().params.get('from');
-  const back=chatAllowed(fromChat,viewer())&&fromChat.concernId===c?.id?'/chat?id='+encodeURIComponent(fromChat.id):from==='notifications'?'/notifications':from==='received'?'/mine?tab=received':from==='answers'?'/mine?tab=answers':from==='mine'?'/mine':'/listen';
+  const back=chatAllowed(fromChat,viewer())&&fromChat.concernId===c?.id?'/chat?id='+encodeURIComponent(fromChat.id):from==='notifications'?notificationInboxRoute():from==='received'?'/mine?tab=received':from==='answers'?'/mine?tab=answers':from==='mine'?'/mine':'/listen';
   if(!c||!eligible(c))return shell('고민',empty('아직 볼 수 없는 고민이에요','관심 주제를 먼저 선택해 주세요',link('/me','관심 주제 설정')),{back});
   const answered=state.answers.find(a=>a.concernId===c.id),answers=c.own?ownAnswers(c):[];
   const context=concernContext(c,{open:chatAllowed(fromChat,viewer())&&fromChat.concernId===c.id});
-  if(c.own)return shell('받은 답변',context+(answers.length?`<div class="answer-list">${answers.map(a=>{const id=connectionKey(c.id,a.id),conn=state.connections[id];return `<article class="answer-card" id="received-${esc(a.id)}" tabindex="-1"><header>${anonymousAvatar({otherId:a.authorId})}<strong>익명의 사친</strong></header><p class="prose">${esc(a.body)}</p><div class="answer-actions">${button('helpful',icon('heart'),'icon-button'+(state.helpfulAnswers[id]?' is-helpful':''),`aria-label="도움이 됐어요" aria-pressed="${Boolean(state.helpfulAnswers[id])}" data-id="${esc(id)}"`)}${conn?.closed?'<span class="meta">마친 채팅방</span>':chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(id),'채팅방 열기','text-link'):button('accept-answer','대화하기','btn btn-primary btn-sm',`data-id="${esc(id)}" data-concern="${esc(c.id)}" data-answer="${a.id}"`)}</div></article>`;}).join('')}</div>`:`<section class="letter-empty answer-waiting">${doodleSvg('envelope')}<h2>답변을 기다리고 있어요</h2>${link('/listen','다른 고민 들어주기','text-link')}</section>${demo('가상 답변으로 다음 화면을 확인할 수 있어요','demo-answer','예시 답변 받기',`data-id="${esc(c.id)}"`)}`),{back:back.startsWith('/chat')||back==='/notifications'||from==='received'?back:'/mine',screen:'received-answers-page'});
+  if(c.own)return shell('받은 답변',context+(answers.length?`<div class="answer-list">${answers.map(a=>{const id=connectionKey(c.id,a.id),conn=state.connections[id];return `<article class="answer-card" id="received-${esc(a.id)}" tabindex="-1"><header>${anonymousAvatar({otherId:a.authorId})}<strong>익명의 사친</strong></header><p class="prose">${esc(a.body)}</p><div class="answer-actions">${button('helpful',icon('heart'),'icon-button'+(state.helpfulAnswers[id]?' is-helpful':''),`aria-label="도움이 됐어요" aria-pressed="${Boolean(state.helpfulAnswers[id])}" data-id="${esc(id)}"`)}${conn?.closed?'<span class="meta">마친 채팅방</span>':chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(id),'채팅방 열기','text-link'):button('accept-answer','대화하기','btn btn-primary btn-sm',`data-id="${esc(id)}" data-concern="${esc(c.id)}" data-answer="${a.id}"`)}</div></article>`;}).join('')}</div>`:`<section class="letter-empty answer-waiting">${doodleSvg('envelope')}<h2>답변을 기다리고 있어요</h2>${link('/listen','다른 고민 들어주기','text-link')}</section>${demo('가상 답변으로 다음 화면을 확인할 수 있어요','demo-answer','예시 답변 받기',`data-id="${esc(c.id)}"`)}`),{back:back.startsWith('/chat')||from==='notifications'||from==='received'?back:'/mine',screen:'received-answers-page'});
   if(answered){
     const id='sent_'+c.id,conn=state.connections[id];
     return shell('보낸 답변',`${context}<article class="answer-card sent-answer-letter"><header><span class="sent-answer-mark" aria-hidden="true">${doodleSvg('paperplane')}</span><h2>내 답변</h2>${conn?.closed?'<span class="answer-state">마친 채팅방</span>':!chatAllowed(conn,viewer())&&answered.chatConsent?'<span class="answer-state">답변 선택 대기</span>':''}</header><p class="prose">${esc(answered.body)}</p></article>${chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(id),'채팅방 열기','btn btn-primary btn-block'):link('/listen','다음 고민 보기','btn btn-primary btn-block')}${!answered.chatConsent?`<p class="form-privacy">상대가 이 답변을 선택하면 익명 채팅방이 열려요</p>${button('allow-answer-chat','이 답변으로 대화 허용','btn btn-outline btn-block',`data-id="${esc(c.id)}"`)}`:''}${answered.chatConsent&&!conn?.closed&&!chatAllowed(conn,viewer())?demo('고민 작성자가 내 답변을 선택한 상황을 체험해요','demo-accept-sent','상대가 답변 선택하기',`data-id="${esc(c.id)}"`):''}`,{back,screen:'sent-answer-page'});
@@ -2114,7 +2194,7 @@ function connection(){
     const copy=waiting?'상대도 동의하면, 프로필이 함께 열려요':invited?'나도 동의하면, 서로의 사진과 소개가 열려요':'서로 동의하면, 사진과 소개가 함께 열려요';
     body=`<section class="reveal-panel reveal-letter" data-reveal-stage="${stage}"><div class="consent-pair">${consentPerson({otherId:viewer().id},'나',c.mineReveal)}<i aria-hidden="true"></i>${consentPerson(c,'상대',c.theirReveal)}</div><h2>${title}</h2><p class="reveal-description">${copy}</p>${sharingPreview(c)}<div class="reveal-letter-actions">${waiting?`${link(chatLink,'계속 대화하기','btn btn-primary btn-block')}${button('cancel-reveal','공개 제안 취소','quiet-link',`data-id="${esc(id)}"`)}`:`<label class="checkbox-row reveal-agreement"><input id="reveal-consent" type="checkbox"><span>이 상대에게 내 프로필을 공개할게요</span></label>${button('request-reveal',invited?'동의하고 서로 공개하기':'프로필 공개 제안','btn btn-primary btn-block',`data-id="${esc(id)}" disabled`)}${invited?button('decline-reveal','지금은 대화만 할게요','quiet-link',`data-id="${esc(id)}"`):link(chatLink,'지금은 대화만 할게요','quiet-link')}`}</div></section>`;
   }
-  return shell(stage==='open'?'상대 프로필':'프로필 공개',body,{back:route().params.get('from')==='notifications'?'/notifications':chatLink,tools:stage==='open'?link('/profile?connection='+encodeURIComponent(id),'내 공개 프로필','shared-profile-own-link'):'',screen:'connection-profile-page stationery-page '+(stage==='open'?'is-profile-open canvas-page':'is-profile-private')});
+  return shell(stage==='open'?'상대 프로필':'프로필 공개',body,{back:route().params.get('from')==='notifications'?notificationInboxRoute():chatLink,tools:stage==='open'?link('/profile?connection='+encodeURIComponent(id),'내 공개 프로필','shared-profile-own-link'):'',screen:'connection-profile-page stationery-page '+(stage==='open'?'is-profile-open canvas-page':'is-profile-private')});
 }
 function chatRevealNotice(c){
   const stage=revealStage(c,viewer());
@@ -2130,7 +2210,7 @@ function chatMessages(c){
 function chat(){
   const c=currentConnection();
   if(!chatAllowed(c,viewer()))return shell('채팅방',empty('열린 채팅방이 없어요','',link('/connections','채팅방으로')),{back:'/connections'});
-  return shell(personName(c),`<a class="chat-context" href="#/concern?id=${encodeURIComponent(c.concernId)}&fromChat=${encodeURIComponent(c.id)}" aria-label="이 대화의 고민 보기">${icon('mine')}<span><span>${esc(getConcern(c.concernId)?.title??'함께 나눈 이야기')}</span></span>${icon('arrow')}</a><div class="chat-body" id="chat-messages" role="log" aria-live="polite" aria-label="대화 내용">${chatMessages(c)}</div><form id="chat-form" class="chat-input" data-id="${esc(c.id)}"><label class="sr-only" for="chat-message">메시지</label><textarea id="chat-message" name="body" rows="1" maxlength="1000" required placeholder="편하게 이야기해요">${esc(state.chatDrafts[c.id]??'')}</textarea><button type="submit" class="send-btn" aria-label="메시지 보내기" ${String(state.chatDrafts[c.id]??'').trim()?'':'disabled'}>${icon('send')}</button></form>`,{back:route().params.get('from')==='notifications'?'/notifications':'/connections',chat:true,tools:link('/connection?id='+encodeURIComponent(c.id),icon(profilesVisible(c,viewer())?'me':'lock')+'<span>프로필</span>','chat-profile-link').replace('class="chat-profile-link"','class="chat-profile-link" aria-label="'+(profilesVisible(c,viewer())?'상대 프로필 보기':'프로필 공개 제안')+'"')+button('ask-close',icon('exit'),'icon-button',`data-id="${esc(c.id)}" aria-label="채팅방 나가기"`)});
+  return shell(personName(c),`<a class="chat-context" href="#/concern?id=${encodeURIComponent(c.concernId)}&fromChat=${encodeURIComponent(c.id)}" aria-label="이 대화의 고민 보기">${icon('mine')}<span><span>${esc(getConcern(c.concernId)?.title??'함께 나눈 이야기')}</span></span>${icon('arrow')}</a><div class="chat-body" id="chat-messages" role="log" aria-live="polite" aria-label="대화 내용">${chatMessages(c)}</div><form id="chat-form" class="chat-input" data-id="${esc(c.id)}"><label class="sr-only" for="chat-message">메시지</label><textarea id="chat-message" name="body" rows="1" maxlength="1000" required placeholder="편하게 이야기해요">${esc(state.chatDrafts[c.id]??'')}</textarea><button type="submit" class="send-btn" aria-label="메시지 보내기" ${String(state.chatDrafts[c.id]??'').trim()?'':'disabled'}>${icon('send')}</button></form>`,{back:route().params.get('from')==='notifications'?notificationInboxRoute():'/connections',chat:true,tools:link('/connection?id='+encodeURIComponent(c.id),icon(profilesVisible(c,viewer())?'me':'lock')+'<span>프로필</span>','chat-profile-link').replace('class="chat-profile-link"','class="chat-profile-link" aria-label="'+(profilesVisible(c,viewer())?'상대 프로필 보기':'프로필 공개 제안')+'"')+button('ask-close',icon('exit'),'icon-button',`data-id="${esc(c.id)}" aria-label="채팅방 나가기"`)});
 }
 function serviceRow(href,title,{note='',symbol='',value=''}={}){
   return `<a class="service-row" href="#${esc(href)}">${symbol?`<span class="service-row-mark">${doodleSvg(symbol)}</span>`:''}<span class="service-row-copy"><strong>${esc(title)}</strong>${note?`<small>${esc(note)}</small>`:''}</span>${value?`<span class="service-row-value">${esc(value)}</span>`:''}<span class="service-chevron">${icon('back')}</span></a>`;
@@ -2139,14 +2219,14 @@ function serviceSection(title,body){return `<section class="service-section"><h2
 function me(){
   const m=viewer(),p=state.profile,hasBio=Boolean(profileIntroduction(p)),hasPhoto=Boolean(p.photo);
   const next=[m.ageBand,m.region,m.occupation].filter(Boolean).join(' · ');
-  return shell('마이',`<section class="my-identity" aria-label="내 프로필"><div class="my-identity-line">${ownPortrait(p.photo)}<div class="my-identity-copy"><h2>${esc(m.nickname)}</h2><p>${esc(next)}</p></div><a class="my-profile-edit" href="#/profile/edit" aria-label="프로필 편집" title="프로필 편집">${icon('edit')}</a></div></section>${serviceSection('이용 관리',serviceRow('/settings/notifications','알림 설정',{symbol:'bell'})+serviceRow('/billing','결제 관리',{symbol:'coin'}))}${serviceSection('도움과 설정',serviceRow('/support','고객센터',{symbol:'headphones'})+serviceRow('/settings','설정',{note:'관심 주제 · 계정 · 개인정보',symbol:'settings'}))}<footer class="my-service-footer">${link('/legal?doc=terms','이용약관','')}${link('/legal?doc=privacy','개인정보처리방침','')}</footer>`,{compact:true,screen:'my-page my-hub'});
+  return shell('마이',`<section class="my-identity" aria-label="내 프로필"><div class="my-identity-line">${ownPortrait(p.photo)}<div class="my-identity-copy"><h2>${esc(m.nickname)}</h2><p>${esc(next)}</p></div><a class="my-profile-edit" href="#/profile/edit" aria-label="프로필 편집" title="프로필 편집">${icon('edit')}</a></div></section>${serviceSection('이용 관리',serviceRow('/settings/notifications','알림 설정',{symbol:'bell'})+serviceRow('/billing','결제 관리',{symbol:'coin'}))}${serviceSection('도움과 설정',serviceRow('/support','고객센터',{symbol:'headphones'})+serviceRow('/settings','설정',{note:'관심 주제 · 계정 · 개인정보',symbol:'settings'}))}<footer class="my-service-footer">${link('/legal?doc=terms','이용약관','')}${link('/legal?doc=privacy','개인정보처리방침','')}</footer>`,{screen:'my-page my-hub'});
 }
 function settings(){
   return shell('설정',`${serviceSection('나에게 맞게',serviceRow('/preferences?from=settings','관심 주제',{note:state.topics.map(topic).join(' · ')}))}${serviceSection('계정과 개인정보',serviceRow('/settings/account','계정 관리')+serviceRow('/settings/privacy','안전과 프로필 공개'))}${serviceSection('서비스 정보',serviceRow('/about?from=settings','사친사친 소개')+serviceRow('/legal','약관 및 정책'))}`,{back:'/me',screen:'service-page'});
 }
 function notificationPreferences(){
-  const choices=[['answers','받은 답변','내 고민에 도착한 새로운 답변'],['chats','새로운 연결','내 답변에서 열린 채팅방'],['messages','새 메시지','상대가 보내온 이야기'],['profiles','프로필 공개','공개 제안과 서로의 동의']];
-  return shell('알림 설정',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('bell')}</span><h2>알림을 받을 항목</h2><p>앱 안에서 새 소식을 표시할 항목을 선택해 주세요</p></div><fieldset class="notification-switches"><legend class="sr-only">앱 안 알림 종류</legend>${choices.map(([key,title,copy])=>`<label class="setting-switch-row"><span><strong>${title}</strong><small>${copy}</small></span><span class="pen-switch"><input type="checkbox" role="switch" data-notification-setting="${key}" aria-label="${title}" ${state.notificationSettings[key]?'checked':''}><i aria-hidden="true"></i></span></label>`).join('')}</fieldset>`,{back:'/me',screen:'service-page'});
+  const choices=[['answers','받은 답변','내 고민에 도착한 새로운 답변'],['chats','새 채팅방','내 답변을 상대가 선택해 시작된 대화'],['messages','새 메시지','상대가 보내온 이야기'],['profiles','프로필 공개','공개 제안과 서로의 동의'],['service','서비스 소식','공지사항, 점검 안내와 업데이트']];
+  return shell('알림 설정',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('bell')}</span><h2>알림을 받을 항목</h2><p>앱 안에서 새 소식을 표시할 항목을 선택해 주세요</p></div><fieldset class="notification-switches"><legend class="sr-only">앱 안 알림 종류</legend>${choices.map(([key,title,copy])=>`<label class="setting-switch-row"><span><strong>${title}</strong><small>${copy}</small></span><span class="pen-switch"><input type="checkbox" role="switch" data-notification-setting="${key}" aria-label="${title}" ${state.notificationSettings[key]?'checked':''}><i aria-hidden="true"></i></span></label>`).join('')}</fieldset><p class="notification-preference-note">끄더라도 알림함에서 소식을 확인할 수 있어요</p>`,{back:route().params.get('from')==='notifications'?notificationInboxRoute(notificationChannel()):'/me',screen:'service-page'});
 }
 function privacySettings(){
   return shell('안전과 프로필 공개',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('lock')}</span><h2>내 정보의 공개 범위</h2></div><div class="service-explanations"><section><h3>고민은 기본적으로 익명이에요</h3><p>연령대·하는 일·지역만 함께 전해져요<br>이름과 사진은 고민 카드에 나오지 않아요</p></section><section><h3>서로 동의해야 프로필이 열려요</h3><p>익명 대화에서 상대별로 공개 여부를 선택해요<br>마이페이지에서 사진을 올려도 바로 공개되지 않아요</p></section><section><h3>편하지 않은 대화는 멈출 수 있어요</h3><p>채팅방 오른쪽 위 나가기 버튼으로 대화를 끝낼 수 있어요</p></section></div>${serviceRow('/profile','상대에게 보일 내 프로필')}${serviceRow('/support?topic=safety','안전 관련 도움받기')}${serviceRow('/legal?doc=privacy&from=privacy','개인정보처리방침')}`,{back:'/settings',screen:'service-page'});
@@ -2181,7 +2261,6 @@ function supportCompose(){
   return shell('문의 작성',`<form id="support-form" class="support-form" novalidate><label class="service-field"><span>어떤 문의인가요?</span>${choiceSelect('support-category','category','문의 유형',category,SUPPORT_CATEGORIES)}</label><label class="service-field"><span>문의 내용</span><textarea name="body" rows="7" maxlength="2000" placeholder="어떤 상황이었는지 알려주세요">${esc(d.body)}</textarea></label><label class="service-field"><span>답변받을 이메일 <small>선택</small></span><input name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" value="${esc(d.email)}" placeholder="name@example.com"></label><p class="support-channel-note">문의 접수 창구가 열리기 전까지 내용을 저장해둘 수 있어요</p><div class="fixed-actions"><p class="danger" id="support-error" role="alert"></p><button type="submit" class="btn btn-primary btn-block">문의 임시저장</button></div></form>`,{back:requested==='payment'?'/billing':'/support',screen:'service-page support-compose-page has-fixed-actions'});
 }
 function supportHistory(){const d=state.supportDraft;return shell('내 문의 내역',d.body?`<ul class="service-draft-list"><li><a href="#/support/write"><span class="draft-state">작성 중 · 미접수</span><h2>${esc(SUPPORT_CATEGORIES.find(c=>c.value===d.category)?.label??'문의')}</h2><p>${esc(d.body)}</p><span class="text-link">이어서 작성하기</span></a></li></ul>`:`<section class="letter-empty service-empty">${doodleSvg('envelope')}<h2>아직 작성한 문의가 없어요</h2>${link('/support/write','문의 작성하기','text-link')}</section>`,{back:'/support',screen:'service-page'});}
-function serviceNotices(){return shell('공지사항',`<section class="letter-empty service-empty">${doodleSvg('megaphone')}<h2>등록된 공지사항이 없어요</h2><p>서비스 소식과 변경 사항을 안내해요</p></section>`,{back:'/support',screen:'service-page'});}
 const LEGAL_CONTENT={
   terms:{title:'이용약관',note:'정식 이용약관은 서비스 오픈 전에 안내돼요',sections:[['사친사친에서 나누는 것','고민을 이성이 들어주고, 마음에 닿는 답변에서 익명 대화를 시작해요. 사진과 소개는 서로 원할 때 열어요'],['내가 쓰는 이야기','본인의 경험을 바탕으로 이야기를 나누고, 타인의 개인정보나 동의받지 않은 사진은 올리지 않아요'],['서로를 대하는 방식','모욕이나 혐오, 강요 없이 대화해요. 원치 않는 만남이나 프로필 공개를 재촉하지 않아요'],['정식 약관에서 안내할 내용','이용 자격, 게시물의 권리, 서비스 제한, 결제·환불, 탈퇴와 분쟁 처리 기준을 운영 정보와 함께 안내할 예정이에요']]},
   privacy:{title:'개인정보처리방침',note:'정식 개인정보처리방침은 서비스 오픈 전에 안내돼요',sections:[['고민에 함께 보이는 정보','고민 카드에는 연령대·하는 일·지역만 표시돼요. 닉네임과 사진은 표시하지 않아요'],['프로필이 공개되는 순간','대화 중인 두 사람이 모두 동의하면, 그 상대에게 사진과 소개, 내가 공개로 고른 항목이 열려요'],['현재 입력한 정보의 저장','현재 화면에서 입력한 프로필, 고민, 답변, 대화와 설정은 이용 중인 브라우저에 저장돼요'],['정식 운영 전에 안내할 내용','운영 주체, 수집 항목과 목적, 보관·삭제 기간, 처리 위탁, 문의 담당자와 권리 행사 방법을 확정해 안내할 예정이에요']]},
@@ -2214,12 +2293,15 @@ function profilePreview(){
   return shell('프로필 미리보기',`<p class="profile-preview-note">상대방에게는 이렇게 보여요<span>편집 중인 내용이에요. ‘완료’를 누르면 저장돼요.</span></p>${profileLetter(preview,{label:'상대에게 보일 프로필 미리보기'})}<p class="profile-self-reported">사진과 소개는 서로 동의한 상대에게만 보여요</p>`,{tools:`<a class="icon-button" href="#${editorRoute('/profile/edit')}" aria-label="미리보기 닫기">${icon('close')}</a>`,screen:'profile-preview-page stationery-page canvas-page'});
 }
 function resizeProfileText(){
+  const scrollTop=window.scrollY;
   const height=window.visualViewport?.height??window.innerHeight;
   for(const input of document.querySelectorAll?.('[data-profile-autosize]')??[]){
     const bounded=input===document.activeElement&&height<500,limit=bounded?Math.max(48,Math.min(260,height*.4)):Infinity,previous=input.scrollTop;
     input.style.height='0px';input.style.height=Math.min(limit,input.scrollHeight)+'px';input.style.overflowY=bounded?'auto':'hidden';
     if(bounded)input.scrollTop=input.selectionEnd===input.value.length?input.scrollHeight:previous;
   }
+  // Measuring a tall textarea at zero height can temporarily clamp document scroll.
+  if(window.scrollY!==scrollTop)window.scrollTo({top:scrollTop,behavior:'instant'});
 }
 function closeProfilePanel(){document.querySelector('dialog.profile-panel')?.close();}
 function profilePanel(title,body,actions='',options={}){
@@ -2482,7 +2564,7 @@ function render({keepScroll=false,focus=null}={}){
   if(activeModal&&activeModal.hash!==location.hash)closeAppModal({restoreFocus:false});
   const {path,params}=route();
   if(state.member)readPageNotifications(path,params);
-  const pages={'/home':home,'/signup':signup,'/listen':listen,'/preferences':preferences,'/notifications':notifications,'/write':write,'/concern':detail,'/mine':storyHub,'/settings':settings,'/settings/notifications':notificationPreferences,'/settings/privacy':privacySettings,'/settings/account':accountSettings,'/billing':billing,'/billing/history':billingHistory,'/support':support,'/support/write':supportCompose,'/support/history':supportHistory,'/support/notices':serviceNotices,'/legal':legal,'/connections':connections,'/connection':connection,'/chat':chat,'/me':me,'/profile':ownProfile,'/profile/edit':profileEdit,'/profile/preview':profilePreview,'/about':about};
+  const pages={'/home':home,'/signup':signup,'/listen':listen,'/preferences':preferences,'/notifications':notifications,'/notice':serviceNoticeDetail,'/write':write,'/concern':detail,'/mine':storyHub,'/settings':settings,'/settings/notifications':notificationPreferences,'/settings/privacy':privacySettings,'/settings/account':accountSettings,'/billing':billing,'/billing/history':billingHistory,'/support':support,'/support/write':supportCompose,'/support/history':supportHistory,'/support/notices':serviceNotices,'/legal':legal,'/connections':connections,'/connection':connection,'/chat':chat,'/me':me,'/profile':ownProfile,'/profile/edit':profileEdit,'/profile/preview':profilePreview,'/about':about};
   const needsMember=!state.member&&!['/home','/about'].includes(path);
   $('#app').innerHTML=needsMember?signup():(pages[path]??home)();
   const pageTitle=$('#app h1')?.textContent??'사친사친';
@@ -2491,8 +2573,9 @@ function render({keepScroll=false,focus=null}={}){
   const section=path==='/home'&&['approach','experience','privacy','start'].includes(params.get('section'))?$('#landing-'+params.get('section')):null;
   const heading=section?.querySelector('h2')??$('#app h1');heading?.setAttribute('tabindex','-1');if(focus)$(focus)?.focus({preventScroll:true});else if(!keepScroll)heading?.focus({preventScroll:true});section?.scrollIntoView({behavior:'instant',block:'start'});
   if(path==='/chat')$('#chat-messages')?.scrollTo({top:$('#chat-messages').scrollHeight});
-  const chosenAnswer=path==='/concern'&&params.get('from')==='received'?document.getElementById?.('received-'+params.get('answer')):null;if(chosenAnswer){chosenAnswer.focus({preventScroll:true});chosenAnswer.scrollIntoView({block:'start',behavior:'instant'});}
+  const chosenAnswer=path==='/concern'&&['received','notifications'].includes(params.get('from'))?document.getElementById?.('received-'+params.get('answer')):null;if(chosenAnswer){chosenAnswer.focus({preventScroll:true});chosenAnswer.scrollIntoView({block:'start',behavior:'instant'});}
   $('#announcer').textContent=document.title;updatePageNotice(path);initLanding();initIntro();initHeaderBrand();initSwipe();resizeWritingTitle();resizeReplyInput();initComposerViewport();resizeChatInput();resizeProfileText();syncProfileToolbar();
+  if(notificationVisit?.returnTo===location.hash.slice(1)){window.scrollTo({top:notificationVisit.scrollY,behavior:"instant"});const area=$(".viewport-composer .app-main");if(area&&notificationVisit.scrollTop!==undefined)area.scrollTop=notificationVisit.scrollTop;notificationVisit=null;}
 }
 function resizeChatInput(){
   const input=$('#chat-message');if(!input)return;
@@ -2614,8 +2697,9 @@ document.addEventListener('click',event=>{
   const choice=event.target.closest('[data-choice]');if(choice){openChoice(choice);return;}
   const target=event.target.closest('[data-action]');if(!target||target.disabled)return;const action=target.dataset.action,id=target.dataset.id;
 
-  if(action==='read-notification'){const item=activity().find(item=>item.id===id);if(item)readNotifications([item.id]);return;}
-  if(action==='read-all-notifications'){readNotifications(activity().map(item=>item.id));render();toast('알림을 모두 읽었어요');return;}
+  if(action==='open-notifications'){notificationVisit={returnTo:location.hash.slice(1),scrollY:window.scrollY,scrollTop:$('.viewport-composer .app-main')?.scrollTop};return;}
+  if(action==='read-notification'){const item=allNotifications().find(item=>item.id===id);if(item)readNotifications([item.id]);return;}
+  if(action==='read-all-notifications'){if(readNotifications(allNotifications().filter(item=>item.channel===notificationChannel()).map(item=>item.id))){render({keepScroll:true});toast((notificationChannel()==='service'?'서비스 소식':'활동 알림')+'을 모두 읽었어요');}return;}
   if(action==='dismiss-toast'){dismissToast();return;}
   if(action==='pick-occupation'){
     const form=target.closest('form'),input=form?.querySelector('[name="occupation"]');if(!input)return;
