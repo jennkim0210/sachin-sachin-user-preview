@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
   <meta name="theme-color" content="#E1E1E1">
   <meta name="description" content="고민 하나로 시작하는, 사친사친. 이성과 익명으로 고민을 나누고, 서로 원하면 대화와 프로필 교환으로 이어가요.">
   <meta name="robots" content="noindex, nofollow">
@@ -804,6 +804,32 @@
 .is-focused.is-entry .screen-heading h1{font-size:20px;color:var(--ink)}
 .join-page.is-entry .screen-heading h1{font-size:17px}
 @media(max-width:370px){.is-focused.is-entry .screen-heading h1{font-size:18px}.join-page.is-entry .screen-heading h1{font-size:16px}}
+
+/* A single viewport frame keeps writing, replies and chat above the software keyboard. */
+html.has-composer-viewport,html.has-composer-viewport body{height:100%;overflow:hidden;overscroll-behavior:none}
+.product-app.viewport-composer{position:fixed;inset:auto 0;top:var(--composer-top,0px);height:var(--composer-height,100dvh);min-height:0;padding-bottom:0;display:flex;flex-direction:column;overflow:hidden}
+.viewport-composer .product-header{flex:none;position:relative;top:auto}
+.viewport-composer:not(.is-chat) .app-main{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:auto;scroll-padding:12px 0;margin-top:0;padding-top:8px}
+.viewport-composer.has-fixed-actions .page{padding-bottom:24px}
+.viewport-composer>.fixed-actions{position:relative;inset:auto;transform:none;flex:none;width:calc(100% - 40px);max-width:462px;margin:0 auto!important;padding:10px 0 max(12px,env(safe-area-inset-bottom));box-shadow:none;gap:8px}
+.viewport-composer>.fixed-actions .form-privacy{margin:0;font-size:10px;line-height:1.6}
+.viewport-composer>.fixed-actions .danger:empty{display:none}
+.viewport-composer>.fixed-actions .danger{font-size:12px;margin:0}
+.viewport-composer>.fixed-actions .btn{min-height:52px}
+.viewport-composer .compose-form #concern-body,.viewport-composer .reply-letter textarea{min-height:0;max-height:none;resize:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#bcb7cc transparent}
+.viewport-composer #concern-tags{font-size:16px;min-height:28px}
+.viewport-composer textarea,.viewport-composer input{scroll-margin:12px 0;caret-color:var(--blue)}
+.viewport-composer.is-chat .app-main{overflow:hidden}
+.viewport-composer.is-chat .chat-input{margin-bottom:max(10px,env(safe-area-inset-bottom))}
+.viewport-composer.is-chat .chat-input textarea{max-height:120px;overscroll-behavior:contain}
+.viewport-composer .chat-body{overflow-anchor:none;scroll-behavior:auto}
+.viewport-composer .app-main,.viewport-composer textarea,.viewport-composer .chat-body{scrollbar-width:none}
+.viewport-composer .app-main::-webkit-scrollbar,.viewport-composer textarea::-webkit-scrollbar,.viewport-composer .chat-body::-webkit-scrollbar{display:none}
+.viewport-composer.is-compact-viewport .chat-context,.viewport-composer.is-compact-viewport>.fixed-actions .form-privacy{display:none}
+.viewport-composer.is-compact-viewport .product-header{height:46px}
+.viewport-composer.is-compact-viewport>.fixed-actions{padding-block:6px}
+.viewport-composer.is-compact-viewport>.fixed-actions .btn{min-height:44px!important}
+@media(max-height:500px){.viewport-composer .product-header{height:52px}.viewport-composer>.fixed-actions .btn{min-height:46px}.viewport-composer>.fixed-actions{padding-top:6px;padding-bottom:8px}.viewport-composer .chat-context{padding-block:7px;margin-block:4px}}
 </style>
   
 </head>
@@ -1930,12 +1956,15 @@ function chatRevealNotice(c){
   const label=stage==='invited'?'프로필 공개 제안':'공개 동의 대기';
   return link('/connection?id='+encodeURIComponent(c.id),icon('lock')+'<span>'+label+'</span><small>'+(stage==='invited'?'확인하기':'제안 보기')+'</small>'+icon('arrow'),'chat-reveal-note');
 }
+function chatMessages(c){
+  const messages=state.messages.filter(m=>m.connectionId===c.id);
+  const openingAnswer=c.answerId==='sent'?state.answers.find(a=>a.concernId===c.concernId):ownAnswers(getConcern(c.concernId)).find(a=>a.id===c.answerId);
+  return `${chatRevealNotice(c)}${openingAnswer?`<details class="chat-origin"><summary>마음이 닿은 답변 ${icon('plus')}</summary><p>${esc(openingAnswer.body)}</p></details>`:''}${messages.map((m,i)=>`<div class="message-row ${m.mine?'outgoing':'incoming'} ${i>0&&messages[i-1].mine===m.mine?'is-continuation':''}">${m.mine?'':i===0||messages[i-1].mine?`<span class="message-avatar">${personAvatar(c)}</span>`:'<span class="message-avatar-spacer" aria-hidden="true"></span>'}<div class="msg ${m.mine?'mine':'theirs'}">${esc(m.body)}<small>${/^(오전|오후|AM|PM|\d)/.test(m.time??'')?esc(m.time):''}</small></div></div>`).join('')}`;
+}
 function chat(){
   const c=currentConnection();
   if(!chatAllowed(c,viewer()))return shell('채팅방',empty('열린 채팅방이 없어요','',link('/connections','채팅방으로')),{back:'/connections'});
-  const messages=state.messages.filter(m=>m.connectionId===c.id);
-  const openingAnswer=c.answerId==='sent'?state.answers.find(a=>a.concernId===c.concernId):ownAnswers(getConcern(c.concernId)).find(a=>a.id===c.answerId);
-  return shell(personName(c),`<a class="chat-context" href="#/concern?id=${encodeURIComponent(c.concernId)}&fromChat=${encodeURIComponent(c.id)}" aria-label="이 대화의 고민 보기">${icon('feed')}<span><span>${esc(getConcern(c.concernId)?.title??'함께 나눈 이야기')}</span></span>${icon('arrow')}</a><div class="chat-body" id="chat-messages" role="log" aria-live="polite" aria-label="대화 내용">${chatRevealNotice(c)}${openingAnswer?`<details class="chat-origin"><summary>마음이 닿은 답변 ${icon('plus')}</summary><p>${esc(openingAnswer.body)}</p></details>`:''}${messages.map((m,i)=>`<div class="message-row ${m.mine?'outgoing':'incoming'} ${i>0&&messages[i-1].mine===m.mine?'is-continuation':''}">${m.mine?'':i===0||messages[i-1].mine?`<span class="message-avatar">${personAvatar(c)}</span>`:'<span class="message-avatar-spacer" aria-hidden="true"></span>'}<div class="msg ${m.mine?'mine':'theirs'}">${esc(m.body)}<small>${/^(오전|오후|AM|PM|\d)/.test(m.time??'')?esc(m.time):''}</small></div></div>`).join('')}</div><form id="chat-form" class="chat-input" data-id="${esc(c.id)}"><label class="sr-only" for="chat-message">메시지</label><textarea id="chat-message" name="body" rows="1" maxlength="1000" required placeholder="편하게 이야기해요">${esc(state.chatDrafts[c.id]??'')}</textarea><button type="submit" class="send-btn" aria-label="메시지 보내기" ${String(state.chatDrafts[c.id]??'').trim()?'':'disabled'}>${icon('arrow')}</button></form>`,{back:route().params.get('from')==='notifications'?'/notifications':'/connections',chat:true,tools:link('/connection?id='+encodeURIComponent(c.id),icon(profilesVisible(c,viewer())?'me':'lock')+'<span>프로필</span>','chat-profile-link').replace('class="chat-profile-link"','class="chat-profile-link" aria-label="'+(profilesVisible(c,viewer())?'상대 프로필 보기':'프로필 공개 제안')+'"')+button('ask-close',icon('more'),'icon-button',`data-id="${esc(c.id)}" aria-label="채팅방 나가기"`)});
+  return shell(personName(c),`<a class="chat-context" href="#/concern?id=${encodeURIComponent(c.concernId)}&fromChat=${encodeURIComponent(c.id)}" aria-label="이 대화의 고민 보기">${icon('feed')}<span><span>${esc(getConcern(c.concernId)?.title??'함께 나눈 이야기')}</span></span>${icon('arrow')}</a><div class="chat-body" id="chat-messages" role="log" aria-live="polite" aria-label="대화 내용">${chatMessages(c)}</div><form id="chat-form" class="chat-input" data-id="${esc(c.id)}"><label class="sr-only" for="chat-message">메시지</label><textarea id="chat-message" name="body" rows="1" maxlength="1000" required placeholder="편하게 이야기해요">${esc(state.chatDrafts[c.id]??'')}</textarea><button type="submit" class="send-btn" aria-label="메시지 보내기" ${String(state.chatDrafts[c.id]??'').trim()?'':'disabled'}>${icon('arrow')}</button></form>`,{back:route().params.get('from')==='notifications'?'/notifications':'/connections',chat:true,tools:link('/connection?id='+encodeURIComponent(c.id),icon(profilesVisible(c,viewer())?'me':'lock')+'<span>프로필</span>','chat-profile-link').replace('class="chat-profile-link"','class="chat-profile-link" aria-label="'+(profilesVisible(c,viewer())?'상대 프로필 보기':'프로필 공개 제안')+'"')+button('ask-close',icon('more'),'icon-button',`data-id="${esc(c.id)}" aria-label="채팅방 나가기"`)});
 }
 function serviceRow(href,title,{note='',symbol='',value=''}={}){
   return `<a class="service-row" href="#${esc(href)}">${symbol?`<span class="service-row-mark">${doodleSvg(symbol)}</span>`:''}<span class="service-row-copy"><strong>${esc(title)}</strong>${note?`<small>${esc(note)}</small>`:''}</span>${value?`<span class="service-row-value">${esc(value)}</span>`:''}<span class="service-chevron">${icon('back')}</span></a>`;
@@ -2102,12 +2131,70 @@ function initSwipe(){
   swipeCleanup=()=>{controller.abort();clearTimeout(timer);commitSwipe=null;};
 }
 function resizeWritingTitle(){const input=$('#concern-title');if(input){input.style.height='0px';input.style.height=Math.max(34,input.scrollHeight)+'px';}}
-function resizeReplyInput(){const input=$('.reply-letter textarea');if(input){input.style.height='auto';input.style.height=input.scrollHeight+'px';}}
-function syncReplyViewport(){
-  const page=$('.reply-composer');if(!page)return;
-  const viewport=window.visualViewport;
-  const inset=viewport&&document.activeElement?.id==='answer-body'?Math.max(0,window.innerHeight-viewport.height-viewport.offsetTop):0;
-  page.style.setProperty('--reply-keyboard',inset+'px');
+// The visible viewport is the frame; only its writing area / message log scrolls.
+let composerFrame=0,composerReveal=false,chatAtEnd=true,chatResizeObserver=null;
+function composerViewport(layoutHeight,viewport){
+  if(viewport&&Math.abs((viewport.scale??1)-1)>.02)return null;
+  return {height:Math.max(1,Math.min(layoutHeight,viewport?.height??layoutHeight)),top:Math.max(0,viewport?.offsetTop??0)};
+}
+function resizeLetterInput(input){
+  if(!input)return;
+  const viewport=window.visualViewport,height=viewport?.height??window.innerHeight??740;
+  const available=input.closest?.('.viewport-composer')?.querySelector('.app-main')?.clientHeight??height;
+  const limit=Math.max(48,Math.min(300,height*.4,available-24)),previous=input.scrollTop;
+  input.style.height='auto';input.style.height=Math.min(limit,Math.max(Math.min(210,limit),input.scrollHeight))+'px';
+  input.style.overflowY=input.scrollHeight>input.clientHeight?'auto':'hidden';
+  input.scrollTop=input===document.activeElement&&input.selectionEnd===input.value.length?input.scrollHeight:previous;
+}
+function resizeReplyInput(){resizeLetterInput($('#answer-body'));resizeLetterInput($('#concern-body'));}
+function nearChatEnd(log){return !log||log.scrollHeight-log.clientHeight-log.scrollTop<64;}
+function revealComposerInput(page){
+  const input=document.activeElement,area=page.querySelector('.app-main');
+  if(!input?.matches?.('#concern-title,#concern-body,#concern-tags,#answer-body')||!area)return;
+  const bounds=area.getBoundingClientRect(),rect=input.getBoundingClientRect(),bottom=bounds.bottom-12;
+  const addressSpace=input.id==='answer-body'&&rect.height+52<bounds.height?40:0,top=bounds.top+10+addressSpace;
+  const delta=rect.height>bottom-top?rect.top-top:rect.bottom>bottom?rect.bottom-bottom:rect.top<top?rect.top-top:0;
+  if(Math.abs(delta)>1)area.scrollTop+=delta;
+}
+function syncComposerViewport({reveal=false}={}){
+  const page=$('.compose-page,.reply-composer,.is-chat');
+  document.documentElement?.classList.toggle('has-composer-viewport',Boolean(page));
+  if(!page)return;
+  const frame=composerViewport(window.innerHeight,window.visualViewport);if(!frame)return;
+  const log=$('#chat-messages'),follow=chatAtEnd;
+  page.classList.add('viewport-composer');
+  page.classList.toggle('is-compact-viewport',frame.height<320);
+  page.style.setProperty('--composer-height',frame.height+'px');page.style.setProperty('--composer-top',frame.top+'px');
+  // Outside the scrolling form, while retaining native form submission semantics.
+  const footer=page.querySelector('.fixed-actions');
+  if(footer&&footer.parentElement!==page){const form=footer.closest('form');footer.querySelector('[type="submit"]')?.setAttribute('form',form.id);page.append(footer);}
+  resizeReplyInput();resizeChatInput();
+  if(log&&follow)log.scrollTop=log.scrollHeight;
+  if(reveal)revealComposerInput(page);
+}
+function scheduleComposerViewport(reveal=false){
+  composerReveal=composerReveal||reveal;
+  if(composerFrame)return;
+  composerFrame=window.requestAnimationFrame(()=>{composerFrame=0;const focus=composerReveal;composerReveal=false;syncComposerViewport({reveal:focus});});
+}
+function initComposerViewport(){
+  chatResizeObserver?.disconnect();chatAtEnd=true;syncComposerViewport();
+  const log=$('#chat-messages');if(!log)return;
+  let height=log.clientHeight,total=log.scrollHeight,userScrollUntil=0;
+  const changed=()=>{const resized=height!==log.clientHeight||total!==log.scrollHeight;height=log.clientHeight;total=log.scrollHeight;return resized;};
+  const reading=()=>{userScrollUntil=Date.now()+2000;};
+  for(const type of ['wheel','touchstart','touchmove','pointerdown','keydown'])log.addEventListener(type,reading,{passive:true});
+  log.addEventListener('pointermove',event=>{if(event.buttons)reading();},{passive:true});
+  log.addEventListener('scroll',()=>{changed();if(Date.now()<userScrollUntil)chatAtEnd=nearChatEnd(log);else if(chatAtEnd)log.scrollTop=log.scrollHeight;},{passive:true});
+  if(typeof ResizeObserver!=='undefined'){chatResizeObserver=new ResizeObserver(()=>{if(changed()&&chatAtEnd)log.scrollTop=log.scrollHeight;});chatResizeObserver.observe(log);for(const child of log.children)chatResizeObserver.observe(child);}
+}
+function refreshChatLog({bottom=false}={}){
+  const log=$('#chat-messages'),c=currentConnection();if(!log||!chatAllowed(c,viewer()))return false;
+  const follow=bottom||nearChatEnd(log),top=log.scrollTop,open=log.querySelector('.chat-origin')?.open;
+  log.innerHTML=chatMessages(c);if(open&&log.querySelector('.chat-origin'))log.querySelector('.chat-origin').open=true;
+  log.scrollTop=follow?log.scrollHeight:top;chatAtEnd=follow;
+  if(chatResizeObserver){chatResizeObserver.disconnect();chatResizeObserver.observe(log);for(const child of log.children)chatResizeObserver.observe(child);}
+  return true;
 }
 
 function render({keepScroll=false,focus=null}={}){
@@ -2127,9 +2214,15 @@ function render({keepScroll=false,focus=null}={}){
   const heading=section?.querySelector('h2')??$('#app h1');heading?.setAttribute('tabindex','-1');if(focus)$(focus)?.focus({preventScroll:true});else if(!keepScroll)heading?.focus({preventScroll:true});section?.scrollIntoView({behavior:'instant',block:'start'});
   if(path==='/chat')$('#chat-messages')?.scrollTo({top:$('#chat-messages').scrollHeight});
   const chosenAnswer=path==='/concern'&&params.get('from')==='received'?document.getElementById?.('received-'+params.get('answer')):null;if(chosenAnswer){chosenAnswer.focus({preventScroll:true});chosenAnswer.scrollIntoView({block:'start',behavior:'instant'});}
-  $('#announcer').textContent=document.title;updatePageNotice(path);initLanding();initIntro();initHeaderBrand();initSwipe();resizeWritingTitle();resizeReplyInput();syncReplyViewport();resizeChatInput();resizeProfileText();
+  $('#announcer').textContent=document.title;updatePageNotice(path);initLanding();initIntro();initHeaderBrand();initSwipe();resizeWritingTitle();resizeReplyInput();initComposerViewport();resizeChatInput();resizeProfileText();
 }
-function resizeChatInput(){const input=$('#chat-message');if(!input)return;input.style.height='auto';input.style.height=Math.min(120,Math.max(42,input.scrollHeight))+'px';}
+function resizeChatInput(){
+  const input=$('#chat-message');if(!input)return;
+  const log=$('#chat-messages'),follow=chatAtEnd,previous=input.scrollTop;
+  input.style.height='auto';input.style.height=Math.min(120,Math.max(56,(window.visualViewport?.height??window.innerHeight??740)*.25),Math.max(42,input.scrollHeight))+'px';
+  input.scrollTop=input===document.activeElement&&input.selectionEnd===input.value.length?input.scrollHeight:previous;
+  if(log&&follow)log.scrollTop=log.scrollHeight;
+}
 function showDialog(title,copy,confirmLabel,onConfirm){
   document.querySelector('dialog')?.remove();const dialog=document.createElement('dialog');dialog.className='native-dialog';dialog.setAttribute('aria-labelledby','dialog-title');dialog.innerHTML=`<h2 id="dialog-title">${esc(title)}</h2><p>${esc(copy)}</p><div class="dialog-actions"><button class="btn btn-outline" data-cancel>돌아가기</button><button class="btn btn-primary" data-confirm>${esc(confirmLabel)}</button></div>`;document.body.append(dialog);dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.querySelector('[data-confirm]').onclick=()=>{dialog.close();onConfirm();};dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();
 }
@@ -2179,10 +2272,11 @@ document.addEventListener('input',event=>{
   if(supportForm){state.supportDraft=supportDraft({...Object.fromEntries(new FormData(supportForm)),savedAt:state.supportDraft.savedAt});save();$('#support-error').textContent='';}
   const profileForm=event.target.closest('#profile-form');if(profileForm&&event.target.type!=='file'){queueDraftNotice(captureProfile(profileForm));resizeProfileText();$('#profile-save-error').textContent='';}
   if(event.target.id==='concern-title')resizeWritingTitle();
-  const form=event.target.closest('#concern-form');if(form)queueDraftNotice(captureDraft(form));
+  const form=event.target.closest('#concern-form');if(form){queueDraftNotice(captureDraft(form));resizeReplyInput();}
   if(event.target.closest('#signup-form')){state.signupDraft=Object.fromEntries(new FormData($('#signup-form')));$('#form-error').textContent='';save();}
   const reply=event.target.closest('#answer-form');if(reply){state.replyDrafts[reply.dataset.id]=event.target.value;queueDraftNotice(save());const error=$('#answer-error');if(error)error.textContent='';event.target.removeAttribute('aria-invalid');resizeReplyInput();}
   const chat=event.target.closest('#chat-form');if(chat){state.chatDrafts[chat.dataset.id]=event.target.value;save();resizeChatInput();chat.querySelector('[type="submit"]').disabled=!event.target.value.trim();}
+  if(event.target.matches?.('#concern-title,#concern-body,#concern-tags,#answer-body'))scheduleComposerViewport(true);
   if(event.target.closest('#preferences-form'))$('#preferences-form button[type="submit"]').disabled=!$('#preferences-form input:checked');
   if(event.target.id==='reveal-consent')$('[data-action="request-reveal"]').disabled=!event.target.checked;
 });
@@ -2233,7 +2327,8 @@ document.addEventListener('submit',event=>{
   if(form.id==='chat-form'){const c=state.connections[form.dataset.id],body=String(f.get('body')).trim();if(!chatAllowed(c,viewer())||!body||body.length>1000)return;
     const draft=state.chatDrafts[c.id];delete state.chatDrafts[c.id];state.messages.push({id:crypto.randomUUID(),createdAt:new Date().toISOString(),connectionId:c.id,mine:true,body,time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})});
     if(!save()){state.messages.pop();if(draft!==undefined)state.chatDrafts[c.id]=draft;return;}
-    clearTimeout(draftNoticeTimer);dismissToast();noticeSeen.delete('chat-restored:'+c.id);render();$('#chat-message')?.focus({preventScroll:true});
+    clearTimeout(draftNoticeTimer);dismissToast();noticeSeen.delete('chat-restored:'+c.id);
+    if(refreshChatLog({bottom:true})){const input=$('#chat-message');input.value='';resizeChatInput();form.querySelector('[type="submit"]').disabled=true;input.focus({preventScroll:true});syncComposerViewport();}else render();
   }
 });
 document.addEventListener('click',event=>{
@@ -2317,11 +2412,14 @@ document.addEventListener('click',event=>{
 });
 window.addEventListener('storage',event=>{
   if(event.key!==STORAGE_KEY||!event.newValue)return;
-  const active=document.activeElement,typing=['chat-message','answer-body'].includes(active?.id)?{id:active.id,start:active.selectionStart,end:active.selectionEnd}:null;
+  const active=document.activeElement,typing=['chat-message','answer-body','concern-title','concern-body','concern-tags'].includes(active?.id)?{id:active.id,start:active.selectionStart,end:active.selectionEnd}:null;
+  const scrollArea=$('.viewport-composer .app-main'),scrollTop=scrollArea?.scrollTop,oldRoom=currentConnection(),oldName=oldRoom?personName(oldRoom):'';
   const before=new Set(allConnections().filter(c=>chatAllowed(c,viewer())).map(c=>c.id));
   const beforeStages=new Map(allConnections().map(c=>[c.id,revealStage(c,viewer())]));
   try{state=restoreState(JSON.parse(event.newValue));}catch{return;}
-  render();
+  const room=currentConnection(),sameChat=route().path==='/chat'&&chatAllowed(room,viewer())&&beforeStages.get(room.id)===revealStage(room,viewer())&&oldName===personName(room);
+  if(sameChat)readPageNotifications('/chat',route().params);
+  if(!sameChat||!refreshChatLog()){render({keepScroll:true});const area=$('.viewport-composer .app-main');if(area&&scrollTop!==undefined)area.scrollTop=scrollTop;}
   if(typing){const input=document.getElementById(typing.id);input?.focus({preventScroll:true});input?.setSelectionRange(typing.start,typing.end);}
   // The open inbox already shows the new activity; don't cover it with a toast.
   if(route().path==='/notifications')return;
@@ -2335,11 +2433,14 @@ window.matchMedia?.('(prefers-reduced-motion: reduce)').addEventListener?.('chan
 window.addEventListener('resize',resizeWritingTitle);
 window.addEventListener('resize',resizeReplyInput);
 window.addEventListener('resize',resizeProfileText);
-window.visualViewport?.addEventListener('resize',syncReplyViewport);
-window.visualViewport?.addEventListener('scroll',syncReplyViewport);
-document.addEventListener('focusin',syncReplyViewport);
-document.addEventListener('focusout',()=>setTimeout(syncReplyViewport,0));
-document.fonts?.ready.then(()=>{resizeWritingTitle();resizeReplyInput();resizeProfileText();});
+window.addEventListener('resize',()=>scheduleComposerViewport(true));
+window.visualViewport?.addEventListener('resize',()=>scheduleComposerViewport(true));
+window.visualViewport?.addEventListener('scroll',()=>scheduleComposerViewport());
+document.addEventListener('focusin',()=>scheduleComposerViewport(true));
+document.addEventListener('focusout',()=>scheduleComposerViewport());
+// Preserve the input and keyboard while a send tap submits the message.
+document.addEventListener('pointerdown',event=>{if(event.target.closest?.('#chat-form [type="submit"]')&&document.activeElement?.id==='chat-message')event.preventDefault();});
+document.fonts?.ready.then(()=>{resizeWritingTitle();resizeReplyInput();resizeProfileText();syncComposerViewport();});
 startApp();
 
 </script>
