@@ -527,6 +527,27 @@
 .choice-dialog,.native-dialog{border-radius:var(--radius-dock)}
 .conversation-home .concern-card.sachin-postcard,.letter-underlay,
 .postcard-reader .full-story{border-radius:var(--radius-postcard)}
+
+/* Every reply is the same small letter, wherever its story was opened. */
+.reply-composer .app-main{margin-top:6px}
+.reply-composer .reply-source{padding:17px 20px;background:#dad5e5;border:1px solid #c8c1d2;border-radius:var(--radius-postcard);margin-bottom:18px}
+.reply-source summary{list-style:none;cursor:pointer}.reply-source summary::-webkit-details-marker{display:none}
+.reply-source-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#70657f;font-size:11px;line-height:1.7}
+.reply-recipient-mark{display:flex;color:var(--blue);flex:none}.reply-recipient-mark .pen-doodle{width:24px;height:28px;stroke-width:1.6}
+.reply-source h2{color:var(--blue);font-size:19px;line-height:1.6;letter-spacing:-.3px;margin-top:9px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;word-break:keep-all}
+.reply-source[open] h2{display:block}.reply-source .prose{border-top:1px solid #b9adc549;margin-top:14px;padding-top:14px;font-size:15px;color:#585060}
+.reply-source-toggle{display:flex;gap:7px;align-items:center;justify-content:flex-end;margin-top:9px;min-height:28px;font-size:11px;color:#746780}
+.reply-source-toggle svg{width:13px;height:13px}.reply-source .when-open{display:none}.reply-source[open] .when-open{display:inline}.reply-source[open] .when-closed{display:none}.reply-source[open] .reply-source-toggle svg{transform:rotate(180deg)}
+.reply-letter{background:var(--sheet);border:1px solid #cfccd2;border-radius:var(--radius-panel);padding:23px 22px 16px;box-shadow:0 3px 12px #28223304}
+.reply-letter-address{display:block;color:var(--blue);font-size:13px;line-height:1.7;margin-bottom:15px}
+.reply-letter textarea{display:block;width:100%;min-height:clamp(210px,30dvh,290px);padding:0;border:0;border-radius:0;background:transparent;font-size:16px;line-height:1.9;resize:none;overflow:hidden;word-break:keep-all;overflow-wrap:anywhere;caret-color:var(--blue)}
+.reply-letter-signature{display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid #d5d1d9;margin-top:18px;padding-top:13px;color:#80778b;font-size:11px}
+.reply-letter-signature>span:first-child{color:#736087}.reply-letter .danger{font-size:12px;margin:12px 0 0}
+.reply-composer .reply-letter-actions{bottom:calc(max(18px,env(safe-area-inset-bottom)) + var(--reply-keyboard,0px));gap:10px}
+.reply-letter-actions .form-privacy{font-size:11px;justify-content:center;text-align:center;line-height:1.8}
+.reply-composer.has-fixed-actions .page{padding-bottom:calc(145px + var(--reply-keyboard,0px))}
+.toast-heading{display:block;color:var(--blue);font-size:12px;line-height:1.6;margin:2px 0 3px}
+@media(max-width:370px),(max-height:700px) and (max-width:650px){.reply-composer .reply-source{padding:13px 17px;margin-bottom:14px}.reply-source h2{font-size:18px}.reply-letter{padding:18px 18px 14px}.reply-letter textarea{min-height:190px}.reply-letter-address{font-size:12px}.reply-letter-actions .form-privacy{font-size:10px}}
 </style>
   
 </head>
@@ -987,11 +1008,28 @@ let toastTimer,toastDuration=3600,toastScope='',draftNoticeTimer,noticeRoute=nul
 const noticeSeen=new Set();
 function dismissToast(){clearTimeout(toastTimer);const el=$('#toast');if(el)el.hidden=true;}
 function restartToastTimer(){clearTimeout(toastTimer);toastTimer=setTimeout(dismissToast,toastDuration);}
-function toast(message,{href='',label='이어서 쓰기',duration=href?8000:3600}={}){
+function toast(message,{href='',label='이어서 쓰기',title='',drawing='',duration=href?8000:3600}={}){
   const el=$('#toast');if(!el)return;
   clearTimeout(draftNoticeTimer);toastDuration=duration;toastScope=noticeContext();
-  el.innerHTML=`<span class="toast-pen" aria-hidden="true">${href?doodleSvg('envelope'):icon('feed')}</span><span class="toast-message">${esc(message)}</span>${href?`<a class="toast-action" href="#${esc(href)}" data-toast-action>${esc(label)}</a>`:''}<button type="button" class="toast-dismiss" data-action="dismiss-toast" aria-label="알림 닫기">${icon('close')}</button>`;
+  el.innerHTML=`<span class="toast-pen" aria-hidden="true">${drawing?doodleSvg(drawing):href?doodleSvg('envelope'):icon('feed')}</span><span class="toast-message">${title?`<strong class="toast-heading">${esc(title)}</strong>`:''}${esc(message)}</span>${href?`<a class="toast-action" href="#${esc(href)}" data-toast-action>${esc(label)}</a>`:''}<button type="button" class="toast-dismiss" data-action="dismiss-toast" aria-label="알림 닫기">${icon('close')}</button>`;
   el.hidden=false;restartToastTimer();
+}
+const REPLY_THANKS=[
+  '마음을 내어 들어줘서 고마워요',
+  '당신의 한마디가 작은 위로가 되길 바라요',
+  '함께 고민해 준 마음까지 닿기를 바라요',
+  '혼자가 아니라는 마음을 건넸어요',
+  '다정하게 머물러 준 시간, 고마워요',
+  '당신의 답장이 잠시 쉴 틈이 되길 바라요',
+  '한 사람의 이야기를 소중히 들어주셨네요'
+];
+let replyThanksRemaining=[],lastReplyThanks='';
+function nextReplyThanks(){
+  if(!replyThanksRemaining.length)replyThanksRemaining=[...REPLY_THANKS];
+  const candidates=replyThanksRemaining.filter(copy=>copy!==lastReplyThanks);
+  const next=candidates[Math.floor(Math.random()*candidates.length)];
+  replyThanksRemaining.splice(replyThanksRemaining.indexOf(next),1);lastReplyThanks=next;
+  return next;
 }
 function hasUnsavedProfile(){
   if(!state.profileDraft)return false;
@@ -1000,7 +1038,7 @@ function hasUnsavedProfile(){
 }
 function replyNoticeId(){
   const {path,params}=route();
-  const id=path==='/listen'&&discovery.reply?discovery.id:path==='/concern'&&params.get('reply')==='1'?params.get('id'):null;
+  const id=path==='/concern'&&params.get('reply')==='1'?params.get('id'):null;
   return id&&!state.answers.some(a=>a.concernId===id)&&eligible(getConcern(id))?id:null;
 }
 function noticeContext(){const {path,params}=route();return path+(['/concern','/chat','/connection'].includes(path)?':'+(params.get('id')??''):'')+(replyNoticeId()?':reply:'+replyNoticeId():'');}
@@ -1185,9 +1223,7 @@ const eligible=c=>Boolean(c&&(c.own||canRespond(c,viewer())&&(state.topics.inclu
 let discovery={id:null,expanded:false,reply:false,sent:false},deckArrival='';
 function openCardReply(){
   if(!discovery.id||discovery.sent)return;
-  discovery.reply=true;
-  render({keepScroll:true,focus:'#answer-body'});
-  $('#answer-form')?.scrollIntoView({behavior:'instant',block:'end'});
+  navigate('/concern?id='+encodeURIComponent(discovery.id)+'&reply=1&from=home');
 }
 function postcardFace(c,{preview=false,composing=false}={}){
   const read=preview?'<span class="card-read">자세히 보기</span>':link('/concern?id='+encodeURIComponent(c.id),'자세히 보기','card-read').replace('class="card-read"','class="card-read" aria-label="고민 자세히 보기"');
@@ -1209,14 +1245,14 @@ function listen(){
   const options={tools,screen:'deck-page text-deck conversation-home',compact:true};
   if(!c)return shell('홈',`<div class="deck-end-card" data-concern=""><div class="card-open deck-empty" tabindex="0" aria-label="모든 고민을 만났어요, 왼쪽으로 밀면 이전 고민"><span class="empty-art">${doodleSvg('envelope')}</span><h2>오늘 도착한 고민을<br>모두 만났어요</h2>${deck.previous?'<p class="deck-return-hint">← 왼쪽으로 밀면 이전 고민</p>':''}${link('/preferences','관심 주제 바꾸기','btn btn-primary')}</div></div>`,options);
   const id=esc(c.id);
-  let response;
-
-  if(discovery.reply)response=`<form id="answer-form" data-id="${id}" data-inline="true" class="card-reply" novalidate><div class="reply-label"><label for="answer-body">내 답변</label>${button('close-card-reply',icon('close'),'icon-button','aria-label="답변 접기, 작성 내용은 저장돼요"')}</div><textarea id="answer-body" name="body" rows="4" minlength="20" maxlength="2000" required aria-describedby="answer-hint answer-error answer-consent" placeholder="저도 그런 날이 있었어요…">${esc(state.replyDrafts[c.id]??'')}</textarea><p id="answer-hint" class="reply-hint">20자 이상</p><p id="answer-error" class="danger" role="alert"></p><div class="reply-submit"><p id="answer-consent">상대가 답변을 선택하면<br>익명 채팅방이 열려요</p><button type="submit" class="card-primary">보내기 ${icon('arrow')}</button></div></form>`;
-  else response=`<div class="card-actions arrival-actions compact-card-actions" role="group" aria-label="고민에 답하기 또는 넘기기">${button('skip-card',`<span class="skip-orb">${icon('close')}</span><span class="skip-caption">넘기기</span>`,'card-secondary',`data-id="${id}" aria-label="넘기기"`)}${button('reply-card',icon('feed')+`<span>${state.replyDrafts[c.id]?'답변 이어쓰기':'답변하기'}</span>`,'card-primary',`data-id="${id}"`)}</div>`;
-  const composing=discovery.reply;
-  if(!composing)options.screen+=' is-browsing';
+  const response=`<div class="card-actions arrival-actions compact-card-actions" role="group" aria-label="고민에 답하기 또는 넘기기">${button('skip-card',`<span class="skip-orb">${icon('close')}</span><span class="skip-caption">넘기기</span>`,'card-secondary',`data-id="${id}" aria-label="넘기기"`)}${button('reply-card',icon('feed')+`<span>${state.replyDrafts[c.id]?'답변 이어쓰기':'답변하기'}</span>`,'card-primary',`data-id="${id}"`)}</div>`;
+  options.screen+=' is-browsing';
   const arrival='<div class="arrival-intro arrival-note"><p>'+typed('오늘, 당신에게 온 이야기','home-arrival',64)+'</p></div>';
-  return shell('홈',`<div class="discovery-stage ${composing?'is-composing':''}">${composing?'':arrival}<div class="concern-stack" data-depth="${composing||discovery.expanded?0:deck.depth}" data-preview="next">${composing||discovery.expanded?'':deckUnderlays(deck)}<article class="concern-card text-card sachin-postcard ${arriving?'card-arriving arrive-'+arriving:''} ${discovery.expanded?'is-expanded':''} ${discovery.reply?'is-replying':''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-previous" aria-hidden="true">이전 고민</span><span class="swipe-stamp stamp-next" aria-hidden="true">다음 고민</span>${postcardFace(c,{composing})}${composing?response:''}</article></div>${composing?'':response}<p class="${composing?'sr-only':'deck-swipe-guide'}" id="swipe-help">${composing?'답변 아래에서 보낼 수 있어요':'← 이전 고민 <span aria-hidden="true">·</span> 다음 고민 →'}</p></div>`,options);
+  return shell('홈',`<div class="discovery-stage">${arrival}<div class="concern-stack" data-depth="${deck.depth}" data-preview="next">${deckUnderlays(deck)}<article class="concern-card text-card sachin-postcard ${arriving?'card-arriving arrive-'+arriving:''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-previous" aria-hidden="true">이전 고민</span><span class="swipe-stamp stamp-next" aria-hidden="true">다음 고민</span>${postcardFace(c)}</article></div>${response}<p class="deck-swipe-guide" id="swipe-help">← 이전 고민 <span aria-hidden="true">·</span> 다음 고민 →</p></div>`,options);
+}
+function replyComposer(c){
+  const back=route().params.get('from')==='home'?'/listen':'/concern?id='+encodeURIComponent(c.id);
+  return shell('답변하기',`<details class="reply-source"><summary><span class="reply-source-meta"><span>${esc(topic(c.category))} · ${publicFacts(c)}</span><span class="reply-recipient-mark" aria-hidden="true">${concernDoodle(c)}</span></span><h2>${esc(c.title)}</h2><span class="reply-source-toggle"><span class="when-closed">고민 펼쳐보기</span><span class="when-open">고민 접기</span>${icon('chevron')}</span></summary><p class="prose">${esc(c.body)}</p></details><form id="answer-form" data-id="${esc(c.id)}" class="reply-letter-form" novalidate><div class="reply-letter"><label for="answer-body" class="reply-letter-address">이 이야기를 꺼낸 당신에게</label><textarea id="answer-body" name="body" rows="7" minlength="20" maxlength="2000" required aria-label="고민에 대한 답변" aria-describedby="reply-length answer-error reply-consent" placeholder="읽으면서 이런 생각이 들었어요…">${esc(state.replyDrafts[c.id]??'')}</textarea><div class="reply-letter-signature"><span>마음을 담아</span><span id="reply-length">20자 이상</span></div><p id="answer-error" class="danger" role="alert"></p></div><div class="reply-letter-actions fixed-actions"><p id="reply-consent" class="form-privacy">${icon('lock')}상대가 답변을 선택하면 익명 채팅방이 열려요</p><button type="submit" class="btn btn-primary btn-block">답변 보내기 ${icon('arrow')}</button></div></form>`,{back,screen:'reply-page reply-composer has-fixed-actions',entry:true});
 }
 function write(){
   const d=state.draft;
@@ -1235,7 +1271,7 @@ function detail(){
     return shell('보낸 답변',`${context}<article class="answer-card sent-answer-letter"><header><span class="sent-answer-mark" aria-hidden="true">${doodleSvg('paperboat')}</span><h2>내 답변</h2>${conn?.closed?'<span class="answer-state">마친 채팅방</span>':!chatAllowed(conn,viewer())&&answered.chatConsent?'<span class="answer-state">답변 선택 대기</span>':''}</header><p class="prose">${esc(answered.body)}</p></article>${chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(id),'채팅방 열기','btn btn-primary btn-block'):link('/listen','다음 고민 보기 '+icon('arrow'),'btn btn-primary btn-block')}${!answered.chatConsent?`<p class="form-privacy">상대가 이 답변을 선택하면 익명 채팅방이 열려요</p>${button('allow-answer-chat','이 답변으로 대화 허용','btn btn-outline btn-block',`data-id="${esc(c.id)}"`)}`:''}${answered.chatConsent&&!conn?.closed&&!chatAllowed(conn,viewer())?demo('고민 작성자가 내 답변을 선택한 상황을 체험해요','demo-accept-sent','상대가 답변 선택하기',`data-id="${esc(c.id)}"`):''}`,{back,screen:'sent-answer-page'});
   }
   if(route().params.get('reply')!=='1')return shell('자세히 보기',`<article class="full-story"><div class="reader-topline"><span class="topic-badge">${topic(c.category)}</span><span class="reader-salutation" lang="en">a note for you</span></div><h2>${esc(c.title)}</h2><p class="prose">${esc(c.body)}</p>${tags(c.tags??[])}<footer class="postcard-sender"><div class="postcard-facts"><strong>${esc(c.ageBand)} · ${esc(c.occupation)}</strong><span>${esc(c.region)}</span></div><span class="postcard-signature" aria-hidden="true">${concernDoodle(c)}</span></footer></article><div class="reader-actions fixed-actions">${link('/concern?id='+encodeURIComponent(c.id)+'&reply=1','답변하기 '+icon('arrow'),'btn btn-primary btn-block')}</div>`,{back,screen:'story-page postcard-reader has-fixed-actions',entry:true});
-  return shell('답변하기',context+`<form id="answer-form" data-id="${esc(c.id)}" class="reply-form" novalidate><label class="sr-only" for="answer-body">고민에 대한 답변</label><textarea id="answer-body" name="body" minlength="20" maxlength="2000" required aria-describedby="reply-length answer-error reply-consent" placeholder="당신의 생각을 들려주세요">${esc(state.replyDrafts[c.id]??'')}</textarea><p id="reply-length" class="field-hint">20자 이상</p><p id="answer-error" class="danger" role="alert"></p><p id="reply-consent" class="form-privacy">${icon('lock')}상대가 답변을 선택하면 익명 채팅방이 열려요</p><button type="submit" class="btn btn-primary btn-block">답변 보내기 ${icon('arrow')}</button></form>`,{back:'/concern?id='+encodeURIComponent(c.id),screen:'reply-page'});
+  return replyComposer(c);
 }
 function mine(){
   const sent=route().params.get('tab')==='answers';
@@ -1424,6 +1460,13 @@ function initSwipe(){
   swipeCleanup=()=>{controller.abort();clearTimeout(timer);commitSwipe=null;};
 }
 function resizeWritingTitle(){const input=$('#concern-title');if(input){input.style.height='0px';input.style.height=Math.max(34,input.scrollHeight)+'px';}}
+function resizeReplyInput(){const input=$('.reply-letter textarea');if(input){input.style.height='auto';input.style.height=input.scrollHeight+'px';}}
+function syncReplyViewport(){
+  const page=$('.reply-composer');if(!page)return;
+  const viewport=window.visualViewport;
+  const inset=viewport&&document.activeElement?.id==='answer-body'?Math.max(0,window.innerHeight-viewport.height-viewport.offsetTop):0;
+  page.style.setProperty('--reply-keyboard',inset+'px');
+}
 
 function render({keepScroll=false,focus=null}={}){
   if(launchPending){
@@ -1440,7 +1483,7 @@ function render({keepScroll=false,focus=null}={}){
   const section=path==='/home'&&['approach','experience','privacy','start'].includes(params.get('section'))?$('#landing-'+params.get('section')):null;
   const heading=section?.querySelector('h2')??$('#app h1');heading?.setAttribute('tabindex','-1');if(focus)$(focus)?.focus({preventScroll:true});else if(!keepScroll)heading?.focus({preventScroll:true});section?.scrollIntoView({behavior:'instant',block:'start'});
   if(path==='/chat')$('#chat-messages')?.scrollTo({top:$('#chat-messages').scrollHeight});
-  $('#announcer').textContent=document.title;updatePageNotice(path);initLanding();initIntro();initSwipe();resizeWritingTitle();resizeChatInput();
+  $('#announcer').textContent=document.title;updatePageNotice(path);initLanding();initIntro();initSwipe();resizeWritingTitle();resizeReplyInput();syncReplyViewport();resizeChatInput();
 }
 function resizeChatInput(){const input=$('#chat-message');if(!input)return;input.style.height='auto';input.style.height=Math.min(120,Math.max(42,input.scrollHeight))+'px';}
 function showDialog(title,copy,confirmLabel,onConfirm){
@@ -1497,7 +1540,7 @@ document.addEventListener('input',event=>{
   if(event.target.id==='concern-title')resizeWritingTitle();
   const form=event.target.closest('#concern-form');if(form)queueDraftNotice(captureDraft(form));
   if(event.target.closest('#signup-form')){state.signupDraft=Object.fromEntries(new FormData($('#signup-form')));$('#form-error').textContent='';save();}
-  const reply=event.target.closest('#answer-form');if(reply){state.replyDrafts[reply.dataset.id]=event.target.value;queueDraftNotice(save());const error=$('#answer-error');if(error)error.textContent='';event.target.removeAttribute('aria-invalid');}
+  const reply=event.target.closest('#answer-form');if(reply){state.replyDrafts[reply.dataset.id]=event.target.value;queueDraftNotice(save());const error=$('#answer-error');if(error)error.textContent='';event.target.removeAttribute('aria-invalid');resizeReplyInput();}
   const chat=event.target.closest('#chat-form');if(chat){state.chatDrafts[chat.dataset.id]=event.target.value;save();resizeChatInput();chat.querySelector('[type="submit"]').disabled=!event.target.value.trim();}
   if(event.target.closest('#preferences-form'))$('#preferences-form button[type="submit"]').disabled=!$('#preferences-form input:checked');
   if(event.target.id==='reveal-consent')$('[data-action="request-reveal"]').disabled=!event.target.checked;
@@ -1531,8 +1574,7 @@ document.addEventListener('submit',event=>{
     state.answers.push({concernId:c.id,body,authorId:viewer().id,authorGender:viewer().gender,chatConsent:true});
     if(!save()){state.answers.pop();if(draft!==undefined)state.replyDrafts[c.id]=draft;return;}
     noticeSeen.delete('reply-restored:'+c.id);
-    if(form.dataset.inline){discovery={id:null,expanded:false,reply:false,sent:false};render();toast('답변을 보냈어요',{href:'/concern?id='+encodeURIComponent(c.id),label:'답변 보기'});}
-    else{render();toast('답변을 보냈어요');}
+    render();toast(nextReplyThanks(),{title:'답변을 보냈어요',drawing:'paperboat',duration:5200});
   }
   if(form.id==='chat-form'){const c=state.connections[form.dataset.id],body=String(f.get('body')).trim();if(!chatAllowed(c,viewer())||!body||body.length>1000)return;
     const draft=state.chatDrafts[c.id];delete state.chatDrafts[c.id];state.messages.push({connectionId:c.id,mine:true,body,time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})});
@@ -1568,7 +1610,6 @@ document.addEventListener('click',event=>{
   if(action==='remove-profile-photo'){photoTask++;const form=$('#profile-form');if(!form)return;form.querySelector('[type="submit"]').disabled=false;captureProfile(form);state.profileDraft.photo='';save();refreshEditorPhoto();$('#photo-status').textContent='사진을 지웠어요. 소개만으로도 괜찮아요';$('#profile-error').textContent='';}
 
   if(action==='reply-card'&&discovery.id===id)openCardReply();
-  if(action==='close-card-reply'){discovery.reply=false;render({keepScroll:true,focus:'[data-action="reply-card"]'});}
   if(action==='next-concern'){discovery={id:null,expanded:false,reply:false,sent:false};render();}
   if(action==='skip-card'&&discovery.id===id)commitSwipe?.('next');
   if(action==='demo-answer'){const c=state.concerns.find(c=>c.id===id);if(c){c.mockAnswers=true;save();render();}}
@@ -1608,7 +1649,12 @@ window.addEventListener('storage',event=>{
 });
 window.addEventListener('hashchange',render);
 window.addEventListener('resize',resizeWritingTitle);
-document.fonts?.ready.then(resizeWritingTitle);
+window.addEventListener('resize',resizeReplyInput);
+window.visualViewport?.addEventListener('resize',syncReplyViewport);
+window.visualViewport?.addEventListener('scroll',syncReplyViewport);
+document.addEventListener('focusin',syncReplyViewport);
+document.addEventListener('focusout',()=>setTimeout(syncReplyViewport,0));
+document.fonts?.ready.then(()=>{resizeWritingTitle();resizeReplyInput();});
 startApp();
 
 </script>
