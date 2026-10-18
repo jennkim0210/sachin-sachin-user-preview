@@ -226,7 +226,7 @@
 .consent-pair .consent-person>.anonymous-avatar{width:64px;height:68px;flex-basis:auto;background:#d0cdde}
 .consent-pair .consent-person>.anonymous-avatar .pen-doodle{width:38px;height:44px;padding:0;border:0;background:none;border-radius:0}
 .consent-person>span:not(.anonymous-avatar){display:flex;align-items:center;gap:4px}
-.consent-pair .consent-person>span>svg:not(.pen-doodle){width:15px;height:15px;border:0;padding:0;background:none;color:var(--blue)}
+.consent-pair .consent-person>span:not(.anonymous-avatar)>svg{width:15px;height:15px;border:0;padding:0;background:none;color:var(--blue)}
 .consent-person small{font-size:10px;color:var(--muted)}.consent-person.yes small{color:var(--blue)}
 @media(max-width:370px){.is-chat .product-header{padding:0 10px}.is-chat .app-main{padding:0 14px}.is-chat .screen-heading{gap:6px}.is-chat .screen-heading h1{font-size:14px}.is-chat .screen-heading .anonymous-avatar,.is-chat .screen-heading .avatar-photo{width:30px;height:34px;flex-basis:30px}.chat-context{padding:10px 12px}.chat-context>span>span{font-size:12px}.chat-list a{gap:12px}.chat-list .anonymous-avatar,.chat-list .avatar-photo{width:51px;height:54px;flex-basis:51px}.chat-list strong{font-size:15px}.message-row .msg{font-size:14px;padding:10px 12px 8px}}
 
@@ -668,7 +668,7 @@
 .portrait .media-fallback .profile-person-drawing{width:84px;height:95px}
 .canvas-page .page{padding-bottom:36px}
 .canvas-page .product-header{z-index:20;background:var(--paper)}
-.canvas-done{min-height:40px;padding:9px 16px;border-radius:var(--radius-control,12px);background:var(--blue);color:var(--sheet);font:inherit;font-size:14px;white-space:nowrap}
+.canvas-done{min-height:44px;padding:9px 16px;border-radius:var(--radius-control,12px);background:var(--blue);color:var(--sheet);font:inherit;font-size:14px;white-space:nowrap}
 .canvas-done:disabled{opacity:.45}
 .canvas-privacy.profile-privacy{font-size:11px;line-height:1.6;margin:4px 0 20px;display:flex;align-items:center;justify-content:center;gap:7px;color:#727078}
 .profile-edit-page .canvas-privacy{margin-bottom:4px}
@@ -724,7 +724,7 @@
 .profile-canvas .canvas-feed{padding:0;display:flex;flex-direction:column;gap:0}
 .canvas-feed:empty{display:none}
 .canvas-block{position:relative;min-width:0;margin:25px 0 0;padding:24px 0 0;border-top:1px solid #d6d3d8}
-.canvas-block-menu{position:absolute;top:11px;right:-8px;min-height:38px;width:38px;display:grid;place-items:center;color:#79727e;border-radius:10px;z-index:2}
+.canvas-block-menu{position:absolute;top:8px;right:-8px;min-height:44px;width:44px;display:grid;place-items:center;color:#79727e;border-radius:10px;z-index:2}
 .canvas-block-menu svg{width:21px;height:21px}
 .canvas-note .canvas-note-title{display:block;font-size:19px;line-height:1.6;font-weight:400;color:var(--blue);margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
 .is-editable .canvas-note .canvas-note-title{padding-right:32px}
@@ -788,7 +788,7 @@
 @media(max-width:370px){.profile-canvas .canvas-content{padding-left:18px;padding-right:18px}.profile-canvas .canvas-identity h2{font-size:26px}.profile-canvas .canvas-basics{font-size:11px}.profile-canvas .canvas-bio,.profile-canvas .canvas-note-body{font-size:15px}.canvas-privacy.profile-privacy{font-size:10px}}
 
 .profile-canvas #own-photo-slot{position:relative}.profile-canvas #own-photo-slot>img{position:absolute;inset:0}.profile-canvas #own-photo-slot:has(img:not([hidden])) .canvas-person-placeholder{visibility:hidden}
-.shared-profile-own-link{font-size:12px;line-height:1.4;color:var(--blue);min-height:40px;display:flex;align-items:center;justify-content:center;padding:7px 5px;white-space:nowrap}
+.shared-profile-own-link{font-size:.8125rem;line-height:1.4;color:var(--blue);min-height:44px;display:flex;align-items:center;justify-content:center;padding:7px 5px;white-space:nowrap}
 .connection-profile-page.is-profile-open .profile-letter-actions{margin-top:24px}
 .sharing-profile-link{display:flex;align-items:center;gap:13px;text-align:left;padding:16px;margin:26px 0 0;border:1px solid #cfccd5;border-radius:14px;background:var(--sheet);color:inherit}
 .sharing-profile-link .own-portrait{display:block;flex:0 0 46px;width:46px;height:52px;border-radius:10px;background:#dfdce7;overflow:hidden}
@@ -1049,6 +1049,27 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 @media(max-height:500px){.native-ui.is-chat .product-header{height:52px;min-height:48px}.native-ui.is-chat .chat-context{min-height:50px;padding-block:7px}.native-ui.is-chat .chat-context small{display:none}.native-ui.is-chat .chat-body{padding-top:12px}.native-ui.is-chat .chat-input{margin-bottom:max(6px,env(safe-area-inset-bottom))}}
 .native-ui.is-chat.is-compact-viewport .product-header{height:48px;min-height:44px}
 .native-ui.is-chat.is-compact-viewport .chat-context{display:none}
+
+
+/* Shared screen chrome. Layout variants own content, not header geometry.
+   Primary destinations retain their dock-aligned header; focused screens share
+   title/back/actions, safe-area padding and minimum touch targets. */
+:root{--screen-header-row:64px;--control-hit:44px}
+.native-ui.is-focused .product-header{height:auto;min-height:calc(var(--screen-header-row) + env(safe-area-inset-top));padding-block:calc(10px + env(safe-area-inset-top)) 10px;gap:8px;flex-wrap:wrap}
+.native-ui.is-focused .screen-heading{gap:8px;flex:1}
+.native-ui.is-focused .product-header:has(.header-tools>:not(.icon-button)) .screen-heading{flex:1 1 10rem}
+.native-ui.is-focused .header-tools{max-width:100%}
+.native-ui.is-focused .screen-heading h1{font-size:1.25rem;line-height:1.4;white-space:normal;word-break:keep-all;overflow-wrap:anywhere;color:var(--ink)}
+.native-ui .product-header .back,.native-ui .header-tools>:is(a,button){min-width:var(--control-hit);min-height:var(--control-hit);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center}
+.native-ui .product-header>nav a{min-width:var(--control-hit);justify-content:center}
+.native-ui .header-tools>:is(a,button):not(.icon-button){font-size:.8125rem;line-height:1.4;white-space:normal}
+.anonymous-avatar>.ui-pen{width:56%;height:56%;color:var(--blue)}
+.story-ledger-mark>.ui-pen{width:25px;height:25px;color:var(--blue)}
+.native-ui.is-chat .product-header{padding-inline:20px}
+.native-ui.is-chat .back{margin-left:-12px}
+@media(max-width:370px){.native-ui.is-chat .product-header{padding-inline:16px}}
+@media(max-height:500px){.native-ui.is-focused .product-header{--screen-header-row:52px;padding-block:calc(4px + env(safe-area-inset-top)) 4px}}
+.native-ui.is-focused.is-compact-viewport .product-header{--screen-header-row:48px;padding-block:2px}
 </style>
   
 </head>
@@ -2019,22 +2040,28 @@ function profilePicture(image,name,personId,cls='',gender='male'){
   return `<span class="portrait ${cls}"><span class="media-fallback" aria-hidden="true">${fallback}<small class="photo-fallback-label">사진을 불러오지 못했어요</small></span><img src="${esc(image)}" alt="${esc(name)}의 프로필 사진" width="720" height="720" decoding="async"></span>`;
 }
 function portrait(cls='',c){const info=profileInfo(c);return profilePicture(info?.image,info?.name??'사친',counterpartId(c,state.concerns),cls,c.otherGender);}
-function anonymousAvatar(c){return '<span class="anonymous-avatar" role="img" aria-label="익명 프로필">'+personDoodle(counterpartId(c,state.concerns))+'</span>';}
+function anonymousAvatar(){return '<span class="anonymous-avatar" role="img" aria-label="익명 프로필">'+icon('me')+'</span>';}
 function consentPerson(c,label,agreed){return `<span class="consent-person ${agreed?'yes':''}">${anonymousAvatar(c)}<span>${label}${agreed?icon('check'):''}</span><small>${agreed?'공개 동의':'아직 비공개'}</small></span>`;}
 function choiceFrom(p){return p.has('category')?{category:p.get('category')}:p.has('tag')?{tag:p.get('tag')}:null;}
 function choiceQuery(c){return c?.category?'category='+encodeURIComponent(c.category):c?.tag?'tag='+encodeURIComponent(c.tag):'';}
 const tabs=[['/listen','홈','home'],['/mine','내 고민','mine'],['/connections','채팅','chat'],['/me','마이','me']];
+// Route policy is shared by the header and both navigation layouts. Child
+// screens never opt into global controls, even when their parent has a bell.
+function screenNavigation(path,{entry=false,chat=false}={}){
+  return Boolean(state.member)&&!entry&&!chat&&tabs.some(([href])=>href===path);
+}
+function navigationItems(path){
+  return tabs.map(([href,label,symbol])=>`<a href="#${href}" ${href===path?'class="active" aria-current="page"':''}>${icon(symbol)}<span>${label}</span></a>`).join('');
+}
+function screenHeader(title,{back,tools='',compact=false,primary=false,nav=''}={}){
+  const heading=compact?`<div class="screen-heading brand-heading">${headerBrand()}<h1 class="sr-only" tabindex="-1">${esc(title)}</h1></div>`:`<div class="screen-heading">${back?link(esc(back),icon('back'),'back').replace('class="back"','class="back" aria-label="뒤로"'):''}<h1 tabindex="-1">${esc(title)}</h1></div>`;
+  return `<header class="product-header">${heading}${primary?'<nav aria-label="주 메뉴">'+nav+'</nav>':''}<div class="header-tools">${primary?notificationButton():tools}</div></header>`;
+}
 function shell(title,body,{back,chat=false,tools='',screen='',entry=false,compact=false}={}){
   const {path}=route();
-  // Only the four destinations own global navigation. Child routes keep their
-  // contextual back action, including empty/error states and onboarding redirects.
-  const showNavigation=Boolean(state.member)&&!entry&&!chat&&tabs.some(([href])=>href===path);
-  const active=path;
-  const nav=tabs.map(([href,label,symbol])=>`<a href="#${href}" ${href===active?'class="active" aria-current="page"':''}>${icon(symbol)}<span>${label}</span></a>`).join('');
-  const bell=state.member&&!chat&&path!=='/notifications'?notificationButton():'';
-  const headingBell=showNavigation?'':bell;
-  const heading=compact?`<div class="screen-heading brand-heading">${headerBrand()}<h1 class="sr-only" tabindex="-1">${esc(title)}</h1>${headingBell}</div>`:`<div class="screen-heading">${back?link(esc(back),icon('back'),'back').replace('class="back"','class="back" aria-label="뒤로"'):''}<h1 tabindex="-1">${esc(title)}</h1>${headingBell}</div>`;
-  return `<div class="product-app native-ui ${showNavigation?'has-tabbar':'is-focused'} ${chat?'is-chat':''} ${entry?'is-entry':''} ${screen}"><header class="product-header">${heading}${showNavigation?'<nav aria-label="주 메뉴">'+nav+'</nav>':''}<div class="header-tools">${tools}${showNavigation?bell:''}</div></header><main class="app-main"><div class="page ${chat?'chat':''}">${body}</div></main>${showNavigation?'<nav class="tabbar" aria-label="하단 메뉴">'+nav+'</nav>':''}</div>`;
+  const showNavigation=screenNavigation(path,{entry,chat}),nav=navigationItems(path);
+  const header=screenHeader(title,{back,tools,compact,primary:showNavigation,nav});
+  return `<div class="product-app native-ui ${showNavigation?'has-tabbar':'is-focused'} ${chat?'is-chat':''} ${entry?'is-entry':''} ${screen}">${header}<main class="app-main"><div class="page ${chat?'chat':''}">${body}</div></main>${showNavigation?'<nav class="tabbar" aria-label="하단 메뉴">'+nav+'</nav>':''}</div>`;
 }
 
 const INTRO_STORIES=[
@@ -2248,7 +2275,7 @@ function detail(){
   const fromChat=state.connections[route().params.get('fromChat')];
   const from=route().params.get('from');
   const back=chatAllowed(fromChat,viewer())&&fromChat.concernId===c?.id?'/chat?id='+encodeURIComponent(fromChat.id):from==='notifications'?notificationInboxRoute():from==='received'?'/mine?tab=received':from==='answers'?'/mine?tab=answers':from==='mine'?'/mine':'/listen';
-  if(!c||!eligible(c))return shell('고민',empty('아직 볼 수 없는 고민이에요','관심 주제를 먼저 선택해 주세요',link('/me','관심 주제 설정')),{back});
+  if(!c||!eligible(c))return shell('고민',empty('아직 볼 수 없는 고민이에요','관심 주제를 먼저 선택해 주세요',link('/preferences','관심 주제 설정')),{back});
   const answered=state.answers.find(a=>a.concernId===c.id),answers=c.own?ownAnswers(c):[];
   const context=concernContext(c,{open:chatAllowed(fromChat,viewer())&&fromChat.concernId===c.id});
   if(c.own)return shell('받은 답변',context+(answers.length?`<div class="answer-list">${answers.map(a=>{const id=connectionKey(c.id,a.id),conn=state.connections[id];return `<article class="answer-card" id="received-${esc(a.id)}" tabindex="-1"><header>${anonymousAvatar({otherId:a.authorId})}<strong>익명의 사친</strong></header><p class="prose">${esc(a.body)}</p><div class="answer-actions">${button('helpful',icon('heart'),'icon-button'+(state.helpfulAnswers[id]?' is-helpful':''),`aria-label="도움이 됐어요" aria-pressed="${Boolean(state.helpfulAnswers[id])}" data-id="${esc(id)}"`)}${conn?.closed?'<span class="meta">마친 채팅방</span>':chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(id),'채팅방 열기','text-link'):button('accept-answer','대화하기','btn btn-primary btn-sm',`data-id="${esc(id)}" data-concern="${esc(c.id)}" data-answer="${a.id}"`)}</div></article>`;}).join('')}</div>`:`<section class="letter-empty answer-waiting">${doodleSvg('envelope')}<h2>답변을 기다리고 있어요</h2>${link('/listen','다른 고민 들어주기','text-link')}</section>${demo('가상 답변으로 다음 화면을 확인할 수 있어요','demo-answer','예시 답변 받기',`data-id="${esc(c.id)}"`)}`),{back:back.startsWith('/chat')||from==='notifications'||from==='received'?back:'/mine',screen:'received-answers-page'});
@@ -2292,8 +2319,9 @@ function profile(c){
 function ownPublicProfile(member,profile){return profileDisclosure(member,profile);}
 function profileEditorValue(){return state.profileDraft??{...viewer(),...state.profile};}
 function editingConnection(){const c=state.connections[route().params.get('connection')];return chatAllowed(c,viewer())?c:null;}
-function editorRoute(path){const c=editingConnection();return path+(c?'?connection='+encodeURIComponent(c.id):'');}
-function editorReturn(){const c=editingConnection();return c?'/connection?id='+encodeURIComponent(c.id):'/me';}
+function profileOrigin(){return {account:'/settings/account',privacy:'/settings/privacy'}[route().params.get('from')]??'/me';}
+function editorRoute(path){const c=editingConnection(),from=route().params.get('from');return path+(c?'?connection='+encodeURIComponent(c.id):['account','privacy'].includes(from)?'?from='+from:'');}
+function editorReturn(){const c=editingConnection();return c?'/connection?id='+encodeURIComponent(c.id):profileOrigin();}
 function sharingPreview(c){
   return link('/profile?connection='+encodeURIComponent(c.id),ownPortrait(state.profile.photo)+'<span><strong>공개할 내 프로필</strong><small>사진 · 글 · 공개 정보 확인</small></span>'+icon('back'),'sharing-profile-link');
 }
@@ -2375,10 +2403,10 @@ function notificationPreferences(){
   return shell('알림 설정',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('bell')}</span><h2>알림을 받을 항목</h2><p>앱 안에서 새 소식을 표시할 항목을 선택해 주세요</p></div><fieldset class="notification-switches"><legend class="sr-only">앱 안 알림 종류</legend>${choices.map(([key,title,copy])=>`<label class="setting-switch-row"><span><strong>${title}</strong><small>${copy}</small></span><span class="pen-switch"><input type="checkbox" role="switch" data-notification-setting="${key}" aria-label="${title}" ${state.notificationSettings[key]?'checked':''}><i aria-hidden="true"></i></span></label>`).join('')}</fieldset><p class="notification-preference-note">끄더라도 알림함에서 소식을 확인할 수 있어요</p>`,{back:route().params.get('from')==='notifications'?notificationInboxRoute():'/me',screen:'service-page'});
 }
 function privacySettings(){
-  return shell('안전과 프로필 공개',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('lock')}</span><h2>내 정보의 공개 범위</h2></div><div class="service-explanations"><section><h3>고민은 기본적으로 익명이에요</h3><p>연령대·하는 일·지역만 함께 전해져요<br>이름과 사진은 고민 카드에 나오지 않아요</p></section><section><h3>서로 동의해야 프로필이 열려요</h3><p>익명 대화에서 상대별로 공개 여부를 선택해요<br>마이페이지에서 사진을 올려도 바로 공개되지 않아요</p></section><section><h3>편하지 않은 대화는 멈출 수 있어요</h3><p>채팅방 오른쪽 위 나가기 버튼으로 대화를 끝낼 수 있어요</p></section></div>${serviceRow('/profile','상대에게 보일 내 프로필')}${serviceRow('/support?topic=safety','안전 관련 도움받기')}${serviceRow('/legal?doc=privacy&from=privacy','개인정보처리방침')}`,{back:'/settings',screen:'service-page'});
+  return shell('안전과 프로필 공개',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('lock')}</span><h2>내 정보의 공개 범위</h2></div><div class="service-explanations"><section><h3>고민은 기본적으로 익명이에요</h3><p>연령대·하는 일·지역만 함께 전해져요<br>이름과 사진은 고민 카드에 나오지 않아요</p></section><section><h3>서로 동의해야 프로필이 열려요</h3><p>익명 대화에서 상대별로 공개 여부를 선택해요<br>마이페이지에서 사진을 올려도 바로 공개되지 않아요</p></section><section><h3>편하지 않은 대화는 멈출 수 있어요</h3><p>채팅방 오른쪽 위 대화 메뉴(···)에서 ‘채팅방 나가기’를 선택해 주세요</p></section></div>${serviceRow('/profile?from=privacy','상대에게 보일 내 프로필')}${serviceRow('/support?topic=safety','안전 관련 도움받기')}${serviceRow('/legal?doc=privacy&from=privacy','개인정보처리방침')}`,{back:'/settings',screen:'service-page'});
 }
 function accountSettings(){
-  return shell('계정 관리',`<dl class="account-facts"><div><dt>닉네임</dt><dd>${esc(viewer().nickname)}</dd></div><div><dt>하는 일</dt><dd>${esc(viewer().occupation)}</dd></div><div><dt>지역</dt><dd>${esc(viewer().region)}</dd></div></dl>${serviceRow('/profile/edit','기본 정보 수정')}${serviceRow('/legal?doc=privacy&from=account','내 정보와 개인정보 보호')}<section class="account-access"><h2>로그인 계정</h2><p>아직 연결된 로그인 계정이 없어요</p><div><button disabled>로그아웃</button><button disabled>회원 탈퇴</button></div><small>로그인 계정이 연결되면 이용할 수 있어요</small></section>`,{back:'/settings',screen:'service-page'});
+  return shell('계정 관리',`<dl class="account-facts"><div><dt>닉네임</dt><dd>${esc(viewer().nickname)}</dd></div><div><dt>하는 일</dt><dd>${esc(viewer().occupation)}</dd></div><div><dt>지역</dt><dd>${esc(viewer().region)}</dd></div></dl>${serviceRow('/profile/edit?from=account','기본 정보 수정')}${serviceRow('/legal?doc=privacy&from=account','내 정보와 개인정보 보호')}<section class="account-access"><h2>로그인 계정</h2><p>아직 연결된 로그인 계정이 없어요</p><div><button disabled>로그아웃</button><button disabled>회원 탈퇴</button></div><small>로그인 계정이 연결되면 이용할 수 있어요</small></section>`,{back:'/settings',screen:'service-page'});
 }
 function storyHub(){
   const tab=['received','answers'].includes(route().params.get('tab'))?route().params.get('tab'):'mine';
@@ -2386,7 +2414,7 @@ function storyHub(){
   const items=tab==='answers'?[...state.answers].reverse().map(a=>({c:getConcern(a.concernId),a})).filter(x=>x.c):tab==='received'?owned.flatMap(c=>ownAnswers(c).map(a=>({c,a}))):owned.map(c=>({c}));
   const tabs=[['mine','작성한 고민','/mine'],['received','받은 답변','/mine?tab=received'],['answers','보낸 답변','/mine?tab=answers']];
   const draft=tab==='mine'&&(state.draft.title.trim()||state.draft.body.trim())?`<a class="story-draft-row" href="#/write?from=mine">${doodleSvg('pencil')}<span><strong>${esc(state.draft.title||'쓰던 고민')}</strong><small>임시저장</small></span>${icon('back')}</a>`:'';
-  const list=items.length?`<ul class="story-ledger">${items.map(({c,a})=>{const target='/concern?id='+encodeURIComponent(c.id)+'&from='+tab+(tab==='received'?'&answer='+encodeURIComponent(a.id):'');const connected=allConnections().some(room=>room.concernId===c.id&&(tab!=='received'||room.answerId===a.id)&&chatAllowed(room,viewer()));return `<li><a href="#${target}"><span class="story-ledger-mark">${tab==='received'?personDoodle(a.authorId):concernDoodle(c)}</span><span class="story-ledger-copy"><small>${topic(c.category)}${tab==='mine'?' · '+(ownAnswers(c).length?'답변 도착':'답변 기다리는 중'):connected?' · 대화 중':''}</small><strong>${esc(c.title)}</strong>${a?`<span>${esc(a.body)}</span>`:''}</span>${icon('back')}</a></li>`;}).join('')}</ul>`:`<section class="letter-empty story-hub-empty">${doodleSvg(tab==='answers'?'paperplane':'envelope')}<h2>${tab==='answers'?'아직 보낸 답변이 없어요':tab==='received'?'아직 받은 답변이 없어요':'아직 작성한 고민이 없어요'}</h2><p>${tab==='answers'?'홈에서 고민을 읽고 답변할 수 있어요':tab==='received'?'내 고민에 도착한 답변을 확인할 수 있어요':'작성한 고민을 이곳에서 관리할 수 있어요'}</p>${tab==='answers'?link('/listen','고민 만나보기','text-link'):''}</section>`;
+  const list=items.length?`<ul class="story-ledger">${items.map(({c,a})=>{const target='/concern?id='+encodeURIComponent(c.id)+'&from='+tab+(tab==='received'?'&answer='+encodeURIComponent(a.id):'');const connected=allConnections().some(room=>room.concernId===c.id&&(tab!=='received'||room.answerId===a.id)&&chatAllowed(room,viewer()));return `<li><a href="#${target}"><span class="story-ledger-mark">${tab==='received'?icon('me'):concernDoodle(c)}</span><span class="story-ledger-copy"><small>${topic(c.category)}${tab==='mine'?' · '+(ownAnswers(c).length?'답변 도착':'답변 기다리는 중'):connected?' · 대화 중':''}</small><strong>${esc(c.title)}</strong>${a?`<span>${esc(a.body)}</span>`:''}</span>${icon('back')}</a></li>`;}).join('')}</ul>`:`<section class="letter-empty story-hub-empty">${doodleSvg(tab==='answers'?'paperplane':'envelope')}<h2>${tab==='answers'?'아직 보낸 답변이 없어요':tab==='received'?'아직 받은 답변이 없어요':'아직 작성한 고민이 없어요'}</h2><p>${tab==='answers'?'홈에서 고민을 읽고 답변할 수 있어요':tab==='received'?'내 고민에 도착한 답변을 확인할 수 있어요':'작성한 고민을 이곳에서 관리할 수 있어요'}</p>${tab==='answers'?link('/listen','고민 만나보기','text-link'):''}</section>`;
   return shell('내 고민',`<nav class="story-hub-tabs" aria-label="고민과 답변 종류">${tabs.map(([id,label,path])=>`<a href="#${path}" ${tab===id?'aria-current="page" class="active"':''}>${label}</a>`).join('')}</nav>${draft}${list}<div class="story-fab-wrap">${link('/write?from=mine'+(tab==='mine'?'':'&tab='+tab),'<span>고민 쓰기</span>','story-write-fab')}</div>`,{screen:'story-hub-page'});
 }
 function billing(){
@@ -2399,7 +2427,7 @@ const FAQ=[
   ['언제 채팅방이 열리나요?','고민을 쓴 사람이 마음에 드는 답변을 선택하면 익명 채팅방이 열려요'],
   ['사진을 등록하면 바로 공개되나요?','아니요. 사진과 소개는 대화 중인 상대와 서로 공개에 동의했을 때만 열려요'],
   ['받은 답변과 보낸 답변은 어디서 보나요?','하단 내 고민에서 작성한 고민, 받은 답변, 보낸 답변을 나눠 볼 수 있어요'],
-  ['불편한 대화는 어떻게 멈추나요?','채팅방 오른쪽 위 나가기 버튼을 눌러 주세요. 나간 대화와 상대의 프로필은 다시 열 수 없어요']
+  ['불편한 대화는 어떻게 멈추나요?','채팅방 오른쪽 위 대화 메뉴(···)에서 ‘채팅방 나가기’를 선택해 주세요. 나간 대화와 상대의 프로필은 다시 열 수 없어요']
 ];
 function support(){return shell('고객센터',`<div class="support-heading">${doodleSvg('headphones')}<h2>어떤 도움이 필요하세요?</h2></div>${serviceSection('문의와 답변',serviceRow('/support/write'+(route().params.get('topic')==='safety'?'?category=safety':''),'문의 작성')+serviceRow('/support/history','내 문의 내역',{value:state.supportDraft.body?'작성 중':''}))}<section class="faq-section"><h2>자주 묻는 질문</h2>${FAQ.map(([q,a])=>`<details class="faq-item"><summary>${q}${icon('plus')}</summary><p>${a}</p></details>`).join('')}</section>${serviceSection('서비스 안내',serviceRow('/support/notices','공지사항')+serviceRow('/legal?doc=community','커뮤니티 가이드'))}`,{back:'/me',screen:'service-page'});}
 function supportCompose(){
@@ -2419,9 +2447,9 @@ function legal(){
 }
 
 function ownProfile(){
-  const c=editingConnection(),context=c?'?connection='+encodeURIComponent(c.id):'',open=c&&profilesVisible(c,viewer());
+  const c=editingConnection(),open=c&&profilesVisible(c,viewer());
   const copy=c?(open?'이 상대에게 공개된 내 프로필이에요':'서로 동의하면 이 모습으로 보여요'):'서로 동의한 상대에게 보이는 모습이에요';
-  return shell(c?'내 공개 프로필':'내 프로필',`<p class="profile-privacy canvas-privacy">${icon('lock')}${copy}</p>${profileLetter(ownPublicProfile(viewer(),state.profile),{label:'상대에게 보일 내 프로필'})}<p class="profile-self-reported">직업·학력 등은 본인이 작성한 정보예요</p>${c?'<div class="own-letter-actions">'+link('/connection?id='+encodeURIComponent(c.id),open?'상대 프로필로':'공개 제안으로 돌아가기','btn btn-primary btn-block')+'</div>':''}`,{back:c?'/connection?id='+encodeURIComponent(c.id):'/me',tools:link('/profile/edit'+context,'수정','shared-profile-own-link'),screen:'own-profile-page stationery-page canvas-page'});
+  return shell(c?'내 공개 프로필':'내 프로필',`<p class="profile-privacy canvas-privacy">${icon('lock')}${copy}</p>${profileLetter(ownPublicProfile(viewer(),state.profile),{label:'상대에게 보일 내 프로필'})}<p class="profile-self-reported">직업·학력 등은 본인이 작성한 정보예요</p>${c?'<div class="own-letter-actions">'+link('/connection?id='+encodeURIComponent(c.id),open?'상대 프로필로':'공개 제안으로 돌아가기','btn btn-primary btn-block')+'</div>':''}`,{back:c?'/connection?id='+encodeURIComponent(c.id):profileOrigin(),tools:link(editorRoute('/profile/edit'),'수정','shared-profile-own-link'),screen:'own-profile-page stationery-page canvas-page'});
 }
 
 function editorPhoto(photo){return `<span class="canvas-person-placeholder">${profilePersonSvg(viewer().gender)}</span>${photo?`<img src="${esc(photo)}" alt="선택한 프로필 사진">`:''}`;}

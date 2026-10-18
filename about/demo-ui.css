@@ -214,7 +214,7 @@
 .consent-pair .consent-person>.anonymous-avatar{width:64px;height:68px;flex-basis:auto;background:#d0cdde}
 .consent-pair .consent-person>.anonymous-avatar .pen-doodle{width:38px;height:44px;padding:0;border:0;background:none;border-radius:0}
 .consent-person>span:not(.anonymous-avatar){display:flex;align-items:center;gap:4px}
-.consent-pair .consent-person>span>svg:not(.pen-doodle){width:15px;height:15px;border:0;padding:0;background:none;color:var(--blue)}
+.consent-pair .consent-person>span:not(.anonymous-avatar)>svg{width:15px;height:15px;border:0;padding:0;background:none;color:var(--blue)}
 .consent-person small{font-size:10px;color:var(--muted)}.consent-person.yes small{color:var(--blue)}
 @media(max-width:370px){.is-chat .product-header{padding:0 10px}.is-chat .app-main{padding:0 14px}.is-chat .screen-heading{gap:6px}.is-chat .screen-heading h1{font-size:14px}.is-chat .screen-heading .anonymous-avatar,.is-chat .screen-heading .avatar-photo{width:30px;height:34px;flex-basis:30px}.chat-context{padding:10px 12px}.chat-context>span>span{font-size:12px}.chat-list a{gap:12px}.chat-list .anonymous-avatar,.chat-list .avatar-photo{width:51px;height:54px;flex-basis:51px}.chat-list strong{font-size:15px}.message-row .msg{font-size:14px;padding:10px 12px 8px}}
 
@@ -656,7 +656,7 @@
 .portrait .media-fallback .profile-person-drawing{width:84px;height:95px}
 .canvas-page .page{padding-bottom:36px}
 .canvas-page .product-header{z-index:20;background:var(--paper)}
-.canvas-done{min-height:40px;padding:9px 16px;border-radius:var(--radius-control,12px);background:var(--blue);color:var(--sheet);font:inherit;font-size:14px;white-space:nowrap}
+.canvas-done{min-height:44px;padding:9px 16px;border-radius:var(--radius-control,12px);background:var(--blue);color:var(--sheet);font:inherit;font-size:14px;white-space:nowrap}
 .canvas-done:disabled{opacity:.45}
 .canvas-privacy.profile-privacy{font-size:11px;line-height:1.6;margin:4px 0 20px;display:flex;align-items:center;justify-content:center;gap:7px;color:#727078}
 .profile-edit-page .canvas-privacy{margin-bottom:4px}
@@ -712,7 +712,7 @@
 .profile-canvas .canvas-feed{padding:0;display:flex;flex-direction:column;gap:0}
 .canvas-feed:empty{display:none}
 .canvas-block{position:relative;min-width:0;margin:25px 0 0;padding:24px 0 0;border-top:1px solid #d6d3d8}
-.canvas-block-menu{position:absolute;top:11px;right:-8px;min-height:38px;width:38px;display:grid;place-items:center;color:#79727e;border-radius:10px;z-index:2}
+.canvas-block-menu{position:absolute;top:8px;right:-8px;min-height:44px;width:44px;display:grid;place-items:center;color:#79727e;border-radius:10px;z-index:2}
 .canvas-block-menu svg{width:21px;height:21px}
 .canvas-note .canvas-note-title{display:block;font-size:19px;line-height:1.6;font-weight:400;color:var(--blue);margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
 .is-editable .canvas-note .canvas-note-title{padding-right:32px}
@@ -776,7 +776,7 @@
 @media(max-width:370px){.profile-canvas .canvas-content{padding-left:18px;padding-right:18px}.profile-canvas .canvas-identity h2{font-size:26px}.profile-canvas .canvas-basics{font-size:11px}.profile-canvas .canvas-bio,.profile-canvas .canvas-note-body{font-size:15px}.canvas-privacy.profile-privacy{font-size:10px}}
 
 .profile-canvas #own-photo-slot{position:relative}.profile-canvas #own-photo-slot>img{position:absolute;inset:0}.profile-canvas #own-photo-slot:has(img:not([hidden])) .canvas-person-placeholder{visibility:hidden}
-.shared-profile-own-link{font-size:12px;line-height:1.4;color:var(--blue);min-height:40px;display:flex;align-items:center;justify-content:center;padding:7px 5px;white-space:nowrap}
+.shared-profile-own-link{font-size:.8125rem;line-height:1.4;color:var(--blue);min-height:44px;display:flex;align-items:center;justify-content:center;padding:7px 5px;white-space:nowrap}
 .connection-profile-page.is-profile-open .profile-letter-actions{margin-top:24px}
 .sharing-profile-link{display:flex;align-items:center;gap:13px;text-align:left;padding:16px;margin:26px 0 0;border:1px solid #cfccd5;border-radius:14px;background:var(--sheet);color:inherit}
 .sharing-profile-link .own-portrait{display:block;flex:0 0 46px;width:46px;height:52px;border-radius:10px;background:#dfdce7;overflow:hidden}
@@ -1037,6 +1037,27 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 @media(max-height:500px){.native-ui.is-chat .product-header{height:52px;min-height:48px}.native-ui.is-chat .chat-context{min-height:50px;padding-block:7px}.native-ui.is-chat .chat-context small{display:none}.native-ui.is-chat .chat-body{padding-top:12px}.native-ui.is-chat .chat-input{margin-bottom:max(6px,env(safe-area-inset-bottom))}}
 .native-ui.is-chat.is-compact-viewport .product-header{height:48px;min-height:44px}
 .native-ui.is-chat.is-compact-viewport .chat-context{display:none}
+
+
+/* Shared screen chrome. Layout variants own content, not header geometry.
+   Primary destinations retain their dock-aligned header; focused screens share
+   title/back/actions, safe-area padding and minimum touch targets. */
+:root{--screen-header-row:64px;--control-hit:44px}
+.native-ui.is-focused .product-header{height:auto;min-height:calc(var(--screen-header-row) + env(safe-area-inset-top));padding-block:calc(10px + env(safe-area-inset-top)) 10px;gap:8px;flex-wrap:wrap}
+.native-ui.is-focused .screen-heading{gap:8px;flex:1}
+.native-ui.is-focused .product-header:has(.header-tools>:not(.icon-button)) .screen-heading{flex:1 1 10rem}
+.native-ui.is-focused .header-tools{max-width:100%}
+.native-ui.is-focused .screen-heading h1{font-size:1.25rem;line-height:1.4;white-space:normal;word-break:keep-all;overflow-wrap:anywhere;color:var(--ink)}
+.native-ui .product-header .back,.native-ui .header-tools>:is(a,button){min-width:var(--control-hit);min-height:var(--control-hit);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center}
+.native-ui .product-header>nav a{min-width:var(--control-hit);justify-content:center}
+.native-ui .header-tools>:is(a,button):not(.icon-button){font-size:.8125rem;line-height:1.4;white-space:normal}
+.anonymous-avatar>.ui-pen{width:56%;height:56%;color:var(--blue)}
+.story-ledger-mark>.ui-pen{width:25px;height:25px;color:var(--blue)}
+.native-ui.is-chat .product-header{padding-inline:20px}
+.native-ui.is-chat .back{margin-left:-12px}
+@media(max-width:370px){.native-ui.is-chat .product-header{padding-inline:16px}}
+@media(max-height:500px){.native-ui.is-focused .product-header{--screen-header-row:52px;padding-block:calc(4px + env(safe-area-inset-top)) 4px}}
+.native-ui.is-focused.is-compact-viewport .product-header{--screen-header-row:48px;padding-block:2px}
 
 /* Display frame, independent of the visitor's account. */
 html,body{height:100%;overflow:hidden;scroll-behavior:auto}body{margin:0}.demo-document [hidden]{display:none!important}.demo-document .product-header{position:sticky;top:0}.demo-document a,.demo-document button,.demo-document input,.demo-document textarea{pointer-events:none}.demo-document .chat-body{scrollbar-width:none;overscroll-behavior:auto}.demo-document .chat-body::-webkit-scrollbar{display:none}.demo-document .message-row.is-arriving{animation:demo-arrive .3s ease-out both}.demo-document .profile-self-reported,.demo-document .profile-actions{display:none}.demo-document .profile-canvas.newly-opened{animation:none}.demo-document .connection-profile-page{padding-bottom:24px}.demo-document .is-profile-private .app-main{margin-top:8px}.demo-document .is-profile-private .reveal-letter{padding-top:10px}.demo-document .is-profile-private .reveal-letter h2{font-size:1.15rem}.demo-document .is-profile-private .reveal-description{font-size:.8rem}.demo-document .is-profile-private .reveal-letter-actions{margin-top:22px}.demo-document .is-profile-private .sharing-profile-link{margin-block:22px}.demo-document .is-profile-open .canvas-cover{max-height:320px}.demo-document .is-profile-open .canvas-cover img{object-fit:cover}.demo-document .is-profile-open .canvas-content{padding-top:20px}.demo-document .is-profile-open .canvas-bio{font-size:1rem;line-height:1.8}.demo-document .is-profile-open .canvas-identity h2{font-size:1.75rem}
