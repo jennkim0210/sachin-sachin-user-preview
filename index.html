@@ -578,9 +578,8 @@
 @media(max-width:370px){.product-header .wordmark.brand-motion{font-size:21px;width:200px;flex-basis:200px}}
 @media(prefers-reduced-motion:reduce){.brand-motion .brand-typed-name{display:none!important}.brand-motion .quote-mark{animation:none!important;opacity:1!important}}
 
-/* Rounded original pen contours: legible at small sizes without texture filters. */
-.pen-doodle .pen-contour{stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
-.ui-pen{stroke-width:1.7}.ui-pen[data-pen-icon="more"]{stroke-width:3}
+/* Variable-pressure ink silhouettes keep the original blue at every scale. */
+.pen-doodle .pen-ink,.ui-pen .pen-ink{fill:currentColor;stroke:none}
 .settings-symbol .pen-doodle{width:24px;height:27px}.interest>span>svg.pen-doodle{flex:none}
 </style>
   
@@ -920,7 +919,7 @@ function swipeDecision(dx,dy,width,velocity=0){
   return dx<0?'previous':'next';
 }
 
-// Original rounded pen drawings, inspired by everyday hand-drawn objects.
+// Original hand-ink drawings, inspired by everyday hand-drawn objects.
 // The first 20 identity slots stay stable across this visual refresh.
 const CONCERN_DOODLES = [
   {
@@ -946,7 +945,7 @@ const CONCERN_DOODLES = [
   {
     "id": "cloud",
     "label": "구름",
-    "path": "M16 51C4 51 4 36 15 33C14 15 37 12 43 28C56 24 65 44 54 50C48 54 23 52 16 51Z"
+    "path": "M16 53C4 52 5 38 15 34C12 18 34 11 42 27C54 23 63 36 57 46C52 57 29 51 16 53Z"
   },
   {
     "id": "umbrella",
@@ -956,17 +955,17 @@ const CONCERN_DOODLES = [
   {
     "id": "mug",
     "label": "머그잔",
-    "path": "M10 29C10 24 42 23 43 29C44 34 10 35 10 29ZM10 30L12 48C13 61 39 62 41 48L43 30M44 33C61 28 60 48 42 49M27 18C18 13 36 9 29 3"
+    "path": "M9 29C8 23 40 21 43 27C46 33 11 37 9 29ZM9 30Q10 42 14 50C18 62 38 59 41 47L43 29M44 32C59 27 61 44 42 48M27 18C18 13 36 9 29 3"
   },
   {
     "id": "book",
     "label": "책",
-    "path": "M32 22C24 15 13 15 7 19L8 57C17 53 25 54 32 60C40 54 49 53 57 56L57 18C48 15 39 16 32 22ZM32 23L32 59M12 25L13 49Q22 47 27 52M51 24L51 49Q43 49 38 52"
+    "path": "M31 23C23 17 13 16 7 19L10 57C18 53 26 56 33 61C40 54 49 53 57 55L56 16C47 15 38 17 31 23ZM31 24Q31 43 33 60M13 26L15 49Q22 48 27 53M50 23L51 48Q43 49 39 52"
   },
   {
     "id": "envelope",
     "label": "편지",
-    "path": "M8 23Q31 20 56 23L55 55Q32 58 8 55L8 23ZM9 25L31 42Q43 34 55 25"
+    "path": "M7 24Q31 20 56 23L54 55Q31 58 9 56L7 24ZM9 26L30 42Q43 35 55 25"
   },
   {
     "id": "candle",
@@ -1029,12 +1028,12 @@ const ACCENT_DOODLES = [
   {
     "id": "heart",
     "label": "하트",
-    "path": "M32 58C22 49 7 38 8 25C9 12 25 11 32 25C40 8 56 12 56 25C56 37 41 52 32 58Z"
+    "path": "M30 59C20 48 8 39 8 27C7 13 23 12 31 26C37 8 54 10 56 23C58 37 40 53 30 59Z"
   },
   {
     "id": "ribbon",
     "label": "리본",
-    "path": "M30 33C18 18 6 19 7 31C7 44 22 43 30 35M34 33C44 17 58 19 57 31C57 44 41 43 34 35M28 34C27 28 36 28 36 34C37 40 28 40 28 34ZM29 39Q27 51 19 62M35 40Q39 53 47 61M24 51L22 60M42 52L44 61"
+    "path": "M29 34C16 18 5 23 8 34C11 45 23 42 30 36M34 34C43 18 56 16 57 28C59 40 43 43 34 36M28 35C26 29 35 28 36 34C38 40 29 42 28 35ZM29 40Q28 52 20 62M35 41Q38 51 47 59"
   },
   {
     "id": "coin",
@@ -1049,7 +1048,7 @@ const ACCENT_DOODLES = [
   {
     "id": "laptop",
     "label": "노트북",
-    "path": "M10 17Q31 14 53 16L52 46L11 47L10 17ZM16 23L47 21L47 40L17 42L16 23ZM11 47L4 55Q29 63 59 54L52 46M25 54L38 53"
+    "path": "M9 18Q29 14 52 15L53 46L12 49L9 18ZM15 24L46 21L47 40L18 43L15 24ZM12 49L5 56Q31 62 59 53L53 46M26 55L38 54"
   },
   {
     "id": "pencil",
@@ -1063,6 +1062,86 @@ const ACCENT_DOODLES = [
   }
 ];
 const ALL_DOODLES=[...CONCERN_DOODLES,...ACCENT_DOODLES];
+
+// Turn the editable centre lines into one continuous ink silhouette per pen lift.
+// Pressure and a slow hand wobble are stable for each symbol, never random on render.
+// No blur, doubled strokes or tiny gaps: these must remain clear in 22–28px UI.
+const handInkCache=new Map();
+function handInk(path,seed,{small=false,dot=false}={}){
+  const key=seed+':'+small+':'+dot+':'+path;
+  if(handInkCache.has(key))return handInkCache.get(key);
+  const scale=small?24/64:1,base=dot?3:small?1.75:3.55;
+  let hash=2166136261;
+  for(const c of seed){hash^=c.codePointAt(0);hash=Math.imul(hash,16777619);}
+  const phase=(hash>>>0)/4294967296*Math.PI*2;
+  const tokens=path.match(/[MLCQZ]|-?\d*\.?\d+/g)||[];
+  const strokes=[];let points=[],cursor=[0,0],start=[0,0],i=0;
+  const distance=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);
+  const finish=closed=>{if(points.length>1)strokes.push({points,closed});points=[];};
+  const pair=()=>[Number(tokens[i++]),Number(tokens[i++])];
+  while(i<tokens.length){
+    const command=tokens[i++];
+    if(command==='M'){finish(false);cursor=pair();start=cursor;points=[cursor];continue;}
+    if(command==='Z'){
+      if(distance(cursor,start)>.01){
+        const count=Math.ceil(distance(cursor,start)/(1.1*scale));
+        for(let k=1;k<=count;k++)points.push(cursor.map((v,j)=>v+(start[j]-v)*k/count));
+      }
+      if(distance(points[0],points.at(-1))<.01)points.pop();
+      finish(true);cursor=start;continue;
+    }
+    const a=cursor,b=pair(),c=command==='Q'||command==='C'?pair():b,d=command==='C'?pair():c;
+    const length=distance(a,b)+(command==='L'?0:distance(b,c))+(command==='C'?distance(c,d):0);
+    const count=Math.max(2,Math.ceil(length/(1.1*scale)));
+    for(let k=1;k<=count;k++){
+      const t=k/count,u=1-t;
+      points.push(a.map((v,j)=>command==='L'?u*v+t*b[j]:command==='Q'?u*u*v+2*u*t*b[j]+t*t*c[j]:u*u*u*v+3*u*u*t*b[j]+3*u*t*t*c[j]+t*t*t*d[j]));
+    }
+    cursor=d;
+  }
+  finish(false);
+  const fmt=p=>p.map(v=>Number(v.toFixed(2))).join(' ');
+  const polygon=p=>'M'+p.map(fmt).join('L')+'Z';
+  const ink=strokes.map((stroke,n)=>{
+    const {closed}=stroke,source=stroke.points;
+    let length=0;
+    const distances=source.map((p,j)=>{if(j)length+=distance(source[j-1],p);return length;});
+    if(closed)length+=distance(source.at(-1),source[0]);
+    const ph=phase+n*1.71;
+    const points=source.map((p,j)=>{
+      const s=distances[j],t=s/Math.max(length,1),envelope=closed?1:Math.sin(Math.PI*t);
+      const previous=source[j?j-1:closed?source.length-1:0],next=source[j<source.length-1?j+1:closed?0:j];
+      const angle=Math.atan2(next[1]-previous[1],next[0]-previous[0]);
+      const wave=closed?Math.sin(t*Math.PI*6+ph)+.3*Math.sin(t*Math.PI*14+ph):Math.sin(s/(7*scale)+ph)+.3*Math.sin(s/(2.6*scale)+ph);
+      const offset=wave*(small?.32:.8)*scale*envelope;
+      return [p[0]-Math.sin(angle)*offset,p[1]+Math.cos(angle)*offset];
+    });
+    const normals=points.map((p,j)=>{
+      const a=points[j?j-1:closed?points.length-1:0],b=points[j<points.length-1?j+1:closed?0:j];
+      const angle=Math.atan2(b[1]-a[1],b[0]-a[0]);return [-Math.sin(angle),Math.cos(angle)];
+    });
+    const widths=points.map((p,j)=>{
+      const s=distances[j],t=s/Math.max(length,1);
+      const pressure=1+(small?.13:.25)*Math.sin((closed?t*Math.PI*4:s/(10*scale))+ph)+.065*Math.sin((closed?t*Math.PI*12:s/(3.8*scale))+ph*2);
+      const taper=closed?1:.78+.22*Math.min(1,t*8,(1-t)*9);
+      return base/2*pressure*taper;
+    });
+    const edge=side=>points.map((p,j)=>{
+      // A little tooth at the outside of the ink, below one display pixel.
+      // Functional marks stay smooth so 14px locks/checks remain readable.
+      const tooth=small?0:.105*Math.sin(distances[j]*2.4+ph+side);
+      return p.map((v,k)=>v+normals[j][k]*(widths[j]+tooth)*side);
+    });
+    const left=edge(1),right=edge(-1);
+    if(closed)return `<path class="pen-ink" fill="currentColor" fill-rule="evenodd" stroke="none" d="${polygon(left)+polygon(right.reverse())}"/>`;
+    const cap=(index,reverse)=>{
+      const p=points[index],normal=normals[index],angle=Math.atan2(normal[1],normal[0])+(reverse?Math.PI:0);
+      return Array.from({length:6},(_,k)=>{const a=angle-(k+1)*Math.PI/7;return [p[0]+Math.cos(a)*widths[index],p[1]+Math.sin(a)*widths[index]];});
+    };
+    return `<path class="pen-ink" fill="currentColor" stroke="none" d="${polygon([...left,...cap(points.length-1,false),...right.reverse(),...cap(0,true)])}"/>`;
+  }).join('');
+  handInkCache.set(key,ink);return ink;
+}
 
 const DOODLE_POOLS={
   work:['mug','sprout','sun','candle','leaf','spark'],
@@ -1103,7 +1182,7 @@ function chooseConcernDoodle(concern={}){
 }
 function doodleSvg(id){
   const mark=ALL_DOODLES.find(d=>d.id===id)??CONCERN_DOODLES[0];
-  return `<svg class="pen-doodle" data-doodle="${mark.id}" viewBox="0 0 64 72" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path class="pen-contour" d="${mark.path}"/></svg>`;
+  return `<svg class="pen-doodle" data-doodle="${mark.id}" viewBox="0 0 64 72" aria-hidden="true" focusable="false">${handInk(mark.path,mark.id)}</svg>`;
 }
 function concernDoodle(concern){return doodleSvg(chooseConcernDoodle(concern));}
 // Person marks have their own immutable seed. Topics, messages and consent never change it.
@@ -1143,7 +1222,7 @@ const paths={
   "back": "<path d=\"M15 5Q11 9 8 12L15 19\"/>",
   "chevron": "<path d=\"M6 9Q9 12 12 15L18 9\"/>"
 };
-const icon=name=>`<svg class="ui-pen" data-pen-icon="${name}" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]??paths.feed}</svg>`;
+const icon=name=>`<svg class="ui-pen" data-pen-icon="${name}" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">${handInk((paths[name]??paths.feed).match(/d="([^"]+)"/)[1],'ui-'+name,{small:true,dot:name==='more'})}</svg>`;
 const topicMark=id=>doodleSvg(TOPICS.find(t=>t.id===id)?.doodle??'envelope');
 const topic=id=>TOPICS.find(t=>t.id===id)?.name??'이야기';
 const tags=items=>`<div class="tags">${items.map(t=>`<span>#${esc(t)}</span>`).join('')}</div>`;
