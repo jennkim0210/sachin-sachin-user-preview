@@ -1088,7 +1088,8 @@ html,body{height:100%;overflow:hidden;scroll-behavior:auto}body{margin:0}
 .demo-document .product-header{position:sticky;top:0}
 .demo-document a,.demo-document button,.demo-document input,.demo-document textarea{pointer-events:none}
 .demo-document .chat-body{scrollbar-width:none;overscroll-behavior:auto}
-.demo-document .message-row.is-arriving{animation:demo-arrive .3s ease-out both}
+.demo-document .message-row.is-arriving{animation:demo-arrive .18s ease-out both}
+.demo-document[data-kind="proposal"] #app>.product-app{animation:demo-arrive .18s ease-out both}
 .demo-document .profile-self-reported,.demo-document .profile-actions{display:none}
 .demo-document .profile-canvas.newly-opened{animation:none}
 .demo-document .connection-profile-page{padding-bottom:24px}

@@ -1,11 +1,11 @@
-import {demoDuration,demoStep} from './demo-sequence.mjs?v=20261018-open-profiles';
+import {demoDuration,demoStep} from './demo-sequence.mjs?v=20261018-quick-transitions';
 const kind=document.body.dataset.kind,app=document.querySelector('#app'),reduced=matchMedia('(prefers-reduced-motion: reduce)'),scroller=document.querySelector('#demo-scroll');
 const duration=demoDuration[kind];
 let elapsed=0,playing=true,visible=parent===window,complete=false,last=0,screen='',stage='',profileView='peer';
-const rows=[...document.querySelectorAll('.message-row')],times=[800,2700,6500,9000,12700,15300];
+const rows=[...document.querySelectorAll('.message-row')],times=[0,450,1400,2200,3300,4200];
 const input=document.querySelector('#chat-message'),send=document.querySelector('.send-btn'),log=document.querySelector('#chat-messages');
 const original=rows.map(row=>row.querySelector('.msg').textContent);
-const outgoing=[{start:4000,end:6500,row:2},{start:10300,end:12700,row:4}];
+const outgoing=[{start:850,end:1400,row:2},{start:2750,end:3300,row:4}];
 function report(ready=false){parent.postMessage({type:'sachin-demo-status',kind,playing,complete,ready,stage,profileView},location.origin);}
 function updateChat(){
  rows.forEach((row,i)=>{const show=elapsed>=times[i];if(show&&row.hidden){row.classList.remove('is-arriving');void row.offsetWidth;row.classList.add('is-arriving');}row.hidden=!show;});

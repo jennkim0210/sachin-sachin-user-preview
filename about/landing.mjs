@@ -24,7 +24,7 @@ function playScene(){
  if(motion.matches){scene.classList.add('is-complete');return;}
  // Restart the original ear-to-ear drawing once; never loop while the visitor reads.
  void scene.offsetWidth;scene.classList.add('is-playing');
- motionTimer=setTimeout(()=>{scene.classList.remove('is-playing');scene.classList.add('is-complete');},3900);
+ motionTimer=setTimeout(()=>{scene.classList.remove('is-playing');scene.classList.add('is-complete');},2200);
 }
 replay.hidden=false;replay.addEventListener('click',playScene);motion.addEventListener('change',playScene);
 const art=scene.querySelector('img');if(art.complete)playScene();else art.addEventListener('load',playScene,{once:true});
