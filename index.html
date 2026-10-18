@@ -1161,7 +1161,7 @@ function openCardReply(){
   $('#answer-form')?.scrollIntoView({behavior:'instant',block:'end'});
 }
 function postcardFace(c,{preview=false,composing=false}={}){
-  const read=preview?'<span class="card-read">자세히 보기 <span>↗</span></span>':link('/concern?id='+encodeURIComponent(c.id),'자세히 보기 <span aria-hidden="true">↗</span>','card-read').replace('class="card-read"','class="card-read" aria-label="고민 자세히 보기"');
+  const read=preview?'<span class="card-read">자세히 보기</span>':link('/concern?id='+encodeURIComponent(c.id),'자세히 보기','card-read').replace('class="card-read"','class="card-read" aria-label="고민 자세히 보기"');
   const focus=preview?'':` tabindex="0" aria-label="${composing?'고민 내용':'고민 카드, 오른쪽 키로 다음 고민, 왼쪽 키로 이전 고민'}" aria-describedby="swipe-help"`;
   return `<div class="card-open"${focus}><div class="postcard-topline"><span class="card-topic">${topic(c.category)}</span>${read}</div><div class="card-story postcard-copy"><h2${preview?'':' id="card-title"'}>${esc(c.title)}</h2><p${preview?'':' id="card-body"'} class="card-excerpt">${esc(c.body)}</p></div><div class="postcard-sender"><div class="postcard-facts"><strong>${esc(c.ageBand)} · ${esc(c.occupation)}</strong><span>${esc(c.region)}</span></div><span class="postcard-signature" aria-hidden="true">${concernDoodle(c)}</span></div></div>`;
 }
