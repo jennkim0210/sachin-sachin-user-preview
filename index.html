@@ -546,7 +546,7 @@
 
 /* Every reply is the same small letter, wherever its story was opened. */
 .reply-composer .app-main{margin-top:6px}
-.reply-composer .reply-source{padding:17px 20px;background:#dad5e5;border:1px solid #c8c1d2;border-radius:var(--radius-postcard);margin-bottom:18px}
+.reply-source{padding:17px 20px;background:#dad5e5;border:1px solid #c8c1d2;border-radius:var(--radius-postcard);margin-bottom:18px}
 .reply-source summary{list-style:none;cursor:pointer}.reply-source summary::-webkit-details-marker{display:none}
 .reply-source-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#70657f;font-size:11px;line-height:1.7}
 .reply-recipient-mark{display:flex;color:var(--blue);flex:none}.reply-recipient-mark .pen-doodle{width:24px;height:28px;stroke-width:1.6}
@@ -563,7 +563,7 @@
 .reply-letter-actions .form-privacy{font-size:11px;justify-content:center;text-align:center;line-height:1.8}
 .reply-composer.has-fixed-actions .page{padding-bottom:calc(145px + var(--reply-keyboard,0px))}
 .toast-heading{display:block;color:var(--blue);font-size:12px;line-height:1.6;margin:2px 0 3px}
-@media(max-width:370px),(max-height:700px) and (max-width:650px){.reply-composer .reply-source{padding:13px 17px;margin-bottom:14px}.reply-source h2{font-size:18px}.reply-letter{padding:18px 18px 14px}.reply-letter textarea{min-height:190px}.reply-letter-address{font-size:12px}.reply-letter-actions .form-privacy{font-size:10px}}
+@media(max-width:370px),(max-height:700px) and (max-width:650px){.reply-source{padding:13px 17px;margin-bottom:14px}.reply-source h2{font-size:18px}.reply-letter{padding:18px 18px 14px}.reply-letter textarea{min-height:190px}.reply-letter-address{font-size:12px}.reply-letter-actions .form-privacy{font-size:10px}}
 
 /* A quiet quote signature; only the occasional wordmark types itself out. */
 .product-header .wordmark.brand-motion{display:flex;align-items:center;justify-content:flex-start;flex:0 1 226px;width:226px;min-width:48px;height:44px;gap:4px;font-size:24px;line-height:1.05;opacity:1;transform:none;overflow:hidden}
@@ -799,6 +799,11 @@
 .is-profile-private .reveal-letter-actions{padding-top:24px}
 .profile-unavailable{padding:60px 20px;text-align:center;font-size:15px;line-height:1.8}
 @media(max-width:370px){.shared-profile-own-link{font-size:11px;padding-right:0}.is-profile-private .reveal-letter h2{font-size:23px}.sharing-profile-link{padding:14px;gap:10px}.sharing-profile-link strong{font-size:14px}.sharing-profile-link small{font-size:10px}}
+
+/* Focused tasks keep one title scale and the same original-concern note. */
+.is-focused.is-entry .screen-heading h1{font-size:20px;color:var(--ink)}
+.join-page.is-entry .screen-heading h1{font-size:17px}
+@media(max-width:370px){.is-focused.is-entry .screen-heading h1{font-size:18px}.join-page.is-entry .screen-heading h1{font-size:16px}}
 </style>
   
 </head>
@@ -1474,10 +1479,11 @@ function personDoodle(personId){return doodleSvg(choosePersonDoodle(personId));}
 function profilePersonSvg(gender){
   const female=gender==='female';
   const hair=female
-    ? 'M21 29C16 20 20 11 31 10C44 9 48 18 45 31M21 25C17 34 19 43 15 52Q20 55 25 52M44 24C47 34 44 44 48 53Q42 55 38 51M22 27Q28 24 29 18Q33 25 42 27'
-    : 'M21 28C16 21 21 14 28 13Q37 9 43 17Q47 22 43 29M22 26Q26 25 29 19Q34 25 42 26';
-  const face='M22 28C19 35 23 44 29 47Q33 49 38 45Q44 40 42 28M27 32L27.5 32M36 32L36.5 32M32 34L31 38L33 38M29 41Q32 43 35 41M27 47L27 52M38 46L38 51M27 51Q31 56 38 51M27 52C19 54 12 54 11 65M38 52C47 54 52 56 54 65M21 57L20 66M44 58L45 66';
-  return `<svg class="profile-person-drawing" data-person-gender="${female?'female':'male'}" viewBox="0 0 64 72" aria-hidden="true" focusable="false">${handInk(hair+face,'profile-person-'+(female?'female':'male'),{fine:true})}</svg>`;
+    ? 'M20 28C17 18 22 10 32 10C43 10 47 19 44 29M20 25C19 35 20 43 17 49Q21 51 25 49M44 25C45 35 44 44 47 49Q43 51 39 49M21 26Q28 24 30 18Q35 24 43 26'
+    : 'M21 28C17 21 21 12 30 11C40 10 47 17 43 28M21 25Q27 24 30 19Q35 24 43 25';
+  // One blank head and shoulder outline; hair is the only gender distinction.
+  const silhouette='M21 27C21 38 25 45 32 45C39 45 43 37 43 27M25 43L25 49C16 51 10 55 10 65M39 43L39 49C48 51 54 55 54 65';
+  return `<svg class="profile-person-drawing" data-person-gender="${female?'female':'male'}" viewBox="0 0 64 72" aria-hidden="true" focusable="false">${handInk(hair+silhouette,'profile-person-'+(female?'female':'male'),{fine:true})}</svg>`;
 }
 
 
@@ -1838,9 +1844,12 @@ function listen(){
   const arrival='<div class="arrival-intro arrival-note"><p>'+typed('오늘, 당신에게 온 이야기','home-arrival',64)+'</p></div>';
   return shell('홈',`<div class="discovery-stage">${arrival}<div class="concern-stack" data-depth="${deck.depth}" data-preview="next">${deckUnderlays(deck)}<article class="concern-card text-card sachin-postcard ${arriving?'card-arriving arrive-'+arriving:''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-previous" aria-hidden="true">이전 고민</span><span class="swipe-stamp stamp-next" aria-hidden="true">다음 고민</span>${postcardFace(c)}</article></div>${response}<p class="deck-swipe-guide" id="swipe-help">← 이전 고민 <span aria-hidden="true">·</span> 다음 고민 →</p></div>`,options);
 }
+function concernContext(c,{open=false}={}){
+  return `<details class="reply-source" ${open?'open':''}><summary><span class="reply-source-meta"><span>${esc(topic(c.category))}${c.own?'':' · '+publicFacts(c)}</span><span class="reply-recipient-mark" aria-hidden="true">${concernDoodle(c)}</span></span><h2>${esc(c.title)}</h2><span class="reply-source-toggle"><span class="when-closed">고민 펼쳐보기</span><span class="when-open">고민 접기</span>${icon('chevron')}</span></summary><p class="prose">${esc(c.body)}</p></details>`;
+}
 function replyComposer(c){
   const back=route().params.get('from')==='home'?'/listen':'/concern?id='+encodeURIComponent(c.id);
-  return shell('답변하기',`<details class="reply-source"><summary><span class="reply-source-meta"><span>${esc(topic(c.category))} · ${publicFacts(c)}</span><span class="reply-recipient-mark" aria-hidden="true">${concernDoodle(c)}</span></span><h2>${esc(c.title)}</h2><span class="reply-source-toggle"><span class="when-closed">고민 펼쳐보기</span><span class="when-open">고민 접기</span>${icon('chevron')}</span></summary><p class="prose">${esc(c.body)}</p></details><form id="answer-form" data-id="${esc(c.id)}" class="reply-letter-form" novalidate><div class="reply-letter"><label for="answer-body" class="reply-letter-address">이 이야기를 꺼낸 당신에게</label><textarea id="answer-body" name="body" rows="7" minlength="20" maxlength="2000" required aria-label="고민에 대한 답변" aria-describedby="reply-length answer-error reply-consent" placeholder="읽으면서 이런 생각이 들었어요…">${esc(state.replyDrafts[c.id]??'')}</textarea><div class="reply-letter-signature"><span>마음을 담아</span><span id="reply-length">20자 이상</span></div><p id="answer-error" class="danger" role="alert"></p></div><div class="reply-letter-actions fixed-actions"><p id="reply-consent" class="form-privacy">${icon('lock')}상대가 답변을 선택하면 익명 채팅방이 열려요</p><button type="submit" class="btn btn-primary btn-block">답변 보내기 ${icon('arrow')}</button></div></form>`,{back,screen:'reply-page reply-composer has-fixed-actions',entry:true});
+  return shell('답변하기',`${concernContext(c)}<form id="answer-form" data-id="${esc(c.id)}" class="reply-letter-form" novalidate><div class="reply-letter"><label for="answer-body" class="reply-letter-address">이 이야기를 꺼낸 당신에게</label><textarea id="answer-body" name="body" rows="7" minlength="20" maxlength="2000" required aria-label="고민에 대한 답변" aria-describedby="reply-length answer-error reply-consent" placeholder="읽으면서 이런 생각이 들었어요…">${esc(state.replyDrafts[c.id]??'')}</textarea><div class="reply-letter-signature"><span>마음을 담아</span><span id="reply-length">20자 이상</span></div><p id="answer-error" class="danger" role="alert"></p></div><div class="reply-letter-actions fixed-actions"><p id="reply-consent" class="form-privacy">${icon('lock')}상대가 답변을 선택하면 익명 채팅방이 열려요</p><button type="submit" class="btn btn-primary btn-block">답변 보내기 ${icon('arrow')}</button></div></form>`,{back,screen:'reply-page reply-composer has-fixed-actions',entry:true});
 }
 function write(){
   const d=state.draft;
@@ -1853,7 +1862,7 @@ function detail(){
   const back=chatAllowed(fromChat,viewer())&&fromChat.concernId===c?.id?'/chat?id='+encodeURIComponent(fromChat.id):from==='notifications'?'/notifications':from==='received'?'/mine?tab=received':from==='answers'?'/mine?tab=answers':from==='mine'?'/mine':'/listen';
   if(!c||!eligible(c))return shell('고민',empty('아직 볼 수 없는 고민이에요','관심 주제를 먼저 선택해 주세요',link('/me','관심 주제 설정')),{back});
   const answered=state.answers.find(a=>a.concernId===c.id),answers=c.own?ownAnswers(c):[];
-  const context=`<details class="story-context" ${fromChat?'open':''}><summary><span class="eyebrow">${topic(c.category)}${c.own?'':' · '+publicFacts(c)}</span><h2>${esc(c.title)}</h2><span class="context-toggle">${icon('plus')}</span></summary><p class="prose">${esc(c.body)}</p></details>`;
+  const context=concernContext(c,{open:chatAllowed(fromChat,viewer())&&fromChat.concernId===c.id});
   if(c.own)return shell('받은 답변',context+(answers.length?`<div class="answer-list">${answers.map(a=>{const id=connectionKey(c.id,a.id),conn=state.connections[id];return `<article class="answer-card" id="received-${esc(a.id)}" tabindex="-1"><header>${anonymousAvatar({otherId:a.authorId})}<strong>익명의 사친</strong></header><p class="prose">${esc(a.body)}</p><div class="answer-actions">${button('helpful',icon('heart'),'icon-button'+(state.helpfulAnswers[id]?' is-helpful':''),`aria-label="도움이 됐어요" aria-pressed="${Boolean(state.helpfulAnswers[id])}" data-id="${esc(id)}"`)}${conn?.closed?'<span class="meta">마친 채팅방</span>':chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(id),'채팅방 열기 '+icon('arrow'),'text-link'):button('accept-answer','대화하기 '+icon('arrow'),'btn btn-primary btn-sm',`data-id="${esc(id)}" data-concern="${esc(c.id)}" data-answer="${a.id}"`)}</div></article>`;}).join('')}</div>`:`<section class="letter-empty answer-waiting">${doodleSvg('envelope')}<h2>답변을 기다리고 있어요</h2>${link('/listen','다른 고민 들어주기 '+icon('arrow'),'text-link')}</section>${demo('가상 답변으로 다음 화면을 확인할 수 있어요','demo-answer','예시 답변 받기',`data-id="${esc(c.id)}"`)}`),{back:back.startsWith('/chat')||back==='/notifications'||from==='received'?back:'/mine',screen:'received-answers-page'});
   if(answered){
     const id='sent_'+c.id,conn=state.connections[id];
@@ -1934,7 +1943,7 @@ function serviceRow(href,title,{note='',symbol='',value=''}={}){
 function serviceSection(title,body){return `<section class="service-section"><h2>${esc(title)}</h2><div class="service-rows">${body}</div></section>`;}
 function me(){
   const m=viewer(),p=state.profile,hasBio=Boolean(profileIntroduction(p)),hasPhoto=Boolean(p.photo);
-  const next=[m.ageBand,m.occupation,m.region].filter(Boolean).join(' · ');
+  const next=[m.ageBand,m.region,m.occupation].filter(Boolean).join(' · ');
   const profileAction='프로필 수정';
   return shell('마이',`<section class="my-identity" aria-label="내 프로필"><div class="my-identity-line">${ownPortrait(p.photo)}<div><h2>${esc(m.nickname)}</h2><p>${esc(next)}</p></div></div><div class="my-profile-actions">${link('/profile/edit',profileAction,'my-profile-edit')}${link('/profile','프로필 보기','my-profile-view').replace('class="my-profile-view"','class="my-profile-view" aria-label="내 프로필 보기"')}</div></section><a class="story-hub-entry" href="#/mine"><span class="story-hub-drawing" aria-hidden="true">${doodleSvg('envelope')}</span><div><h2>고민과 답변</h2><p>작성한 고민 · 주고받은 답변</p></div><span class="service-chevron">${icon('back')}</span></a>${serviceSection('이용 관리',serviceRow('/settings/notifications','알림 설정',{symbol:'candle'})+serviceRow('/billing','결제 관리',{symbol:'coin'}))}${serviceSection('도움과 설정',serviceRow('/support','고객센터',{symbol:'headphones'})+serviceRow('/settings','설정',{note:'관심 주제 · 계정 · 개인정보',symbol:'compass'}))}<footer class="my-service-footer">${link('/legal?doc=terms','이용약관','')}${link('/legal?doc=privacy','개인정보처리방침','')}</footer>`,{compact:true,screen:'my-page my-hub'});
 }
@@ -1993,7 +2002,7 @@ function legal(){
 function ownProfile(){
   const c=editingConnection(),context=c?'?connection='+encodeURIComponent(c.id):'',open=c&&profilesVisible(c,viewer());
   const copy=c?(open?'이 상대에게 공개된 내 프로필이에요':'서로 동의하면 이 모습으로 보여요'):'서로 동의한 상대에게 보이는 모습이에요';
-  return shell(c?'내 공개 프로필':'내 프로필',`<p class="profile-privacy canvas-privacy">${icon('lock')}${copy}</p>${profileLetter(ownPublicProfile(viewer(),state.profile),{label:'상대에게 보일 내 프로필'})}<p class="profile-self-reported">직업·학력 등은 본인이 작성한 정보예요</p><div class="own-letter-actions">${c?link('/connection?id='+encodeURIComponent(c.id),open?'상대 프로필로':'공개 제안으로 돌아가기','btn btn-primary btn-block'):link('/profile/edit','프로필 수정하기','btn btn-primary btn-block')}</div>`,{back:c?'/connection?id='+encodeURIComponent(c.id):'/me',tools:c?link('/profile/edit'+context,'수정','shared-profile-own-link'):'',screen:'own-profile-page stationery-page canvas-page'});
+  return shell(c?'내 공개 프로필':'내 프로필',`<p class="profile-privacy canvas-privacy">${icon('lock')}${copy}</p>${profileLetter(ownPublicProfile(viewer(),state.profile),{label:'상대에게 보일 내 프로필'})}<p class="profile-self-reported">직업·학력 등은 본인이 작성한 정보예요</p>${c?'<div class="own-letter-actions">'+link('/connection?id='+encodeURIComponent(c.id),open?'상대 프로필로':'공개 제안으로 돌아가기','btn btn-primary btn-block')+'</div>':''}`,{back:c?'/connection?id='+encodeURIComponent(c.id):'/me',tools:link('/profile/edit'+context,'수정','shared-profile-own-link'),screen:'own-profile-page stationery-page canvas-page'});
 }
 
 function editorPhoto(photo){return `<span class="canvas-person-placeholder">${profilePersonSvg(viewer().gender)}</span>${photo?`<img src="${esc(photo)}" alt="선택한 프로필 사진">`:''}`;}
