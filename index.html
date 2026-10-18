@@ -509,6 +509,19 @@
 .tabbar{--nav-radius:18px;--nav-border:1px;--nav-padding:5px;border-width:var(--nav-border);padding:var(--nav-padding);border-radius:var(--nav-radius)}
 .tabbar a{border-radius:calc(var(--nav-radius) - var(--nav-border) - var(--nav-padding));transition:background .15s,color .15s,filter .15s}
 .tabbar a:active{transform:none;filter:brightness(.95)}
+
+/* Focused screens have one exit and one task, without the main tab dock. */
+.product-app.is-focused:not(.is-chat){padding-bottom:max(12px,env(safe-area-inset-bottom))}
+.is-focused:not(.is-chat) .product-header{max-width:510px;display:flex;gap:12px;padding-inline:24px}
+.is-focused .header-tools{margin-left:auto;flex-shrink:0}
+.is-focused:not(.is-chat) .screen-heading{min-width:0}
+.is-focused.has-fixed-actions:not(.is-chat){padding-bottom:0}
+.product-app.is-focused .fixed-actions{bottom:var(--reply-keyboard,0px);padding-bottom:max(18px,env(safe-area-inset-bottom))}
+.is-focused.has-fixed-actions .page{padding-bottom:calc(150px + var(--reply-keyboard,0px))}
+.is-focused.onboarding-page .page{padding-bottom:110px}
+.is-focused.has-fixed-actions :is(input,textarea){scroll-margin-bottom:170px}
+@media(max-width:650px){.is-focused:not(.is-chat) .product-header{padding-inline:20px}}
+@media(max-width:370px){.is-focused:not(.is-chat) .product-header{padding-inline:16px}}
 .btn,.card-primary,.card-secondary,
 .full-welcome .welcome-start,.intro-controls .intro-next,.intro-back,
 .profile-wizard .fixed-actions .btn,.postcard-reader .reader-actions .btn,
@@ -1150,11 +1163,14 @@ function choiceFrom(p){return p.has('category')?{category:p.get('category')}:p.h
 function choiceQuery(c){return c?.category?'category='+encodeURIComponent(c.category):c?.tag?'tag='+encodeURIComponent(c.tag):'';}
 const tabs=[['/listen','홈','home'],['/connections','채팅방','feed'],['/me','마이','me']];
 function shell(title,body,{back,chat=false,tools='',screen='',entry=false,compact=false}={}){
-  const {path}=route(),own=path==='/concern'&&getConcern(route().params.get('id'))?.own;
-  const active=path==='/me'||path.startsWith('/profile')||path==='/mine'||path==='/write'||path==='/about'||own?'/me':/connection|chat/.test(path)?'/connections':'/listen';
+  const {path}=route();
+  // Only the three destinations own global navigation. Child routes keep their
+  // contextual back action, including empty/error states and onboarding redirects.
+  const showNavigation=Boolean(state.member)&&!entry&&!chat&&tabs.some(([href])=>href===path);
+  const active=path;
   const nav=tabs.map(([href,label,symbol])=>`<a href="#${href}" ${href===active?'class="active" aria-current="page"':''}>${icon(symbol)}<span>${label}</span></a>`).join('');
   const heading=compact?`${headerBrand()}<h1 class="sr-only" tabindex="-1">${esc(title)}</h1>`:`<div class="screen-heading">${back?link(back,icon('back'),'back').replace('class="back"','class="back" aria-label="뒤로"'):''}${chat?personAvatar(currentConnection()):''}<h1 tabindex="-1">${esc(title)}</h1></div>`;
-  return `<div class="product-app native-ui ${chat?'is-chat':''} ${entry?'is-entry':''} ${screen}"><header class="product-header">${heading}${entry||chat?'':'<nav aria-label="주 메뉴">'+nav+'</nav>'}<div class="header-tools">${tools}</div></header><main class="app-main"><div class="page ${chat?'chat':''}">${body}</div></main>${entry?'':'<nav class="tabbar" aria-label="하단 메뉴">'+nav+'</nav>'}</div>`;
+  return `<div class="product-app native-ui ${showNavigation?'has-tabbar':'is-focused'} ${chat?'is-chat':''} ${entry?'is-entry':''} ${screen}"><header class="product-header">${heading}${showNavigation?'<nav aria-label="주 메뉴">'+nav+'</nav>':''}<div class="header-tools">${tools}</div></header><main class="app-main"><div class="page ${chat?'chat':''}">${body}</div></main>${showNavigation?'<nav class="tabbar" aria-label="하단 메뉴">'+nav+'</nav>':''}</div>`;
 }
 
 const INTRO_STORIES=[
@@ -1301,12 +1317,13 @@ function replyComposer(c){
 }
 function write(){
   const d=state.draft;
-  return shell('고민 쓰기',`<form id="concern-form" class="compose-form" novalidate><p class="compose-salutation" lang="en">${typed("dear, friend","write")}</p><div class="compose-sheet"><div class="compose-toolbar">${choiceSelect('concern-topic','category','고민 주제',d.category,TOPICS.map(t=>({value:t.id,label:t.name,icon:t.icon})),'주제 선택')}</div><label class="sr-only" for="concern-title">고민 제목</label><textarea id="concern-title" name="title" rows="1" placeholder="오늘, 어떤 마음인가요?" minlength="5" maxlength="80" required>${esc(d.title)}</textarea><label class="sr-only" for="concern-body">고민 내용</label><textarea id="concern-body" name="body" placeholder="잘 정리된 이야기가 아니어도 괜찮아요.\n지금 마음에 남은 일을 편하게 들려주세요" minlength="20" maxlength="2000" required>${esc(d.body)}</textarea><div class="compose-bottom"><label class="sr-only" for="concern-tags">해시태그</label><input id="concern-tags" name="tags" value="${esc(d.tags)}" placeholder="#태그 추가"></div></div><div class="compose-footer fixed-actions"><p class="form-privacy">${icon('lock')}이 주제를 선택한 이성에게만 전해져요</p><p id="form-error" class="danger" role="alert"></p><button type="submit" class="btn btn-primary btn-block">고민 보내기 ${icon('arrow')}</button></div></form>`,{back:'/me',screen:'compose-page has-fixed-actions'});
+  return shell('고민 쓰기',`<form id="concern-form" class="compose-form" novalidate><p class="compose-salutation" lang="en">${typed("dear, friend","write")}</p><div class="compose-sheet"><div class="compose-toolbar">${choiceSelect('concern-topic','category','고민 주제',d.category,TOPICS.map(t=>({value:t.id,label:t.name,icon:t.icon})),'주제 선택')}</div><label class="sr-only" for="concern-title">고민 제목</label><textarea id="concern-title" name="title" rows="1" placeholder="오늘, 어떤 마음인가요?" minlength="5" maxlength="80" required>${esc(d.title)}</textarea><label class="sr-only" for="concern-body">고민 내용</label><textarea id="concern-body" name="body" placeholder="잘 정리된 이야기가 아니어도 괜찮아요.\n지금 마음에 남은 일을 편하게 들려주세요" minlength="20" maxlength="2000" required>${esc(d.body)}</textarea><div class="compose-bottom"><label class="sr-only" for="concern-tags">해시태그</label><input id="concern-tags" name="tags" value="${esc(d.tags)}" placeholder="#태그 추가"></div></div><div class="compose-footer fixed-actions"><p class="form-privacy">${icon('lock')}이 주제를 선택한 이성에게만 전해져요</p><p id="form-error" class="danger" role="alert"></p><button type="submit" class="btn btn-primary btn-block">고민 보내기 ${icon('arrow')}</button></div></form>`,{back:route().params.get('from')==='mine'?'/mine':'/me',screen:'compose-page has-fixed-actions'});
 }
 function detail(){
   const c=getConcern(route().params.get('id'));
   const fromChat=state.connections[route().params.get('fromChat')];
-  const back=chatAllowed(fromChat,viewer())&&fromChat.concernId===c?.id?'/chat?id='+encodeURIComponent(fromChat.id):'/listen';
+  const from=route().params.get('from');
+  const back=chatAllowed(fromChat,viewer())&&fromChat.concernId===c?.id?'/chat?id='+encodeURIComponent(fromChat.id):from==='answers'?'/mine?tab=answers':from==='mine'?'/mine':'/listen';
   if(!c||!eligible(c))return shell('고민',empty('아직 볼 수 없는 고민이에요','관심 주제를 먼저 선택해 주세요',link('/preferences','주제 선택')),{back});
   const answered=state.answers.find(a=>a.concernId===c.id),answers=c.own?ownAnswers(c):[];
   const context=`<details class="story-context" ${fromChat?'open':''}><summary><span class="eyebrow">${topic(c.category)}${c.own?'':' · '+publicFacts(c)}</span><h2>${esc(c.title)}</h2><span class="context-toggle">${icon('plus')}</span></summary><p class="prose">${esc(c.body)}</p></details>`;
@@ -1321,7 +1338,7 @@ function detail(){
 function mine(){
   const sent=route().params.get('tab')==='answers';
   const items=sent?state.answers.map(a=>({c:getConcern(a.concernId),a})).filter(x=>x.c):[...state.concerns].reverse().concat(allConnections().some(c=>c.concernId===MY_SAMPLE.id)?[MY_SAMPLE]:[]).map(c=>({c}));
-  return shell('내 고민 관리',`<nav class="small-tabs" aria-label="내 고민 종류">${link('/mine','내 고민',sent?'':'active')}${link('/mine?tab=answers','보낸 답변',sent?'active':'')}</nav><ul class="story-list">${items.map(({c,a})=>`<li><a href="#/concern?id=${encodeURIComponent(c.id)}"><div><span class="eyebrow">${topic(c.category)}</span><h2>${esc(c.title)}</h2><p>${a?esc(a.body.slice(0,65)):ownAnswers(c).length?'답변 '+ownAnswers(c).length:'답변 기다리는 중'}</p></div>${icon('back')}</a></li>`).join('')}</ul>${!items.length?`<section class="letter-empty">${doodleSvg(sent?'paperboat':'envelope')}<h2>${sent?'아직 보낸 답변이 없어요':'마음에 남은 이야기, 있나요?'}</h2><p>${sent?'마음이 닿는 고민에 한마디를 건네보세요':'잘 정리하지 않아도 괜찮아요'}</p>${link(sent?'/listen':'/write',sent?'고민 만나보기':'첫 고민 쓰기','btn btn-primary btn-block')}</section>`:''}${!sent&&items.length?link('/write',icon('plus')+'고민 쓰기','btn btn-primary btn-block gap-top'):''}`,{back:'/me'});
+  return shell('내 고민 관리',`<nav class="small-tabs" aria-label="내 고민 종류">${link('/mine','내 고민',sent?'':'active')}${link('/mine?tab=answers','보낸 답변',sent?'active':'')}</nav><ul class="story-list">${items.map(({c,a})=>`<li><a href="#/concern?id=${encodeURIComponent(c.id)}&from=${sent?'answers':'mine'}"><div><span class="eyebrow">${topic(c.category)}</span><h2>${esc(c.title)}</h2><p>${a?esc(a.body.slice(0,65)):ownAnswers(c).length?'답변 '+ownAnswers(c).length:'답변 기다리는 중'}</p></div>${icon('back')}</a></li>`).join('')}</ul>${!items.length?`<section class="letter-empty">${doodleSvg(sent?'paperboat':'envelope')}<h2>${sent?'아직 보낸 답변이 없어요':'마음에 남은 이야기, 있나요?'}</h2><p>${sent?'마음이 닿는 고민에 한마디를 건네보세요':'잘 정리하지 않아도 괜찮아요'}</p>${link(sent?'/listen':'/write?from=mine',sent?'고민 만나보기':'첫 고민 쓰기','btn btn-primary btn-block')}</section>`:''}${!sent&&items.length?link('/write?from=mine',icon('plus')+'고민 쓰기','btn btn-primary btn-block gap-top'):''}`,{back:'/me'});
 }
 function personName(c){return profilesVisible(c,viewer())?profileInfo(c).name:'익명의 사친';}
 function personAvatar(c){return profilesVisible(c,viewer())?portrait('avatar-photo',c):anonymousAvatar(c);}
@@ -1402,7 +1419,7 @@ function me(){
 }
 function ownProfile(){
   const m=viewer(),p=state.profile;
-  return shell('내 프로필',`<p class="profile-privacy own-letter-privacy">${icon('lock')}서로 동의한 상대에게, 이렇게 보여요</p>${profileLetter(ownPublicProfile(m,p),{label:'상대에게 보일 내 프로필'})}<div class="own-letter-actions">${link('/profile/edit','프로필 수정하기','btn btn-primary btn-block')}${!profileIntroduction(p)||!p.photo?'<p>사진도 소개도, 천천히 채워도 괜찮아요</p>':''}</div>`,{back:'/me',screen:'own-profile-page stationery-page',tools:link('/profile/edit','수정','header-manage')});
+  return shell('내 프로필',`<p class="profile-privacy own-letter-privacy">${icon('lock')}서로 동의한 상대에게, 이렇게 보여요</p>${profileLetter(ownPublicProfile(m,p),{label:'상대에게 보일 내 프로필'})}<div class="own-letter-actions">${link('/profile/edit','프로필 수정하기','btn btn-primary btn-block')}${!profileIntroduction(p)||!p.photo?'<p>사진도 소개도, 천천히 채워도 괜찮아요</p>':''}</div>`,{back:'/me',screen:'own-profile-page stationery-page'});
 }
 function editorPhoto(photo){return photo?`<img src="${esc(photo)}" alt="선택한 프로필 사진">`:`<span class="photo-pick-empty">${personDoodle(viewer().id)}<span>내가 편안한 순간의 사진</span></span>`;}
 function profileStep(){const step=route().params.get('step')??state.profileDraft?.editorStep;return ['basics','photos','about'].includes(step)?step:'basics';}
