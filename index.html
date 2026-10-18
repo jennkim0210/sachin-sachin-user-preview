@@ -835,6 +835,31 @@ html.has-composer-viewport,html.has-composer-viewport body{height:100%;overflow:
 .viewport-composer.is-compact-viewport>.fixed-actions{padding-block:6px}
 .viewport-composer.is-compact-viewport>.fixed-actions .btn{min-height:44px!important}
 @media(max-height:500px){.viewport-composer .product-header{height:52px}.viewport-composer>.fixed-actions .btn{min-height:46px}.viewport-composer>.fixed-actions{padding-top:6px;padding-bottom:8px}.viewport-composer .chat-context{padding-block:7px;margin-block:4px}}
+
+
+/* Headers and actions belong to the modal frame; only the middle pane scrolls. */
+html.has-app-modal,html.has-app-modal body{overflow:hidden;overscroll-behavior:none}
+html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflow:hidden}
+.choice-dialog,.native-dialog,.native-dialog.profile-panel{position:fixed;inset:auto;left:50%;top:calc(var(--modal-top,0px) + var(--modal-height,100dvh)/2);transform:translate(-50%,-50%);margin:0;padding:0;width:420px;max-width:calc(100% - 32px);max-height:calc(var(--modal-height,100dvh) - 48px);overflow:hidden;overscroll-behavior:none;background:var(--sheet)}
+:is(.choice-dialog,.native-dialog)[open]{display:flex;flex-direction:column}
+:is(.choice-dialog,.native-dialog)>header{position:relative;inset:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex:0 0 auto;padding:18px 24px 14px;margin:0;background:var(--sheet);border-bottom:1px solid #d4cfdc70}
+:is(.choice-dialog,.native-dialog)>header h2{font:inherit;font-size:21px;line-height:1.45;margin:0;min-width:0;overflow-wrap:anywhere}
+:is(.choice-dialog,.native-dialog)>header .icon-button{width:44px;height:44px;min-height:44px;margin:0 -8px 0 0;flex:0 0 44px}
+:is(.choice-dialog,.native-dialog)>.modal-scroll{min-height:0;flex:0 1 auto;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;touch-action:pan-y pinch-zoom;scroll-behavior:auto;scroll-padding:12px;padding:16px 24px 24px;scrollbar-width:thin;scrollbar-color:#bdb5cc transparent}
+.choice-dialog>.choice-options{gap:4px;padding:10px 18px 20px}
+.choice-dialog .choice-option{flex-shrink:0}
+.native-dialog>.modal-scroll>p{margin:0}
+.native-dialog>.modal-footer{flex:0 0 auto;padding:14px 24px max(20px,env(safe-area-inset-bottom));border-top:1px solid #d4cfdc70;background:var(--sheet)}
+.native-dialog>.modal-footer .danger:not(:empty){margin:0 0 10px}
+.profile-panel .occupation-options>div{max-height:none;overflow:visible}
+.modal-scroll :is(input,textarea,select,button){scroll-margin-block:12px}
+.choice-dialog.is-compact-modal,.native-dialog.is-compact-modal{max-height:calc(var(--modal-height,100dvh) - 16px)}
+.is-compact-modal>header{padding-block:6px}
+.is-compact-modal>.modal-scroll{padding-block:12px}
+.is-compact-modal>.modal-footer{padding-top:10px;padding-bottom:max(10px,env(safe-area-inset-bottom))}
+@media(max-width:600px){.native-dialog.profile-panel{top:calc(var(--modal-top,0px) + var(--modal-height,100dvh));transform:translate(-50%,-100%);width:100%;max-width:510px;max-height:calc(var(--modal-height,100dvh) - max(16px,env(safe-area-inset-top)));margin:0;padding:0;border-bottom:0;border-radius:22px 22px 0 0}.profile-panel>.modal-scroll:last-child{padding-bottom:max(24px,env(safe-area-inset-bottom))}}
+
+@media(max-width:650px){.choice-dialog{top:calc(var(--modal-top,0px) + var(--modal-height,100dvh) - max(12px,env(safe-area-inset-bottom)));transform:translate(-50%,-100%);width:calc(100% - 24px);max-width:none;max-height:min(calc(var(--modal-height,100dvh)*.78),650px)}}
 </style>
   
 </head>
@@ -1862,16 +1887,65 @@ function choiceSelect(id,name,label,value,options,placeholder='선택'){
   const selected=options.find(o=>o.value===value);
   return `<div class="choice-select"><select id="${id}" name="${name}" class="native-choice" tabindex="-1" aria-hidden="true"><option value="">${placeholder}</option>${options.map(o=>`<option value="${esc(o.value)}" ${o.value===value?'selected':''} ${o.icon?`data-icon="${o.icon}"`:''}>${esc(o.label)}</option>`).join('')}</select><button type="button" class="choice-trigger ${selected?'has-value':''}" data-choice="${id}" data-label="${label}" aria-label="${label}: ${selected?esc(selected.label):placeholder}" aria-haspopup="dialog" aria-expanded="false"><span>${selected?esc(selected.label):placeholder}</span>${icon('chevron')}</button></div>`;
 }
+// Shared modal frame: fixed chrome, one inner scroller, and a locked background.
+let activeModal=null;
+function syncModalViewport({reveal=false}={}){
+  const current=activeModal;if(!current)return;
+  const viewport=window.visualViewport;if(viewport&&Math.abs((viewport.scale??1)-1)>.02)return;
+  const height=Math.max(1,Math.min(window.innerHeight,viewport?.height??window.innerHeight));
+  current.dialog.style.setProperty('--modal-height',height+'px');
+  current.dialog.style.setProperty('--modal-top',Math.max(0,viewport?.offsetTop??0)+'px');
+  current.dialog.classList.toggle('is-compact-modal',height<480);
+  const input=document.activeElement,area=current.dialog.querySelector('.modal-scroll');
+  if(reveal&&area?.contains(input)&&input.matches('input,textarea,select')){
+    const bounds=area.getBoundingClientRect(),rect=input.getBoundingClientRect();
+    if(rect.bottom>bounds.bottom-12)area.scrollTop+=rect.bottom-bounds.bottom+12;
+    else if(rect.top<bounds.top+12)area.scrollTop+=rect.top-bounds.top-12;
+  }
+}
+function closeAppModal({restoreFocus=true,keepLock=false}={}){
+  const current=activeModal;if(!current)return;
+  activeModal=null;
+  if(current.dialog.open)current.dialog.close();
+  current.dialog.remove();current.onClose?.();
+  if(!keepLock){
+    document.documentElement.classList.remove('has-app-modal');
+    document.body.style.paddingRight=current.bodyPadding;
+    if(window.scrollY!==current.scrollY||window.scrollX!==current.scrollX)window.scrollTo({top:current.scrollY,left:current.scrollX,behavior:'instant'});
+    scheduleComposerViewport();
+  }
+  if(restoreFocus&&current.trigger?.isConnected)current.trigger.focus({preventScroll:true});
+}
+function showAppModal(dialog,{trigger=document.activeElement,focus=null,onClose=null}={}){
+  const previous=activeModal;
+  const current={dialog,trigger:previous?.trigger??trigger,onClose,hash:location.hash,scrollX:previous?.scrollX??window.scrollX,scrollY:previous?.scrollY??window.scrollY,bodyPadding:previous?.bodyPadding??document.body.style.paddingRight};
+  if(previous)closeAppModal({restoreFocus:false,keepLock:true});
+  else{
+    const gutter=Math.max(0,window.innerWidth-document.documentElement.clientWidth);
+    if(gutter)document.body.style.paddingRight=(parseFloat(getComputedStyle(document.body).paddingRight)||0)+gutter+'px';
+  }
+  document.documentElement.classList.add('has-app-modal');
+  document.body.append(dialog);activeModal=current;
+  dialog.addEventListener('close',()=>{if(activeModal===current)closeAppModal();});
+  dialog.addEventListener('click',event=>{if(event.target.closest('[data-modal-close]'))dialog.close();});
+  dialog.showModal();syncModalViewport();
+  const target=focus?dialog.querySelector(focus):dialog.querySelector('header h2');
+  target?.focus({preventScroll:true});
+  const area=dialog.querySelector('.modal-scroll');
+  if(area&&target&&area.contains(target)){
+    const rect=target.getBoundingClientRect(),bounds=area.getBoundingClientRect();
+    area.scrollTop+=rect.top-bounds.top-(bounds.height-rect.height)/2;
+  }
+}
+
 function openChoice(trigger){
   const select=document.getElementById(trigger.dataset.choice);if(!select)return;
-  document.querySelector('dialog')?.remove();
   const dialog=document.createElement('dialog');dialog.className='choice-dialog';dialog.setAttribute('aria-labelledby','choice-title');
-  dialog.innerHTML=`<header><h2 id="choice-title">${esc(trigger.dataset.label)} 선택</h2><button type="button" class="icon-button" data-dismiss aria-label="닫기">${icon('close')}</button></header><div class="choice-options">${Array.from(select.options).filter(o=>o.value).map(o=>`<button type="button" class="choice-option" data-value="${esc(o.value)}" aria-pressed="${o.selected}">${o.dataset.icon?topicMark(o.value):''}<span>${esc(o.textContent)}</span>${icon('check')}</button>`).join('')}</div>`;
-  document.body.append(dialog);trigger.setAttribute('aria-expanded','true');
+  dialog.innerHTML=`<header><h2 id="choice-title" tabindex="-1">${esc(trigger.dataset.label)} 선택</h2><button type="button" class="icon-button" data-dismiss aria-label="닫기">${icon('close')}</button></header><div class="choice-options modal-scroll">${Array.from(select.options).filter(o=>o.value).map(o=>`<button type="button" class="choice-option" data-value="${esc(o.value)}" aria-pressed="${o.selected}">${o.dataset.icon?topicMark(o.value):''}<span>${esc(o.textContent)}</span>${icon('check')}</button>`).join('')}</div>`;
+  trigger.setAttribute('aria-expanded','true');
   dialog.addEventListener('click',event=>{const option=event.target.closest('[data-value]');if(option){select.value=option.dataset.value;trigger.querySelector('span').textContent=option.querySelector('span').textContent;trigger.setAttribute('aria-label',trigger.dataset.label+': '+option.querySelector('span').textContent);trigger.classList.add('has-value');select.dispatchEvent(new Event('input',{bubbles:true}));select.dispatchEvent(new Event('change',{bubbles:true}));dialog.close();}else if(event.target===dialog||event.target.closest('[data-dismiss]'))dialog.close();});
   dialog.addEventListener('keydown',event=>{if(!['ArrowDown','ArrowUp','Home','End'].includes(event.key))return;event.preventDefault();const options=Array.from(dialog.querySelectorAll('.choice-option')),index=options.indexOf(document.activeElement);const next=event.key==='Home'?0:event.key==='End'?options.length-1:(index+(event.key==='ArrowDown'?1:-1)+options.length)%options.length;options[next].focus();});
-  dialog.addEventListener('close',()=>{trigger.setAttribute('aria-expanded','false');dialog.remove();if(trigger.isConnected)trigger.focus({preventScroll:true});});
-  dialog.showModal();(dialog.querySelector('[aria-pressed="true"]')??dialog.querySelector('.choice-option'))?.focus();
+  showAppModal(dialog,{trigger,focus:dialog.querySelector('[aria-pressed="true"]')?'[aria-pressed="true"]':'.choice-option',onClose:()=>trigger.setAttribute('aria-expanded','false')});
 }
 
 
@@ -2096,16 +2170,16 @@ function profilePreview(){
 }
 function resizeProfileText(){for(const input of document.querySelectorAll?.('[data-profile-autosize]')??[]){input.style.height='0px';input.style.height=input.scrollHeight+'px';}}
 function closeProfilePanel(){document.querySelector('dialog.profile-panel')?.close();}
-function profilePanel(title,body){
-  document.querySelector('dialog')?.remove();const dialog=document.createElement('dialog');dialog.className='native-dialog profile-panel';dialog.setAttribute('aria-labelledby','profile-panel-title');dialog.innerHTML=`<header><h2 id="profile-panel-title">${esc(title)}</h2>${button('close-profile-panel',icon('close'),'icon-button','aria-label="닫기"')}</header>${body}`;document.body.append(dialog);dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();
+function profilePanel(title,body,actions=''){
+  const dialog=document.createElement('dialog');dialog.className='native-dialog profile-panel';dialog.setAttribute('aria-labelledby','profile-panel-title');dialog.innerHTML=`<header><h2 id="profile-panel-title" tabindex="-1">${esc(title)}</h2>${button('close-profile-panel',icon('close'),'icon-button','aria-label="닫기"')}</header><div class="modal-scroll">${body}</div>${actions?'<footer class="modal-footer">'+actions+'</footer>':''}`;showAppModal(dialog);
 }
 function profileBasicsPanel(){
   const d=ensureProfileDraft();
-  profilePanel('기본 정보',`<form id="profile-basics-form" novalidate><label class="profile-field"><span>닉네임</span><input name="nickname" value="${esc(d.nickname)}" minlength="2" maxlength="12" autocomplete="nickname" required></label><label class="profile-field"><span>거주 지역</span><span class="canvas-select"><select name="region" aria-label="거주 지역">${['서울','경기','인천','강원','충청','전라','경상','제주','해외'].map(v=>`<option ${v===d.region?'selected':''}>${v}</option>`).join('')}</select>${icon('chevron')}</span></label>${occupationField(d.occupation,'profile')}<p class="canvas-identity-source">${esc(viewer().ageBand)} · ${viewer().gender==='female'?'여성':'남성'}<small>나이와 성별은 프로필에서 수정할 수 없어요</small></p><p class="danger" id="profile-panel-error" role="alert"></p><button type="submit" class="btn btn-primary btn-block">적용</button></form>`);
+  profilePanel('기본 정보',`<form id="profile-basics-form" novalidate><label class="profile-field"><span>닉네임</span><input name="nickname" value="${esc(d.nickname)}" minlength="2" maxlength="12" autocomplete="nickname" required></label><label class="profile-field"><span>거주 지역</span><span class="canvas-select"><select name="region" aria-label="거주 지역">${['서울','경기','인천','강원','충청','전라','경상','제주','해외'].map(v=>`<option ${v===d.region?'selected':''}>${v}</option>`).join('')}</select>${icon('chevron')}</span></label>${occupationField(d.occupation,'profile')}<p class="canvas-identity-source">${esc(viewer().ageBand)} · ${viewer().gender==='female'?'여성':'남성'}<small>나이와 성별은 프로필에서 수정할 수 없어요</small></p></form>`,`<p class="danger" id="profile-panel-error" role="alert"></p><button type="submit" form="profile-basics-form" class="btn btn-primary btn-block">적용</button>`);
 }
 function profileFactPanel(key){
   const field=PROFILE_FIELDS.find(([id])=>id===key);if(!field)return;const [id,label,limit]=field,d=ensureProfileDraft(),existing=Boolean(d.details[id]);
-  profilePanel(label,`<form id="profile-fact-form" data-key="${id}"><label class="profile-field"><span>${esc(label)}</span><input name="value" value="${esc(d.details[id])}" maxlength="${limit}" autocomplete="off" placeholder="직접 입력"></label><label class="canvas-public-toggle"><input name="visible" type="checkbox" ${!existing||d.visibility[id]?'checked':''}><span>동의한 상대에게 공개</span></label><p class="danger" id="profile-panel-error" role="alert"></p><div class="canvas-panel-actions">${existing?button('remove-profile-fact','삭제','quiet-link',`data-key="${id}"`):''}<button type="submit" class="btn btn-primary">적용</button></div></form>`);
+  profilePanel(label,`<form id="profile-fact-form" data-key="${id}"><label class="profile-field"><span>${esc(label)}</span><input name="value" value="${esc(d.details[id])}" maxlength="${limit}" autocomplete="off" placeholder="직접 입력"></label><label class="canvas-public-toggle"><input name="visible" type="checkbox" ${!existing||d.visibility[id]?'checked':''}><span>동의한 상대에게 공개</span></label></form>`,`<p class="danger" id="profile-panel-error" role="alert"></p><div class="canvas-panel-actions">${existing?button('remove-profile-fact','삭제','quiet-link',`data-key="${id}"`):''}<button type="submit" form="profile-fact-form" class="btn btn-primary">적용</button></div>`);
 }
 function profileAddPanel(){
   const d=ensureProfileDraft(),full=d.blocks.length>=8,photos=d.blocks.filter(b=>b.type==='photo').length>=3;
@@ -2205,6 +2279,7 @@ function revealComposerInput(page){
   if(Math.abs(delta)>1)area.scrollTop+=delta;
 }
 function syncComposerViewport({reveal=false}={}){
+  if($('dialog[open]'))return;
   const page=$('.compose-page,.reply-composer,.is-chat');
   document.documentElement?.classList.toggle('has-composer-viewport',Boolean(page));
   if(!page)return;
@@ -2250,6 +2325,7 @@ function render({keepScroll=false,focus=null}={}){
     if(!$('.brand-splash'))$('#app').innerHTML=launchSplash();
     document.title='사친사친';return;
   }
+  if(activeModal&&activeModal.hash!==location.hash)closeAppModal({restoreFocus:false});
   const {path,params}=route();
   if(state.member)readPageNotifications(path,params);
   const pages={'/home':home,'/signup':signup,'/listen':listen,'/preferences':preferences,'/notifications':notifications,'/write':write,'/concern':detail,'/mine':storyHub,'/settings':settings,'/settings/notifications':notificationPreferences,'/settings/privacy':privacySettings,'/settings/account':accountSettings,'/billing':billing,'/billing/history':billingHistory,'/support':support,'/support/write':supportCompose,'/support/history':supportHistory,'/support/notices':serviceNotices,'/legal':legal,'/connections':connections,'/connection':connection,'/chat':chat,'/me':me,'/profile':ownProfile,'/profile/edit':profileEdit,'/profile/preview':profilePreview,'/about':about};
@@ -2272,7 +2348,7 @@ function resizeChatInput(){
   if(log&&follow)log.scrollTop=log.scrollHeight;
 }
 function showDialog(title,copy,confirmLabel,onConfirm){
-  document.querySelector('dialog')?.remove();const dialog=document.createElement('dialog');dialog.className='native-dialog';dialog.setAttribute('aria-labelledby','dialog-title');dialog.innerHTML=`<h2 id="dialog-title">${esc(title)}</h2><p>${esc(copy)}</p><div class="dialog-actions"><button class="btn btn-outline" data-cancel>돌아가기</button><button class="btn btn-primary" data-confirm>${esc(confirmLabel)}</button></div>`;document.body.append(dialog);dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.querySelector('[data-confirm]').onclick=()=>{dialog.close();onConfirm();};dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();
+  const dialog=document.createElement('dialog');dialog.className='native-dialog';dialog.setAttribute('aria-labelledby','dialog-title');dialog.innerHTML=`<header><h2 id="dialog-title" tabindex="-1">${esc(title)}</h2><button type="button" class="icon-button" data-modal-close aria-label="닫기">${icon('close')}</button></header><div class="modal-scroll"><p>${esc(copy)}</p></div><footer class="modal-footer dialog-actions"><button type="button" class="btn btn-outline" data-cancel>돌아가기</button><button type="button" class="btn btn-primary" data-confirm>${esc(confirmLabel)}</button></footer>`;dialog.querySelector('[data-cancel]').onclick=()=>dialog.close();dialog.querySelector('[data-confirm]').onclick=()=>{closeAppModal({restoreFocus:false});onConfirm();};showAppModal(dialog);
 }
 function captureDraft(form){const data=new FormData(form);for(const key of ['category','title','body','tags'])if(data.has(key))state.draft[key]=String(data.get(key)??'');const saved=save();const error=$('#form-error');if(error)error.textContent='';return saved;}
 function captureProfile(form){
@@ -2482,6 +2558,10 @@ window.addEventListener('storage',event=>{
   else if(state.notificationSettings.profiles&&allConnections().some(c=>revealStage(c,viewer())==='invited'&&beforeStages.get(c.id)!=='invited'))toast('프로필 공개 제안이 도착했어요');
 });
 window.addEventListener('hashchange',render);
+window.addEventListener('resize',()=>syncModalViewport({reveal:true}));
+window.visualViewport?.addEventListener('resize',()=>syncModalViewport({reveal:true}));
+window.visualViewport?.addEventListener('scroll',()=>syncModalViewport());
+document.addEventListener('focusin',()=>syncModalViewport({reveal:true}));
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopHeaderBrand();else initHeaderBrand();});
 window.matchMedia?.('(prefers-reduced-motion: reduce)').addEventListener?.('change',initHeaderBrand);
 window.addEventListener('resize',resizeWritingTitle);
