@@ -1070,6 +1070,20 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 @media(max-width:370px){.native-ui.is-chat .product-header{padding-inline:16px}}
 @media(max-height:500px){.native-ui.is-focused .product-header{--screen-header-row:52px;padding-block:calc(4px + env(safe-area-inset-top)) 4px}}
 .native-ui.is-focused.is-compact-viewport .product-header{--screen-header-row:48px;padding-block:2px}
+
+/* Profile consent: one message, one preview link, one deliberate action. */
+.is-profile-private .profile-consent{display:flex;flex-direction:column;text-align:left;min-height:min(640px,calc(100svh - 132px));padding:48px 0 0}
+.is-profile-private .profile-consent h2{font-size:clamp(1.5rem,5.8vw,1.875rem);line-height:1.5;margin:0 0 14px;letter-spacing:-.03em}
+.is-profile-private .profile-consent .reveal-description{font-size:.9375rem;line-height:1.9;margin:0;max-width:27em}
+.profile-consent .sharing-profile-link{justify-content:space-between;gap:16px;background:none;border:0;border-block:1px solid var(--line);border-radius:0;min-height:64px;margin:36px 0 0;padding:16px 0;font-size:.9375rem}
+.profile-consent .sharing-profile-link>span{flex:1;min-width:0}
+.profile-consent .sharing-profile-link>svg{width:18px;height:18px;color:var(--muted)}
+.is-profile-private .profile-consent .reveal-letter-actions{margin-top:auto;padding-top:48px}
+.profile-consent .reveal-agreement{font-size:.875rem;line-height:1.8;margin:0 0 20px;min-height:44px;align-items:center;gap:12px}
+.profile-consent .reveal-agreement input{width:20px;height:20px;margin:0;flex:none}
+.profile-consent .reveal-letter-actions>.btn{min-height:54px;font-size:1rem}
+.profile-consent .reveal-letter-actions>.quiet-link{display:flex;justify-content:center;align-items:center;width:100%;min-height:48px;margin-top:8px;font-size:.8125rem}
+@media(max-width:370px){.is-profile-private .profile-consent{padding-top:32px}.profile-consent .reveal-agreement{font-size:.8125rem}.profile-consent .reveal-letter-actions>.btn{font-size:.9375rem}}
 </style>
   
 </head>
@@ -2041,7 +2055,6 @@ function profilePicture(image,name,personId,cls='',gender='male'){
 }
 function portrait(cls='',c){const info=profileInfo(c);return profilePicture(info?.image,info?.name??'사친',counterpartId(c,state.concerns),cls,c.otherGender);}
 function anonymousAvatar(){return '<span class="anonymous-avatar" role="img" aria-label="익명 프로필">'+icon('me')+'</span>';}
-function consentPerson(c,label,agreed){return `<span class="consent-person ${agreed?'yes':''}">${anonymousAvatar(c)}<span>${label}${agreed?icon('check'):''}</span><small>${agreed?'공개 동의':'아직 비공개'}</small></span>`;}
 function choiceFrom(p){return p.has('category')?{category:p.get('category')}:p.has('tag')?{tag:p.get('tag')}:null;}
 function choiceQuery(c){return c?.category?'category='+encodeURIComponent(c.category):c?.tag?'tag='+encodeURIComponent(c.tag):'';}
 const tabs=[['/listen','홈','home'],['/mine','내 고민','mine'],['/connections','채팅','chat'],['/me','마이','me']];
@@ -2323,7 +2336,7 @@ function profileOrigin(){return {account:'/settings/account',privacy:'/settings/
 function editorRoute(path){const c=editingConnection(),from=route().params.get('from');return path+(c?'?connection='+encodeURIComponent(c.id):['account','privacy'].includes(from)?'?from='+from:'');}
 function editorReturn(){const c=editingConnection();return c?'/connection?id='+encodeURIComponent(c.id):profileOrigin();}
 function sharingPreview(c){
-  return link('/profile?connection='+encodeURIComponent(c.id),ownPortrait(state.profile.photo)+'<span><strong>공개할 내 프로필</strong><small>사진 · 글 · 공개 정보 확인</small></span>'+icon('back'),'sharing-profile-link');
+  return link('/profile?connection='+encodeURIComponent(c.id),'<span>공개할 내 프로필 확인</span>'+icon('back'),'sharing-profile-link');
 }
 function connection(){
   const c=currentConnection(),id=c?.id,stage=revealStage(c,viewer());
@@ -2335,8 +2348,8 @@ function connection(){
   }else{
     const invited=stage==='invited',waiting=stage==='waiting';
     const title=waiting?'동의를 기다리고 있어요':invited?'프로필 공개 제안이 왔어요':'서로 알아볼까요?';
-    const copy=waiting?'상대도 동의하면, 프로필이 함께 열려요':invited?'나도 동의하면, 서로의 사진과 소개가 열려요':'서로 동의하면, 사진과 소개가 함께 열려요';
-    body=`<section class="reveal-panel reveal-letter" data-reveal-stage="${stage}"><div class="consent-pair">${consentPerson({otherId:viewer().id},'나',c.mineReveal)}<i aria-hidden="true"></i>${consentPerson(c,'상대',c.theirReveal)}</div><h2>${title}</h2><p class="reveal-description">${copy}</p>${sharingPreview(c)}<div class="reveal-letter-actions">${waiting?`${link(chatLink,'계속 대화하기','btn btn-primary btn-block')}${button('cancel-reveal','공개 제안 취소','quiet-link',`data-id="${esc(id)}"`)}`:`<label class="checkbox-row reveal-agreement"><input id="reveal-consent" type="checkbox"><span>이 상대에게 내 프로필을 공개할게요</span></label>${button('request-reveal',invited?'동의하고 서로 공개하기':'프로필 공개 제안','btn btn-primary btn-block',`data-id="${esc(id)}" disabled`)}${invited?button('decline-reveal','지금은 대화만 할게요','quiet-link',`data-id="${esc(id)}"`):link(chatLink,'지금은 대화만 할게요','quiet-link')}`}</div></section>`;
+    const copy=waiting?'상대도 동의하면 프로필이 함께 열려요':invited?'나도 동의하면 서로의 사진과 소개가 열려요':'서로 동의하면 사진과 소개가 함께 열려요';
+    body=`<section class="reveal-panel reveal-letter profile-consent" data-reveal-stage="${stage}"><h2>${title}</h2><p class="reveal-description">${copy}</p>${sharingPreview(c)}<div class="reveal-letter-actions">${waiting?`${link(chatLink,'계속 대화하기','btn btn-primary btn-block')}${button('cancel-reveal','공개 제안 취소','quiet-link',`data-id="${esc(id)}"`)}`:`<label class="checkbox-row reveal-agreement"><input id="reveal-consent" type="checkbox"><span>이 상대에게 내 프로필을 공개할게요</span></label>${button('request-reveal',invited?'동의하고 서로 공개하기':'프로필 공개 제안','btn btn-primary btn-block',`data-id="${esc(id)}" disabled`)}${invited?button('decline-reveal','지금은 대화만 할게요','quiet-link',`data-id="${esc(id)}"`):link(chatLink,'지금은 대화만 할게요','quiet-link')}`}</div></section>`;
   }
   return shell(stage==='open'?'상대 프로필':'프로필 공개',body,{back:route().params.get('from')==='notifications'?notificationInboxRoute():chatLink,tools:stage==='open'?link('/profile?connection='+encodeURIComponent(id),'내 공개 프로필','shared-profile-own-link'):'',screen:'connection-profile-page stationery-page '+(stage==='open'?'is-profile-open canvas-page':'is-profile-private')});
 }
@@ -2437,7 +2450,7 @@ function supportCompose(){
 function supportHistory(){const d=state.supportDraft;return shell('내 문의 내역',d.body?`<ul class="service-draft-list"><li><a href="#/support/write"><span class="draft-state">작성 중 · 미접수</span><h2>${esc(SUPPORT_CATEGORIES.find(c=>c.value===d.category)?.label??'문의')}</h2><p>${esc(d.body)}</p><span class="text-link">이어서 작성하기</span></a></li></ul>`:`<section class="letter-empty service-empty">${doodleSvg('envelope')}<h2>아직 작성한 문의가 없어요</h2>${link('/support/write','문의 작성하기','text-link')}</section>`,{back:'/support',screen:'service-page'});}
 const LEGAL_CONTENT={
   terms:{title:'이용약관',note:'정식 이용약관은 서비스 오픈 전에 안내돼요',sections:[['사친사친에서 나누는 것','고민을 이성이 들어주고, 마음에 닿는 답변에서 익명 대화를 시작해요. 사진과 소개는 서로 원할 때 열어요'],['내가 쓰는 이야기','본인의 경험을 바탕으로 이야기를 나누고, 타인의 개인정보나 동의받지 않은 사진은 올리지 않아요'],['서로를 대하는 방식','모욕이나 혐오, 강요 없이 대화해요. 원치 않는 만남이나 프로필 공개를 재촉하지 않아요'],['정식 약관에서 안내할 내용','이용 자격, 게시물의 권리, 서비스 제한, 결제·환불, 탈퇴와 분쟁 처리 기준을 운영 정보와 함께 안내할 예정이에요']]},
-  privacy:{title:'개인정보처리방침',note:'정식 개인정보처리방침은 서비스 오픈 전에 안내돼요',sections:[['고민에 함께 보이는 정보','고민 카드에는 연령대·하는 일·지역만 표시돼요. 닉네임과 사진은 표시하지 않아요'],['프로필이 공개되는 순간','대화 중인 두 사람이 모두 동의하면, 그 상대에게 사진과 소개, 내가 공개로 고른 항목이 열려요'],['현재 입력한 정보의 저장','현재 화면에서 입력한 프로필, 고민, 답변, 대화와 설정은 이용 중인 브라우저에 저장돼요'],['정식 운영 전에 안내할 내용','운영 주체, 수집 항목과 목적, 보관·삭제 기간, 처리 위탁, 문의 담당자와 권리 행사 방법을 확정해 안내할 예정이에요']]},
+  privacy:{title:'개인정보처리방침',note:'정식 개인정보처리방침은 서비스 오픈 전에 안내돼요',sections:[['고민에 함께 보이는 정보','고민 카드에는 연령대·하는 일·지역만 표시돼요. 닉네임과 사진은 표시하지 않아요'],['프로필이 공개되는 순간','대화 중인 두 사람이 모두 동의하면 그 상대에게 사진과 소개, 내가 공개로 고른 항목이 열려요'],['현재 입력한 정보의 저장','현재 화면에서 입력한 프로필, 고민, 답변, 대화와 설정은 이용 중인 브라우저에 저장돼요'],['정식 운영 전에 안내할 내용','운영 주체, 수집 항목과 목적, 보관·삭제 기간, 처리 위탁, 문의 담당자와 권리 행사 방법을 확정해 안내할 예정이에요']]},
   community:{title:'커뮤니티 가이드',note:'서로의 이야기가 편안한 자리가 되도록',sections:[['해답보다 먼저, 들어주세요','평가하거나 단정하기보다 상대가 어떤 마음이었을지 생각하며 답변해요'],['익명 뒤에도 사람이 있어요','조롱·비하·혐오 표현과 원치 않는 성적인 이야기를 하지 않아요'],['마음을 서두르지 않아요','연락처나 사진, 만남을 요구하지 않아요. 프로필 공개와 관계의 속도는 함께 정해요'],['나와 타인의 정보를 지켜요','이름·연락처·계정과 사적인 대화 내용을 동의 없이 공유하지 않아요']]}
 };
 function legal(){

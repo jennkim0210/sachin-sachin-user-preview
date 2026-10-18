@@ -8,7 +8,7 @@ function selectStory(tab){
  const example=examples[tab.dataset.story];if(!example)return;
  for(const item of tabs){const selected=item===tab;item.setAttribute('aria-selected',String(selected));item.tabIndex=selected?0:-1;}
  panel.setAttribute('aria-labelledby',tab.id);
- for(const key of ['topic','title','body','reply'])document.getElementById('sample-'+key).textContent=example[key];
+ for(const key of ['topic','title','body','reply'])document.getElementById('sample-'+key).textContent=example[key].replace(/[,.]/g,'');
 }
 tabs.forEach((tab,index)=>{
  tab.addEventListener('click',()=>selectStory(tab));
@@ -31,8 +31,8 @@ const art=scene.querySelector('img');if(art.complete)playScene();else art.addEve
 const copy=document.getElementById('copy-link'),status=document.getElementById('share-status'),url=document.querySelector('link[rel=canonical]').href;
 copy.hidden=false;
 copy.addEventListener('click',async()=>{
- try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard unavailable');await navigator.clipboard.writeText(url);status.textContent='소개 링크를 복사했어요. 함께 나누고 싶은 사람에게 보내보세요.';}
- catch{document.getElementById('share-fallback').hidden=false;const input=document.getElementById('share-url');input.focus();input.select();status.textContent='주소를 선택했어요. 복사해서 공유해 주세요.';}
+ try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard unavailable');await navigator.clipboard.writeText(url);status.textContent='소개 링크를 복사했어요';}
+ catch{document.getElementById('share-fallback').hidden=false;const input=document.getElementById('share-url');input.focus();input.select();status.textContent='주소를 선택했어요 복사해서 공유해 주세요';}
 });
 
 // Playback lives in isolated display documents. No account or draft state is accessed.
