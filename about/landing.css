@@ -31,7 +31,7 @@
 .device-window iframe{display:block;width:100%;height:688px;border:0;pointer-events:none;background:var(--paper)}
 .screen-demo figcaption{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;min-height:44px;font-size:.6875rem;color:var(--muted)}
 .demo-controls{display:flex;align-items:center;gap:16px}.demo-controls button{font-size:.6875rem;min-height:44px;padding:8px 0;text-decoration:underline;text-underline-offset:4px}.demo-controls button:disabled{opacity:.45;cursor:default}
-.profile-showcase{background:#dcd8e7}.profile-showcase .screen-copy{grid-column:2;grid-row:1}.profile-showcase .screen-demo{grid-column:1;grid-row:1}.profile-showcase .device-window{box-shadow:none}
+.proposal-showcase,.editor-showcase{background:#dcd8e7}.proposal-showcase .screen-copy,.editor-showcase .screen-copy{grid-column:2;grid-row:1}.proposal-showcase .screen-demo,.editor-showcase .screen-demo{grid-column:1;grid-row:1}.profile-showcase .device-window{box-shadow:none}
 .faq-section{padding-block:72px}.faq-section h2{font-size:2.25rem}.faq-list{align-self:center}.start-section{padding-block:70px}.start-section .eyebrow{display:none}.start-actions{margin-top:30px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 @media(max-width:900px){.screen-grid{gap:32px}.screen-copy h2{font-size:2.5rem}.device-window iframe{height:650px}.screen-section{padding-block:70px}}
@@ -40,5 +40,5 @@
 
 .hero h1{font-size:clamp(2.25rem,4.3vw,3.875rem);letter-spacing:-.055em}.hero .underlined{max-width:100%;white-space:normal}
 @media(max-width:600px){.hero h1{font-size:clamp(2rem,8.7vw,3.25rem)}}
-.screen-demo figcaption{flex-wrap:wrap;gap:0 12px}.demo-controls{flex-wrap:wrap;gap:0 14px}.screen-demo [data-demo-stage]{min-height:36px;display:flex;align-items:center}.editor-showcase{background:var(--paper)}.editor-showcase .screen-demo{max-width:410px}
+.screen-demo figcaption{flex-wrap:wrap;gap:0 12px}.demo-controls{flex-wrap:wrap;gap:0 14px}.screen-demo [data-demo-stage]{min-height:36px;display:flex;align-items:center}.editor-showcase{background:#dcd8e7}.editor-showcase .screen-demo{max-width:410px}
 .screen-copy .eyebrow:not([lang]){font-family:'Gowun Dodum',sans-serif;letter-spacing:.015em}

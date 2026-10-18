@@ -1,4 +1,4 @@
-import {demoDuration,demoStep,exampleCopy} from './demo-sequence.mjs?v=20261018-profile-story';
+import {demoDuration,demoStep,exampleCopy} from './demo-sequence.mjs?v=20261018-separate-disclosure';
 const kind=document.body.dataset.kind,app=document.querySelector('#app'),reduced=matchMedia('(prefers-reduced-motion: reduce)'),scroller=document.querySelector('#demo-scroll');
 const duration=demoDuration[kind];
 let elapsed=0,playing=true,visible=parent===window,complete=false,last=0,screen='',stage='';
@@ -21,8 +21,8 @@ function scrollToPart(selector,start,end,offset=92){const target=app.querySelect
 function updateProfile(moment){
  showScreen(moment.state);
  if(moment.state==='conversation'||moment.state==='proposal'){const log=app.querySelector('#chat-messages');log.scrollTop=log.scrollHeight;}
- if(moment.state==='invitation'){const consent=app.querySelector('#reveal-consent');consent.checked=Boolean(moment.agreed);const button=app.querySelector('[data-action="request-reveal"]');button.disabled=!moment.agreed;button.classList.toggle('is-demo-target',Boolean(moment.agreed));scrollToPart('.reveal-letter-actions',6200,7200,innerHeight-230);}
- if(moment.state==='open'){if(elapsed<16000)scrollToPart('.canvas-bio',12700,14500,200);else scrollToPart('[data-block-id="travel"]',16000,19500,92);}
+ if(moment.state==='invitation'){const consent=app.querySelector('#reveal-consent');consent.checked=Boolean(moment.agreed);const button=app.querySelector('[data-action="request-reveal"]');button.disabled=!moment.agreed;button.classList.toggle('is-demo-target',Boolean(moment.agreed));scrollToPart('.reveal-letter-actions',4300,5600,innerHeight-230);}
+ if(moment.state==='open'){if(elapsed<5000)scrollToPart('.canvas-bio',1800,3500,200);else scrollToPart('[data-block-id="travel"]',5000,8000,150);}
 }
 function updateEditor(moment){
  showScreen(moment.state);
@@ -30,10 +30,9 @@ function updateEditor(moment){
  for(const button of picker.querySelectorAll('.canvas-menu-row'))button.classList.toggle('is-demo-target',button.dataset.action==='add-profile-'+moment.menu);
  if(moment.state==='intro'){typeField('textarea[name="bio"]',exampleCopy.bio,1200,3200);scrollToPart('.canvas-identity',500,1200,150);}
  if(moment.state==='note'){typeField('[name="block-travel-title"]',exampleCopy.travelTitle,5700,7000);typeField('[name="block-travel-body"]',exampleCopy.travelBody,7100,10300);scrollToPart('[data-block-id="travel"]',5200,5700,125);}
- if(moment.state==='photo'){typeField('[name="block-sea-caption"]',exampleCopy.caption,14000,16500);scrollToPart('[data-block-id="sea"]',12800,14000,100);}
- if(moment.state==='preview'){if(elapsed<20800)scrollToPart('.canvas-bio',19000,20500,190);else scrollToPart('[data-block-id="travel"]',20800,23500,92);}
+ if(moment.state==='preview'){if(elapsed<15000)scrollToPart('.canvas-bio',12500,14000,190);else scrollToPart('[data-block-id="travel"]',15000,17500,150);}
 }
-function update(){const moment=demoStep(kind,elapsed);if(kind==='chat')updateChat();else if(kind==='profile')updateProfile(moment);else updateEditor(moment);if(stage!==moment.label){stage=moment.label;report();}}
+function update(){const moment=demoStep(kind,elapsed);if(kind==='chat')updateChat();else if(kind==='profile'||kind==='proposal')updateProfile(moment);else updateEditor(moment);if(stage!==moment.label){stage=moment.label;report();}}
 function restart(){elapsed=reduced.matches?duration:0;complete=reduced.matches;playing=!complete;last=0;screen='';if(kind==='chat')rows.forEach(row=>{row.hidden=true;row.classList.remove('is-arriving');});update();report();}
 window.addEventListener('message',event=>{if(event.source!==parent||event.origin!==location.origin||event.data?.type!=='sachin-demo')return;const command=event.data.command;if(command==='visible')visible=true;if(command==='hidden')visible=false;if(command==='pause')playing=false;if(command==='play'&&!complete)playing=true;if(command==='restart')restart();if(command==='finish'){elapsed=duration;complete=true;playing=false;update();}last=0;report();});
 function tick(now){if(visible&&playing&&!complete&&!document.hidden&&!reduced.matches){if(last)elapsed+=Math.min(80,now-last);last=now;update();if(elapsed>=duration){elapsed=duration;complete=true;playing=false;update();report();}}else last=0;requestAnimationFrame(tick);}

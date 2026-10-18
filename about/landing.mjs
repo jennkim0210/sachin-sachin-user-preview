@@ -36,7 +36,7 @@ copy.addEventListener('click',async()=>{
 });
 
 // Playback lives in isolated display documents. No account or draft state is accessed.
-const demoLabels={chat:'예시 대화',profile:'프로필 공개 예시',editor:'프로필 작성 예시'};
+const demoLabels={chat:'예시 대화',proposal:'공개 제안 예시',profile:'프로필 공개 예시',editor:'프로필 작성 예시'};
 const demonstrations=[...document.querySelectorAll('[data-demo]')].map(figure=>({figure,frame:figure.querySelector('iframe'),pause:figure.querySelector('[data-demo-pause]'),replay:figure.querySelector('[data-demo-replay]'),finish:figure.querySelector('[data-demo-finish]'),stage:figure.querySelector('[data-demo-stage]'),visible:false,ready:false,playing:true,complete:false}));
 function sendDemo(d,command){d.frame.contentWindow?.postMessage({type:'sachin-demo',command},location.origin);}
 function syncDemo(d){sendDemo(d,d.visible&&!document.hidden?'visible':'hidden');}
