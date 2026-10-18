@@ -1087,14 +1087,16 @@ html,body{height:100%;overflow:hidden;scroll-behavior:auto}body{margin:0}
 .demo-document .connection-profile-page{padding-bottom:24px}
 .demo-document .is-profile-private .profile-consent{min-height:calc(100svh - 132px);padding-top:32px}
 .demo-document .is-profile-private .profile-consent h2{font-size:1.5rem}
-.demo-document .profile-canvas .canvas-cover{height:290px;max-height:none;aspect-ratio:auto}
+.demo-document .profile-canvas .canvas-cover{height:auto;max-height:none;aspect-ratio:1}
 .demo-document .profile-canvas .canvas-cover .portrait{height:100%;aspect-ratio:auto}
-.demo-document .profile-canvas .canvas-cover img{object-fit:cover;object-position:38% 37%}
+.demo-document .profile-canvas .canvas-cover img{object-fit:cover;object-position:50% 3%}
+.demo-document .profile-canvas .canvas-cover img[src*="profile-man.jpg"]{object-position:50% 18%}
 .demo-document .profile-canvas .canvas-content{padding-top:20px}
 .demo-document .profile-canvas .canvas-bio{font-size:1rem;line-height:1.8}
 .demo-document .profile-canvas .canvas-identity h2{font-size:1.75rem}
-.demo-document .canvas-photo>img,.demo-document .canvas-photo-upload>img{aspect-ratio:3/4;max-height:355px;object-position:50% 67%}
-.demo-document .profile-edit-page .canvas-cover{height:220px}
+.demo-document .canvas-photo>img,.demo-document .canvas-photo-upload>img{aspect-ratio:3/4;max-height:none;object-position:center}
+.demo-document .profile-edit-page .canvas-cover{height:auto}
+.demo-document .own-letter-actions{display:none}
 .demo-document .profile-edit-page .canvas-bio{margin-top:18px}
 .demo-document .profile-edit-toolbar{padding:10px 16px 12px}
 .demo-document .profile-edit-toolbar .btn{min-height:46px}

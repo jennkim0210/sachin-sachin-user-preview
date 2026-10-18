@@ -42,3 +42,4 @@
 @media(max-width:600px){.hero h1{font-size:clamp(2rem,8.7vw,3.25rem)}}
 .screen-demo figcaption{flex-wrap:wrap;gap:0 12px}.demo-controls{flex-wrap:wrap;gap:0 14px}.screen-demo [data-demo-stage]{min-height:36px;display:flex;align-items:center}.editor-showcase{background:#dcd8e7}.editor-showcase .screen-demo{max-width:410px}
 .screen-copy .eyebrow:not([lang]){font-family:'Gowun Dodum',sans-serif;letter-spacing:.015em}
+.profile-view-switch{display:flex;gap:8px;justify-content:center;margin-bottom:16px}.profile-view-switch button{border:0;border-bottom:2px solid transparent;background:none;color:var(--muted);min-height:44px;padding:8px 18px;font:inherit;font-size:.875rem;cursor:pointer}.profile-view-switch button[aria-pressed=true]{border-color:var(--blue);color:var(--blue)}.profile-view-switch button:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px}

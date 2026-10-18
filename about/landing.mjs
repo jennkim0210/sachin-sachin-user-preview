@@ -45,6 +45,7 @@ for(const d of demonstrations){
  d.pause.addEventListener('click',()=>{d.playing=!d.playing;sendDemo(d,d.playing?'play':'pause');});
  d.replay.addEventListener('click',()=>{d.playing=true;sendDemo(d,'restart');});
  d.finish?.addEventListener('click',()=>sendDemo(d,'finish'));
+ for(const button of d.figure.querySelectorAll('[data-demo-profile]'))button.addEventListener('click',()=>sendDemo(d,'profile-'+button.dataset.demoProfile));
 }
 const screenObserver=new IntersectionObserver(entries=>{for(const entry of entries){const d=demonstrations.find(item=>item.figure===entry.target);d.visible=entry.isIntersecting;syncDemo(d);}},{threshold:.15});
 demonstrations.forEach(d=>screenObserver.observe(d.figure));
@@ -55,6 +56,7 @@ window.addEventListener('message',event=>{
  d.pause.disabled=d.complete;d.pause.textContent=d.complete?'재생 완료':d.playing?'일시정지':'계속 보기';
  d.pause.setAttribute('aria-label',demoLabels[d.figure.dataset.demo]+' '+d.pause.textContent);
  if(d.stage&&typeof event.data.stage==='string')d.stage.textContent='예시 · '+event.data.stage;
+ if(d.figure.dataset.demo==='profile')for(const button of d.figure.querySelectorAll('[data-demo-profile]'))button.setAttribute('aria-pressed',String(button.dataset.demoProfile===event.data.profileView));
  if(event.data.ready){d.ready=true;syncDemo(d);}
 });
 document.addEventListener('visibilitychange',()=>demonstrations.forEach(syncDemo));
