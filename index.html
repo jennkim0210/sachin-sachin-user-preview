@@ -581,6 +581,31 @@
 /* Variable-pressure ink silhouettes keep the original blue at every scale. */
 .pen-doodle .pen-ink,.ui-pen .pen-ink{fill:currentColor;stroke:none}
 .settings-symbol .pen-doodle{width:24px;height:27px}.interest>span>svg.pen-doodle{flex:none}
+
+/* Home keeps one quiet notification bell; interests live in My. */
+.notification-trigger{position:relative;color:var(--blue)}
+.notification-trigger>svg{width:24px;height:24px}
+.notification-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--blue);top:7px;right:8px;box-shadow:0 0 0 3px var(--paper)}
+.notification-read-all{color:var(--blue);font-size:12px;min-height:44px;padding:0 4px;white-space:nowrap}
+.notifications-page .app-main{margin-top:8px}
+.notification-list{border-top:1px solid var(--line)}
+.notification-list li{border-bottom:1px solid var(--line)}
+.notification-row{display:flex;align-items:flex-start;gap:14px;min-height:106px;padding:23px 2px;position:relative}
+.notification-mark{display:grid;place-items:center;flex:none;width:42px;height:46px;border-radius:12px;color:var(--blue);background:#d8d2e659}
+.notification-mark .pen-doodle{width:28px;height:34px}
+.notification-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px}
+.notification-copy strong{font-size:15px;line-height:1.5;color:var(--ink)}
+.notification-copy>span{font-size:12px;line-height:1.8;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.notification-unread{flex:none;width:5px;height:5px;border-radius:50%;background:var(--blue);margin:9px 3px 0 0}
+.notification-row.is-read .notification-mark{background:transparent}
+.notification-row.is-read .notification-copy strong{color:#686171}
+.notification-row:hover{background:#ffffff20}
+.notification-row:active{background:#d8d2e640}
+.notification-empty{padding-top:clamp(85px,19dvh,170px)}
+.notification-empty>.pen-doodle{width:70px;height:80px;margin-bottom:28px}
+.notification-empty h2{font-size:21px}
+.notification-empty p{font-size:13px;margin-top:12px}
+@media(max-width:370px){.notification-row{gap:10px}.notification-copy strong{font-size:14px}}
 </style>
   
 </head>
@@ -731,7 +756,7 @@ const SAMPLE_ANSWERS = [
   {id:'answer-a',alias:'익명의 답변 01',body:'저도 늘 들어주는 쪽이었어요. 그래서인지 힘들다는 말도 잘해야 할 것 같더라고요.\n\n어느 날 친구에게 “해결해 주지 않아도 돼. 오늘은 그냥 내 얘기 좀 들어줄래?”라고 말했어요. 생각보다 가볍게 시작해도 괜찮았어요.\n\n당신의 마음도 충분히 들어줄 만한 이야기예요.'},
   {id:'answer-b',alias:'익명의 답변 02',body:'늘 괜찮은 사람일 필요는 없다고 생각해요. 가장 편한 한 사람에게 작은 이야기부터 해보면 어떨까요? 오늘 유난히 피곤했다는 말부터요. 그 정도 시작으로도 괜찮아요.'},
 ].map(a=>({...a,alias:'익명의 사친',authorId:'sample-'+a.id,authorGender:'female',chatConsent:true}));
-function initialState() { return {version:3, member:null, profile:{bio:'',prompt:'',photo:''}, profileDraft:null, signupDraft:{}, replyDrafts:{}, chatDrafts:{}, topics:[], skipped:[], concerns:[], answers:[], connections:{}, messages:[], helpfulAnswers:{}, draft:{category:'',title:'',body:'',tags:''}}; }
+function initialState() { return {version:3, member:null, profile:{bio:'',prompt:'',photo:''}, profileDraft:null, signupDraft:{}, replyDrafts:{}, chatDrafts:{}, topics:[], skipped:[], concerns:[], answers:[], connections:{}, messages:[], helpfulAnswers:{}, notificationReads:{}, draft:{category:'',title:'',body:'',tags:''}}; }
 function safeProfilePhoto(value){return typeof value==='string'&&value.length<=700000&&/^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(value)?value:'';}
 const OCCUPATIONS=['디자이너','개발자','사업가','기획자','마케터','연구원','교사','의료인','공무원','회계사','작가','영상 제작자','요리사','서비스직','프리랜서','학생','대학원생','취업 준비생','직장인','자영업'];
 const PROFILE_FIELDS=[['school','학교',40],['major','전공',40],['company','회사·활동',40],['hometown','고향',30],['interests','좋아하는 것',80],['mbti','MBTI',20],['weekend','주말의 나',80],['values','소중한 가치',80]];
@@ -874,13 +899,14 @@ function transition(connection, action,viewer=DEMO_USER) {
   if(action==='demo-chat'&&next.mineChat) next.theirChat=true;
   if(action==='request-reveal'&&chatAllowed(next,viewer)) next.mineReveal=true;
   // Incoming peer events are separate from the member's own explicit consent.
-  if(action==='receive-reveal-request'&&chatAllowed(next,viewer)) next.theirReveal=true;
+  if(action==='receive-reveal-request'&&chatAllowed(next,viewer)&&!next.theirReveal){next.theirReveal=true;next.revealRevision=(Number(next.revealRevision)||0)+1;next.revealUpdatedAt=new Date().toISOString();}
   if(action==='decline-reveal'&&chatAllowed(next,viewer)&&!next.mineReveal) next.theirReveal=false;
   if(action==='withdraw-peer-reveal'&&!profilesVisible(next,viewer)) next.theirReveal=false;
   if(action==='demo-reveal'&&chatAllowed(next,viewer)&&next.mineReveal) next.theirReveal=true;
   if(action==='cancel-reveal'&&!profilesVisible(next,viewer)) {next.mineReveal=false;next.theirReveal=false;}
   if(action==='prefer-friends'&&profilesVisible(next,viewer)) next.mineFriend=true;
   if(action==='demo-friends'&&profilesVisible(next,viewer)&&next.mineFriend) next.theirFriend=true;
+  if(!profilesVisible(connection,viewer)&&profilesVisible(next,viewer))next.revealUpdatedAt=new Date().toISOString();
   return next;
 }
 function restoreState(saved) {
@@ -898,6 +924,7 @@ function restoreState(saved) {
   for(const key of ['signupDraft','replyDrafts','chatDrafts'])result[key]=saved[key]&&typeof saved[key]==='object'&&!Array.isArray(saved[key])?saved[key]:{};
   result.topics=Array.isArray(saved.topics)?[...new Set(saved.topics.filter(id=>TOPICS.some(t=>t.id===id)))]:[];
   result.skipped=Array.isArray(saved.skipped)?saved.skipped.filter(id=>typeof id==='string'):[];
+  result.notificationReads=Object.fromEntries(Object.entries(saved.notificationReads&&typeof saved.notificationReads==='object'&&!Array.isArray(saved.notificationReads)?saved.notificationReads:{}).filter(([key,value])=>key.length<300&&value===true));
   if(saved.version===1) {
     result.concerns=result.concerns.map(c=>({...c,authorId:DEMO_USER.id,authorGender:DEMO_USER.gender}));
     result.connections=Object.fromEntries(Object.entries(result.connections).map(([id,c])=>{
@@ -909,6 +936,32 @@ function restoreState(saved) {
   }
   result.connections=Object.fromEntries(Object.entries(result.connections).map(([id,c])=>[id,{...c,otherId:counterpartId({...c,id},result.concerns)}]));
   return result;
+}
+
+// In-app activity is derived from existing records, never manufactured for a badge.
+// No profile identity or photo is included in a notification, even after consent.
+function notificationFeed(state,receivedAnswers=[],viewer=state.member){
+  if(!viewer)return [];
+  const items=[],own=new Map(state.concerns.filter(c=>c.own&&c.authorId===viewer.id).map(c=>[c.id,c]));
+  const push=item=>items.push({...item,read:state.notificationReads?.[item.id]===true});
+  for(const answer of receivedAnswers){
+    const concern=own.get(answer.concernId);
+    if(!concern||!oppositeGender(viewer.gender,answer.authorGender))continue;
+    push({id:'answer:'+concern.id+':'+answer.id,type:'answer',concernId:concern.id,personId:answer.authorId,title:'새 답변이 도착했어요',copy:concern.title,at:answer.createdAt??concern.answersReceivedAt??'',href:'/concern?id='+encodeURIComponent(concern.id)+'&from=notifications'});
+  }
+  for(const connection of Object.values(state.connections)){
+    if(!chatAllowed(connection,viewer))continue;
+    const id=connection.id,personId=counterpartId(connection,state.concerns),query=encodeURIComponent(id);
+    const context=state.concerns.find(c=>c.id===connection.concernId)??SAMPLES.find(c=>c.id===String(connection.concernId).replace(/^male-/,''));
+    if(connection.answerId==='sent')push({id:'chat:'+id,type:'chat',connectionId:id,personId,title:'채팅방이 열렸어요',copy:context?.title??'당신의 답변에서 이야기가 이어졌어요',at:connection.openedAt??'',href:'/chat?id='+query+'&from=notifications'});
+    let latest;
+    state.messages.forEach((message,index)=>{if(message.connectionId===id&&message.mine===false)latest={...message,key:message.id??index};});
+    if(latest)push({id:'message:'+id+':'+latest.key,type:'message',connectionId:id,personId,title:'새 메시지가 도착했어요',copy:latest.body,at:latest.createdAt??'',href:'/chat?id='+query+'&from=notifications'});
+    const stage=revealStage(connection,viewer),revision=Number(connection.revealRevision)||0;
+    if(stage==='invited'||stage==='open')push({id:(stage==='open'?'profile:':'reveal:')+id+':'+revision,type:stage==='open'?'profile':'reveal',connectionId:id,personId,title:stage==='open'?'서로의 프로필이 열렸어요':'프로필 공개 제안이 왔어요',copy:stage==='open'?'사진과 소개로 조금 더 알아가요':'서로 동의하면 사진과 소개가 열려요',at:connection.revealUpdatedAt??'',href:'/connection?id='+query+'&from=notifications'});
+  }
+  const priority={answer:1,chat:2,message:3,reveal:4,profile:5};
+  return items.sort((a,b)=>(Date.parse(b.at)||0)-(Date.parse(a.at)||0)||priority[b.type]-priority[a.type]);
 }
 // A horizontal commitment is required; a vertical read/scroll never dismisses a card.
 function swipeDecision(dx,dy,width,velocity=0){
@@ -1200,6 +1253,7 @@ const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;
 let state=initialState();
 try { state=restoreState(JSON.parse(localStorage.getItem(STORAGE_KEY))); } catch {}
 const paths={
+  "bell": "<path d=\"M6 16Q7 13 7 9C7 3 17 3 17 9Q17 13 19 16Q13 18 5 17L6 16M10 20Q12 23 14 20M12 4L12 2\"/>",
   "close": "<path d=\"M6 6Q12 12 18 18M6 18Q13 11 18 6\"/>",
   "undo": "<path d=\"M4 10Q9 9 14 10C22 11 21 21 14 21M8 5L3 10L8 14\"/>",
   "filter": "<path d=\"M3 7L10 7M15 7L21 7M3 17L7 17M12 17L21 17M15 7C15 11 9 11 9 7C9 3 15 3 15 7ZM12 17C12 21 6 21 6 17C6 13 12 13 12 17Z\"/>",
@@ -1312,6 +1366,25 @@ function ownAnswers(c){return c?.id===MY_SAMPLE.id || c?.mockAnswers ? SAMPLE_AN
 function connectionKey(concernId,answerId){return `${concernId}_${answerId}`;}
 function currentConnection(){return state.connections[route().params.get('id')];}
 function allConnections(){return Object.values(state.connections);}
+function activity(){return notificationFeed(state,state.concerns.flatMap(c=>ownAnswers(c).map(a=>({...a,concernId:c.id}))),viewer());}
+function readNotifications(ids){
+  const pending=ids.filter(id=>state.notificationReads[id]!==true);if(!pending.length)return;
+  for(const id of pending)state.notificationReads[id]=true;save();
+}
+function readPageNotifications(path,params){
+  const id=params.get('id');
+  readNotifications(activity().filter(item=>path==='/concern'?item.type==='answer'&&item.concernId===id:path==='/chat'?['chat','message'].includes(item.type)&&item.connectionId===id:path==='/connection'?['reveal','profile'].includes(item.type)&&item.connectionId===id:false).map(item=>item.id));
+}
+function notificationButton(){
+  const unread=activity().some(item=>!item.read);
+  return `<a href="#/notifications" class="icon-button notification-trigger" aria-label="${unread?'알림, 읽지 않은 소식 있음':'알림'}">${icon('bell')}${unread?'<span class="notification-dot" aria-hidden="true"></span>':''}</a>`;
+}
+function notifications(){
+  const items=activity(),unread=items.some(item=>!item.read);
+  const tools=unread?button('read-all-notifications','모두 읽음','notification-read-all'):'';
+  const body=items.length?`<ul class="notification-list" aria-label="도착한 알림">${items.map(item=>`<li><a class="notification-row ${item.read?'is-read':'is-unread'}" href="#${esc(item.href)}" data-action="read-notification" data-id="${esc(item.id)}"><span class="notification-mark" aria-hidden="true">${personDoodle(item.personId??item.id)}</span><span class="notification-copy"><strong>${esc(item.title)}</strong><span>${esc(item.copy)}</span></span>${item.read?'':'<span class="notification-unread"><span class="sr-only">읽지 않음</span></span>'}</a></li>`).join('')}</ul>`:`<section class="letter-empty notification-empty">${doodleSvg('envelope')}<h2>아직 도착한 알림이 없어요</h2><p>새 답변과 연결 소식을 여기에 모아둘게요</p></section>`;
+  return shell('알림',body,{back:'/listen',tools,screen:'notifications-page'});
+}
 const viewer=()=>state.member??DEMO_USER;
 const sampleConcerns=()=>SAMPLES.concat(SAMPLES.map(c=>({...c,id:'male-'+c.id,authorId:'male-'+c.authorId,authorGender:'male'})));
 const duo=()=>"<svg class=\"flower-drawing\" viewBox=\"0 0 80 110\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M39 40c-7 10-17 4-13-3-10 1-12-9-3-12-8-7-1-15 6-11 0-10 11-12 14-3 6-8 16-2 11 6 11-2 14 9 5 13 8 6 2 16-7 12-1 10-11 11-13-2Z\"/><path d=\"M37 24c-6 0-7 10-1 11 7 2 11-11 1-11ZM40 46c-2 17 3 35 0 55M40 81c-11 0-17-8-20-16 10 1 18 6 20 16ZM41 69c3-10 11-13 20-14-4 9-11 14-20 14ZM28 101l-5-1-1-5-2 6-12-1M48 101l7-3 2 3 5-2 7 2\"/></svg>";
@@ -1483,7 +1556,7 @@ function signup(){
   return shell('처음 만나는 사친사친',`<section class="join-intro"><div class="intro-flower brand-greeting">${quoteMark()}<span lang="en">hey, friend</span></div><h2>어떻게 불러드릴까요?</h2><p>닉네임은 서로 프로필을 열 때만 보여요</p></section><form id="signup-form" class="join-form" novalidate><section class="join-sheet" aria-label="익명으로 시작할 내 정보"><label class="join-field"><span>닉네임</span><input name="nickname" value="${esc(d.nickname??'')}" minlength="2" maxlength="12" autocomplete="nickname" placeholder="나를 부를 이름" required></label><fieldset class="join-gender"><legend>성별</legend><div>${[['male','남성'],['female','여성']].map(([v,l])=>`<label><input type="radio" name="gender" value="${v}" ${d.gender===v?'checked':''} required><span>${l}</span></label>`).join('')}</div></fieldset><div class="join-grid">${select('ageBand','연령대',['20대','30대','40대','50대 이상'])}${select('region','지역',['서울','경기','인천','강원','충청','전라','경상','제주','해외'])}</div>${occupationField(d.occupation)}</section><p class="form-privacy">${icon('lock')}고민에는 연령대·하는 일·지역만 표시돼요</p><div class="fixed-actions"><p id="form-error" class="danger" role="alert"></p><button type="submit" class="btn btn-primary btn-block">다음 ${icon('arrow')}</button></div></form>`,{back:'/home',screen:'join-page has-fixed-actions',entry:true});
 }
 function preferences(){
-  const first=!state.topics.length,from=route().params.get('from')==='me'?'/me':'/listen';
+  const first=!state.topics.length,from='/me';
   return shell('관심 주제',`<section class="onboarding"><div class="onboard-illustration">${doodleSvg('envelope')}<span lang="en">a note for you</span></div><h2>어떤 이야기에 공감하나요?</h2><p>고른 주제의 고민이 한 장씩 도착해요</p><form id="preferences-form" data-return="${first?'/listen':from}"><fieldset><legend class="sr-only">들어줄 주제, 여러 개 선택 가능</legend><div class="interest-grid">${TOPICS.map(t=>`<label class="interest"><input type="checkbox" name="topics" value="${t.id}" ${state.topics.includes(t.id)?'checked':''}><span>${topicMark(t.id)}<strong>${t.name}</strong>${icon('check')}</span></label>`).join('')}</div></fieldset><div class="fixed-actions"><p id="form-error" class="danger" role="alert"></p><button type="submit" class="btn btn-primary btn-block" ${first?'disabled':''}>${first?'고민 만나보기':'저장하기'} ${icon('arrow')}</button></div></form></section>`,{back:first?'/signup':from,screen:'onboarding-page has-fixed-actions',entry:first});
 }
 const publicFacts=c=>[c.ageBand??'30대',c.occupation??'직장인',c.region??'서울'].map(esc).join(' · ');
@@ -1509,9 +1582,9 @@ function listen(){
   const c=deck.current;
 
   if(c?.id!==discovery.id)discovery={id:c?.id??null,expanded:false,reply:false,sent:false};
-  const tools=link('/preferences',icon('filter'),'icon-button').replace('class="icon-button"','class="icon-button" aria-label="관심 주제 변경"');
+  const tools=notificationButton();
   const options={tools,screen:'deck-page text-deck conversation-home',compact:true};
-  if(!c)return shell('홈',`<div class="deck-end-card" data-concern=""><div class="card-open deck-empty" tabindex="0" aria-label="모든 고민을 만났어요, 왼쪽으로 밀면 이전 고민"><span class="empty-art">${doodleSvg('envelope')}</span><h2>오늘 도착한 고민을<br>모두 만났어요</h2>${deck.previous?'<p class="deck-return-hint">← 왼쪽으로 밀면 이전 고민</p>':''}${link('/preferences','관심 주제 바꾸기','btn btn-primary')}</div></div>`,options);
+  if(!c)return shell('홈',`<div class="deck-end-card" data-concern=""><div class="card-open deck-empty" tabindex="0" aria-label="모든 고민을 만났어요, 왼쪽으로 밀면 이전 고민"><span class="empty-art">${doodleSvg('envelope')}</span><h2>오늘 도착한 고민을<br>모두 만났어요</h2>${deck.previous?'<p class="deck-return-hint">← 왼쪽으로 밀면 이전 고민</p>':''}${link('/me','마이페이지로','btn btn-primary')}</div></div>`,options);
   const id=esc(c.id);
   const response=`<div class="card-actions arrival-actions compact-card-actions" role="group" aria-label="고민에 답하기 또는 넘기기">${button('skip-card',`<span class="skip-orb">${icon('close')}</span><span class="skip-caption">넘기기</span>`,'card-secondary',`data-id="${id}" aria-label="넘기기"`)}${button('reply-card',icon('feed')+`<span>${state.replyDrafts[c.id]?'답변 이어쓰기':'답변하기'}</span>`,'card-primary',`data-id="${id}"`)}</div>`;
   options.screen+=' is-browsing';
@@ -1530,11 +1603,11 @@ function detail(){
   const c=getConcern(route().params.get('id'));
   const fromChat=state.connections[route().params.get('fromChat')];
   const from=route().params.get('from');
-  const back=chatAllowed(fromChat,viewer())&&fromChat.concernId===c?.id?'/chat?id='+encodeURIComponent(fromChat.id):from==='answers'?'/mine?tab=answers':from==='mine'?'/mine':'/listen';
-  if(!c||!eligible(c))return shell('고민',empty('아직 볼 수 없는 고민이에요','관심 주제를 먼저 선택해 주세요',link('/preferences','주제 선택')),{back});
+  const back=chatAllowed(fromChat,viewer())&&fromChat.concernId===c?.id?'/chat?id='+encodeURIComponent(fromChat.id):from==='notifications'?'/notifications':from==='answers'?'/mine?tab=answers':from==='mine'?'/mine':'/listen';
+  if(!c||!eligible(c))return shell('고민',empty('아직 볼 수 없는 고민이에요','관심 주제를 먼저 선택해 주세요',link('/me','관심 주제 설정')),{back});
   const answered=state.answers.find(a=>a.concernId===c.id),answers=c.own?ownAnswers(c):[];
   const context=`<details class="story-context" ${fromChat?'open':''}><summary><span class="eyebrow">${topic(c.category)}${c.own?'':' · '+publicFacts(c)}</span><h2>${esc(c.title)}</h2><span class="context-toggle">${icon('plus')}</span></summary><p class="prose">${esc(c.body)}</p></details>`;
-  if(c.own)return shell('받은 답변',context+(answers.length?`<div class="answer-list">${answers.map(a=>{const id=connectionKey(c.id,a.id),conn=state.connections[id];return `<article class="answer-card"><header>${anonymousAvatar({otherId:a.authorId})}<strong>익명의 사친</strong></header><p class="prose">${esc(a.body)}</p><div class="answer-actions">${button('helpful',icon('heart'),'icon-button'+(state.helpfulAnswers[id]?' is-helpful':''),`aria-label="도움이 됐어요" aria-pressed="${Boolean(state.helpfulAnswers[id])}" data-id="${esc(id)}"`)}${conn?.closed?'<span class="meta">마친 채팅방</span>':chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(id),'채팅방 열기 '+icon('arrow'),'text-link'):button('accept-answer','대화하기 '+icon('arrow'),'btn btn-primary btn-sm',`data-id="${esc(id)}" data-concern="${esc(c.id)}" data-answer="${a.id}"`)}</div></article>`;}).join('')}</div>`:`<section class="letter-empty answer-waiting">${doodleSvg('envelope')}<h2>답변을 기다리고 있어요</h2>${link('/listen','다른 고민 들어주기 '+icon('arrow'),'text-link')}</section>${demo('가상 답변으로 다음 화면을 확인할 수 있어요','demo-answer','예시 답변 받기',`data-id="${esc(c.id)}"`)}`),{back:back.startsWith('/chat')?back:'/mine',screen:'received-answers-page'});
+  if(c.own)return shell('받은 답변',context+(answers.length?`<div class="answer-list">${answers.map(a=>{const id=connectionKey(c.id,a.id),conn=state.connections[id];return `<article class="answer-card"><header>${anonymousAvatar({otherId:a.authorId})}<strong>익명의 사친</strong></header><p class="prose">${esc(a.body)}</p><div class="answer-actions">${button('helpful',icon('heart'),'icon-button'+(state.helpfulAnswers[id]?' is-helpful':''),`aria-label="도움이 됐어요" aria-pressed="${Boolean(state.helpfulAnswers[id])}" data-id="${esc(id)}"`)}${conn?.closed?'<span class="meta">마친 채팅방</span>':chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(id),'채팅방 열기 '+icon('arrow'),'text-link'):button('accept-answer','대화하기 '+icon('arrow'),'btn btn-primary btn-sm',`data-id="${esc(id)}" data-concern="${esc(c.id)}" data-answer="${a.id}"`)}</div></article>`;}).join('')}</div>`:`<section class="letter-empty answer-waiting">${doodleSvg('envelope')}<h2>답변을 기다리고 있어요</h2>${link('/listen','다른 고민 들어주기 '+icon('arrow'),'text-link')}</section>${demo('가상 답변으로 다음 화면을 확인할 수 있어요','demo-answer','예시 답변 받기',`data-id="${esc(c.id)}"`)}`),{back:back.startsWith('/chat')||back==='/notifications'?back:'/mine',screen:'received-answers-page'});
   if(answered){
     const id='sent_'+c.id,conn=state.connections[id];
     return shell('보낸 답변',`${context}<article class="answer-card sent-answer-letter"><header><span class="sent-answer-mark" aria-hidden="true">${doodleSvg('paperboat')}</span><h2>내 답변</h2>${conn?.closed?'<span class="answer-state">마친 채팅방</span>':!chatAllowed(conn,viewer())&&answered.chatConsent?'<span class="answer-state">답변 선택 대기</span>':''}</header><p class="prose">${esc(answered.body)}</p></article>${chatAllowed(conn,viewer())?link('/chat?id='+encodeURIComponent(id),'채팅방 열기','btn btn-primary btn-block'):link('/listen','다음 고민 보기 '+icon('arrow'),'btn btn-primary btn-block')}${!answered.chatConsent?`<p class="form-privacy">상대가 이 답변을 선택하면 익명 채팅방이 열려요</p>${button('allow-answer-chat','이 답변으로 대화 허용','btn btn-outline btn-block',`data-id="${esc(c.id)}"`)}`:''}${answered.chatConsent&&!conn?.closed&&!chatAllowed(conn,viewer())?demo('고민 작성자가 내 답변을 선택한 상황을 체험해요','demo-accept-sent','상대가 답변 선택하기',`data-id="${esc(c.id)}"`):''}`,{back,screen:'sent-answer-page'});
@@ -1605,7 +1678,7 @@ function connection(){
     const copy=waiting?'상대도 동의하면, 프로필이 함께 열려요':invited?'나도 동의하면, 서로의 사진과 소개가 열려요':'서로 동의하면, 사진과 소개가 함께 열려요';
     body=`<section class="reveal-panel reveal-letter" data-reveal-stage="${stage}"><p class="stationery-eyebrow" lang="en">${invited?'a note for you':'a little closer'}</p><div class="consent-pair">${consentPerson({otherId:viewer().id},'나',c.mineReveal)}<i aria-hidden="true"></i>${consentPerson(c,'상대',c.theirReveal)}</div><h2>${title}</h2><p class="reveal-description">${copy}</p>${waiting?'':'<p class="reveal-scope">사진과 피드 · 기본 정보 · 내가 공개로 고른 항목</p>'}${sharingPreview(c)}<div class="reveal-letter-actions">${waiting?`${link(chatLink,'계속 대화하기','btn btn-primary btn-block')}${button('cancel-reveal','공개 제안 취소','quiet-link',`data-id="${esc(id)}"`)}`:`<label class="checkbox-row reveal-agreement"><input id="reveal-consent" type="checkbox"><span>이 상대에게 내 프로필을 공개할게요</span></label>${button('request-reveal',invited?'동의하고 서로 공개하기':'프로필 공개 제안','btn btn-primary btn-block',`data-id="${esc(id)}" disabled`)}${invited?button('decline-reveal','지금은 대화만 할게요','quiet-link',`data-id="${esc(id)}"`):link(chatLink,'지금은 대화만 할게요','quiet-link')}`}</div></section>`;
   }
-  return shell('프로필',body,{back:chatLink,screen:'connection-profile-page stationery-page '+(stage==='open'?'is-profile-open':'is-profile-private')});
+  return shell('프로필',body,{back:route().params.get('from')==='notifications'?'/notifications':chatLink,screen:'connection-profile-page stationery-page '+(stage==='open'?'is-profile-open':'is-profile-private')});
 }
 function chatRevealNotice(c){
   const stage=revealStage(c,viewer());
@@ -1618,7 +1691,7 @@ function chat(){
   if(!chatAllowed(c,viewer()))return shell('채팅방',empty('열린 채팅방이 없어요','',link('/connections','채팅방으로')),{back:'/connections'});
   const messages=state.messages.filter(m=>m.connectionId===c.id);
   const openingAnswer=c.answerId==='sent'?state.answers.find(a=>a.concernId===c.concernId):ownAnswers(getConcern(c.concernId)).find(a=>a.id===c.answerId);
-  return shell(personName(c),`<a class="chat-context" href="#/concern?id=${encodeURIComponent(c.concernId)}&fromChat=${encodeURIComponent(c.id)}" aria-label="이 대화의 고민 보기">${icon('feed')}<span><span>${esc(getConcern(c.concernId)?.title??'함께 나눈 이야기')}</span></span>${icon('arrow')}</a><div class="chat-body" id="chat-messages" role="log" aria-live="polite" aria-label="대화 내용">${chatRevealNotice(c)}${openingAnswer?`<details class="chat-origin"><summary>마음이 닿은 답변 ${icon('plus')}</summary><p>${esc(openingAnswer.body)}</p></details>`:''}${messages.map((m,i)=>`<div class="message-row ${m.mine?'outgoing':'incoming'} ${i>0&&messages[i-1].mine===m.mine?'is-continuation':''}">${m.mine?'':i===0||messages[i-1].mine?`<span class="message-avatar">${personAvatar(c)}</span>`:'<span class="message-avatar-spacer" aria-hidden="true"></span>'}<div class="msg ${m.mine?'mine':'theirs'}">${esc(m.body)}<small>${/^(오전|오후|AM|PM|\d)/.test(m.time??'')?esc(m.time):''}</small></div></div>`).join('')}</div><form id="chat-form" class="chat-input" data-id="${esc(c.id)}"><label class="sr-only" for="chat-message">메시지</label><textarea id="chat-message" name="body" rows="1" maxlength="1000" required placeholder="편하게 이야기해요">${esc(state.chatDrafts[c.id]??'')}</textarea><button type="submit" class="send-btn" aria-label="메시지 보내기" ${String(state.chatDrafts[c.id]??'').trim()?'':'disabled'}>${icon('arrow')}</button></form>`,{back:'/connections',chat:true,tools:link('/connection?id='+encodeURIComponent(c.id),icon(profilesVisible(c,viewer())?'me':'lock')+'<span>프로필</span>','chat-profile-link').replace('class="chat-profile-link"','class="chat-profile-link" aria-label="'+(profilesVisible(c,viewer())?'상대 프로필 보기':'프로필 공개 제안')+'"')+button('ask-close',icon('more'),'icon-button',`data-id="${esc(c.id)}" aria-label="채팅방 나가기"`)});
+  return shell(personName(c),`<a class="chat-context" href="#/concern?id=${encodeURIComponent(c.concernId)}&fromChat=${encodeURIComponent(c.id)}" aria-label="이 대화의 고민 보기">${icon('feed')}<span><span>${esc(getConcern(c.concernId)?.title??'함께 나눈 이야기')}</span></span>${icon('arrow')}</a><div class="chat-body" id="chat-messages" role="log" aria-live="polite" aria-label="대화 내용">${chatRevealNotice(c)}${openingAnswer?`<details class="chat-origin"><summary>마음이 닿은 답변 ${icon('plus')}</summary><p>${esc(openingAnswer.body)}</p></details>`:''}${messages.map((m,i)=>`<div class="message-row ${m.mine?'outgoing':'incoming'} ${i>0&&messages[i-1].mine===m.mine?'is-continuation':''}">${m.mine?'':i===0||messages[i-1].mine?`<span class="message-avatar">${personAvatar(c)}</span>`:'<span class="message-avatar-spacer" aria-hidden="true"></span>'}<div class="msg ${m.mine?'mine':'theirs'}">${esc(m.body)}<small>${/^(오전|오후|AM|PM|\d)/.test(m.time??'')?esc(m.time):''}</small></div></div>`).join('')}</div><form id="chat-form" class="chat-input" data-id="${esc(c.id)}"><label class="sr-only" for="chat-message">메시지</label><textarea id="chat-message" name="body" rows="1" maxlength="1000" required placeholder="편하게 이야기해요">${esc(state.chatDrafts[c.id]??'')}</textarea><button type="submit" class="send-btn" aria-label="메시지 보내기" ${String(state.chatDrafts[c.id]??'').trim()?'':'disabled'}>${icon('arrow')}</button></form>`,{back:route().params.get('from')==='notifications'?'/notifications':'/connections',chat:true,tools:link('/connection?id='+encodeURIComponent(c.id),icon(profilesVisible(c,viewer())?'me':'lock')+'<span>프로필</span>','chat-profile-link').replace('class="chat-profile-link"','class="chat-profile-link" aria-label="'+(profilesVisible(c,viewer())?'상대 프로필 보기':'프로필 공개 제안')+'"')+button('ask-close',icon('more'),'icon-button',`data-id="${esc(c.id)}" aria-label="채팅방 나가기"`)});
 }
 function me(){
   const m=viewer(),p=state.profile;
@@ -1743,7 +1816,8 @@ function render({keepScroll=false,focus=null}={}){
     document.title='사친사친';return;
   }
   const {path,params}=route();
-  const pages={'/home':home,'/signup':signup,'/listen':listen,'/preferences':preferences,'/write':write,'/concern':detail,'/mine':mine,'/connections':connections,'/connection':connection,'/chat':chat,'/me':me,'/profile':ownProfile,'/profile/edit':profileEdit,'/profile/preview':profilePreview,'/about':about};
+  if(state.member)readPageNotifications(path,params);
+  const pages={'/home':home,'/signup':signup,'/listen':listen,'/preferences':preferences,'/notifications':notifications,'/write':write,'/concern':detail,'/mine':mine,'/connections':connections,'/connection':connection,'/chat':chat,'/me':me,'/profile':ownProfile,'/profile/edit':profileEdit,'/profile/preview':profilePreview,'/about':about};
   const needsMember=!state.member&&!['/home','/about'].includes(path);
   $('#app').innerHTML=needsMember?signup():(pages[path]??home)();
   const pageTitle=$('#app h1')?.textContent??'사친사친';
@@ -1832,7 +1906,7 @@ document.addEventListener('submit',event=>{
   if(form.id==='preferences-form'){const selected=f.getAll('topics').filter(id=>TOPICS.some(t=>t.id===id));if(!selected.length){$('#form-error').textContent='주제를 하나 이상 선택해 주세요';return;}state.topics=selected;save();navigate(form.dataset.return??'/listen');}
   if(form.id==='concern-form'){
     captureDraft(form);const result=validateDraft(state.draft);if(result.error){$('#form-error').textContent=result.error;(!state.draft.category?form.querySelector('[data-choice]'):state.draft.title.trim().length<5?$('#concern-title'):$('#concern-body'))?.focus();return;}
-    const id='local-'+crypto.randomUUID(),previousDraft=state.draft;state.concerns.push({id,...result.value,own:true,authorId:viewer().id,authorGender:viewer().gender,ageBand:viewer().ageBand,occupation:viewer().occupation,region:viewer().region});state.draft=initialState().draft;
+    const id='local-'+crypto.randomUUID(),previousDraft=state.draft;state.concerns.push({id,createdAt:new Date().toISOString(),...result.value,own:true,authorId:viewer().id,authorGender:viewer().gender,ageBand:viewer().ageBand,occupation:viewer().occupation,region:viewer().region});state.draft=initialState().draft;
     if(!save()){state.concerns.pop();state.draft=previousDraft;return;}
     noticeSeen.delete('story-restored');navigate('/concern?id='+id);toast('고민을 보냈어요');
   }
@@ -1846,7 +1920,7 @@ document.addEventListener('submit',event=>{
     render();toast(nextReplyThanks(),{title:'답변을 보냈어요',drawing:'paperboat',duration:5200});
   }
   if(form.id==='chat-form'){const c=state.connections[form.dataset.id],body=String(f.get('body')).trim();if(!chatAllowed(c,viewer())||!body||body.length>1000)return;
-    const draft=state.chatDrafts[c.id];delete state.chatDrafts[c.id];state.messages.push({connectionId:c.id,mine:true,body,time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})});
+    const draft=state.chatDrafts[c.id];delete state.chatDrafts[c.id];state.messages.push({id:crypto.randomUUID(),createdAt:new Date().toISOString(),connectionId:c.id,mine:true,body,time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})});
     if(!save()){state.messages.pop();if(draft!==undefined)state.chatDrafts[c.id]=draft;return;}
     clearTimeout(draftNoticeTimer);dismissToast();noticeSeen.delete('chat-restored:'+c.id);render();$('#chat-message')?.focus({preventScroll:true});
   }
@@ -1856,6 +1930,8 @@ document.addEventListener('click',event=>{
   const choice=event.target.closest('[data-choice]');if(choice){openChoice(choice);return;}
   const target=event.target.closest('[data-action]');if(!target||target.disabled)return;const action=target.dataset.action,id=target.dataset.id;
 
+  if(action==='read-notification'){const item=activity().find(item=>item.id===id);if(item)readNotifications([item.id]);return;}
+  if(action==='read-all-notifications'){readNotifications(activity().map(item=>item.id));render();toast('알림을 모두 읽었어요');return;}
   if(action==='dismiss-toast'){dismissToast();return;}
   if(action==='pick-occupation'){
     const form=target.closest('form'),input=form?.querySelector('[name="occupation"]');if(!input)return;
@@ -1881,7 +1957,7 @@ document.addEventListener('click',event=>{
   if(action==='reply-card'&&discovery.id===id)openCardReply();
   if(action==='next-concern'){discovery={id:null,expanded:false,reply:false,sent:false};render();}
   if(action==='skip-card'&&discovery.id===id)commitSwipe?.('next');
-  if(action==='demo-answer'){const c=state.concerns.find(c=>c.id===id);if(c){c.mockAnswers=true;save();render();}}
+  if(action==='demo-answer'){const c=state.concerns.find(c=>c.id===id);if(c){c.mockAnswers=true;c.answersReceivedAt=new Date().toISOString();save();render();}}
   if(action==='helpful'){const c=getConcern(route().params.get('id'));if(!c?.own||!ownAnswers(c).some(a=>connectionKey(c.id,a.id)===id))return;state.helpfulAnswers[id]=!state.helpfulAnswers[id];save();target.setAttribute('aria-pressed',String(state.helpfulAnswers[id]));target.classList.toggle('is-helpful',state.helpfulAnswers[id]);}
   if(action==='accept-answer'){
     const concern=getConcern(target.dataset.concern),answer=concern?.own?ownAnswers(concern).find(a=>a.id===target.dataset.answer):null;
@@ -1890,7 +1966,7 @@ document.addEventListener('click',event=>{
   if(action==='allow-answer-chat'){const a=state.answers.find(a=>a.concernId===id);if(a&&canRespond(getConcern(id),viewer())){a.chatConsent=true;save();render();}}
   if(action==='demo-accept-sent'){
     const concern=getConcern(id),answer=state.answers.find(a=>a.concernId===id);if(!canRespond(concern,viewer())||!answer?.chatConsent||state.connections['sent_'+id]?.closed)return;
-    const key='sent_'+id;state.connections[key]={id:key,concernId:id,answerId:'sent',otherId:concern.authorId,otherGender:concern.authorGender,mineChat:true,theirChat:true,mineReveal:false,theirReveal:false,closed:false};save();navigate('/chat?id='+encodeURIComponent(key));
+    const key='sent_'+id;state.connections[key]={id:key,openedAt:new Date().toISOString(),concernId:id,answerId:'sent',otherId:concern.authorId,otherGender:concern.authorGender,mineChat:true,theirChat:true,mineReveal:false,theirReveal:false,closed:false};save();navigate('/chat?id='+encodeURIComponent(key));
   }
   if(['request-reveal','cancel-reveal','decline-reveal','demo-reveal','prefer-friends','demo-friends'].includes(action)&&state.connections[id]){
     if(action==='request-reveal'&&!$('#reveal-consent')?.checked)return;
@@ -1901,7 +1977,7 @@ document.addEventListener('click',event=>{
     toast(message);
   }
   if(action==='ask-close')showDialog('채팅방을 나갈까요?','나가면 이 대화와 상대의 프로필을 다시 열 수 없어요','나가기',()=>{state.connections[id]=transition(state.connections[id],'close',viewer());save();navigate('/connections');});
-  if(action==='demo-reply'&&chatAllowed(state.connections[id],viewer())){state.messages.push({connectionId:id,mine:false,body:'이야기해 줘서 고마워요. 오늘은 조금 덜 무거운 마음이었으면 좋겠어요',time:'예시 응답'});save();render();}
+  if(action==='demo-reply'&&chatAllowed(state.connections[id],viewer())){state.messages.push({id:crypto.randomUUID(),createdAt:new Date().toISOString(),connectionId:id,mine:false,body:'이야기해 줘서 고마워요. 오늘은 조금 덜 무거운 마음이었으면 좋겠어요',time:'예시 응답'});save();render();}
   if(action==='ask-reset')showDialog('체험 기록을 초기화할까요?','이 브라우저의 고민, 답변, 채팅과 관심 주제가 지워져요','초기화',()=>{state=initialState();save();navigate('/listen');});
 });
 window.addEventListener('storage',event=>{
@@ -1912,6 +1988,8 @@ window.addEventListener('storage',event=>{
   try{state=restoreState(JSON.parse(event.newValue));}catch{return;}
   render();
   if(typing){const input=document.getElementById(typing.id);input?.focus({preventScroll:true});input?.setSelectionRange(typing.start,typing.end);}
+  // The open inbox already shows the new activity; don't cover it with a toast.
+  if(route().path==='/notifications')return;
   if(allConnections().some(c=>chatAllowed(c,viewer())&&!before.has(c.id)))toast('새 채팅방이 열렸어요');
   else if(allConnections().some(c=>revealStage(c,viewer())==='open'&&beforeStages.get(c.id)!=='open'))toast('서로의 프로필이 열렸어요');
   else if(allConnections().some(c=>revealStage(c,viewer())==='invited'&&beforeStages.get(c.id)!=='invited'))toast('프로필 공개 제안이 도착했어요');
