@@ -915,21 +915,19 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 .native-ui .header-tools{flex:0 0 auto;margin-left:auto}
 .native-ui .brand-heading .wordmark.brand-motion{flex:0 1 226px}
 .notification-settings-link{display:flex;align-items:center;min-height:44px;font-size:13px;color:var(--blue);white-space:nowrap}
-.notification-tabs{display:flex;border-bottom:1px solid var(--line);gap:22px}
-.notification-tabs>a{display:flex;align-items:center;gap:6px;min-height:52px;padding:10px 1px;font-size:17px;color:var(--muted);border-bottom:2px solid transparent}
-.notification-tabs>a.active{color:var(--blue);border-bottom-color:var(--blue)}
-.notification-tab-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#d3cde5;color:var(--blue);font-size:11px;line-height:1}
-.notification-list-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:62px;padding:10px 0}
-.notification-list-heading>p{font-size:11px;line-height:1.7;color:var(--muted);word-break:keep-all;flex:1}
-.notification-read-all{flex:none}
+.notification-list-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px;padding:5px 0;border-bottom:1px solid var(--line)}
+.notification-list-heading>p{font-size:.875rem;line-height:1.6;color:var(--muted);word-break:keep-all;overflow-wrap:anywhere;flex:1;min-width:0}
+.notification-list-heading>p>strong{color:var(--blue);margin-left:3px}
+.notification-read-all{flex:none;font-size:.8125rem}
 .notification-list{border-top:0}
-.notification-row{min-height:0;padding:20px 0;gap:10px}
-.notification-copy{gap:8px}
-.notification-copy .notification-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;font-size:11px;line-height:1.5;color:#79717f;overflow:visible}
-.notification-meta>time{margin-left:auto;white-space:nowrap;font-size:10px}
-.notification-copy strong{font-size:16px;line-height:1.6;font-weight:400;word-break:keep-all;overflow-wrap:anywhere}
-.notification-copy .notification-excerpt{font-size:13px;line-height:1.7}
-.notification-copy .notification-destination{display:block;color:var(--blue);font-size:12px;line-height:1.6;margin-top:2px}
+.notification-row{min-height:0;padding:16px 0;gap:10px}
+.notification-row:focus-visible{outline-offset:3px;border-radius:4px}
+.notification-copy{gap:6px}
+.notification-copy .notification-meta{display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px;font-size:.75rem;line-height:1.5;color:#716879;overflow:visible}
+.notification-meta>time{margin-left:auto;white-space:nowrap;font-size:.6875rem}
+.notification-copy strong{font-size:1rem;line-height:1.55;font-weight:400;word-break:keep-all;overflow-wrap:anywhere}
+.notification-copy .notification-excerpt{font-size:.8125rem;line-height:1.7}
+.notification-copy .notification-destination{display:inline-flex;align-items:center;align-self:flex-start;min-height:28px;padding-top:3px;color:var(--blue);font-size:.8125rem;line-height:1.5;margin-top:0;text-decoration:underline;text-underline-offset:4px;-webkit-line-clamp:unset;overflow:visible}
 .notification-unread{margin-top:5px;flex:0 0 5px}
 .notification-row.is-unread strong{color:var(--blue)}
 .notification-empty{padding-top:clamp(50px,12dvh,95px)}
@@ -937,9 +935,9 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 .notification-preference-note{font-size:12px;line-height:1.8;color:var(--muted);margin-top:22px}
 .service-notice-article{padding:16px 0 30px}.service-notice-kind{font-size:12px;color:var(--blue);margin-bottom:12px}.service-notice-article>h2{font-size:27px;font-weight:400;line-height:1.6;word-break:keep-all;overflow-wrap:anywhere}.service-notice-article>time{display:block;font-size:12px;color:var(--muted);margin:18px 0 24px;padding-bottom:24px;border-bottom:1px solid var(--line)}.service-notice-body{font-size:16px;line-height:1.95;overflow-wrap:anywhere}.service-notice-body>p{white-space:pre-wrap;margin:0 0 22px}
 @media(max-width:600px){.is-chat .chat-profile-link span{display:none}.is-chat .chat-profile-link{width:40px;min-width:40px;padding:8px;justify-content:center}.native-ui.is-chat .screen-heading{gap:6px}.is-chat .screen-heading .anonymous-avatar,.is-chat .screen-heading .avatar-photo{width:26px;height:26px;flex-basis:26px}}
-@media(max-width:370px){.native-ui .product-header{gap:6px}.notification-tabs{gap:20px}.notification-tabs>a{font-size:16px}.notification-list-heading{gap:8px}.notification-list-heading>p{font-size:10px}.notification-copy strong{font-size:15px}}
+@media(max-width:370px){.native-ui .product-header{gap:6px}.notification-list-heading{gap:8px}}
 
-.notification-copy .notification-answer-preview{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;line-height:1.7;padding-left:9px;border-left:1px solid #bdb3cf;color:#736a80}
+.notification-copy .notification-answer-preview{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;font-size:.75rem;line-height:1.7;padding-left:9px;border-left:1px solid #bdb3cf;color:#736a80}
 
 /* Home uses the space left by real header, controls and navigation heights.
    Letter text is never line-clamped: long letters scroll inside the paper. */
@@ -1846,16 +1844,15 @@ function ownAnswers(c){return c?.id===MY_SAMPLE.id || c?.mockAnswers ? SAMPLE_AN
 function connectionKey(concernId,answerId){return `${concernId}_${answerId}`;}
 function currentConnection(){return state.connections[route().params.get('id')];}
 function allConnections(){return Object.values(state.connections);}
-let notificationVisit=null;
+let notificationVisit=null,notificationListPosition=null;
 function activity(){return notificationFeed(state,state.concerns.flatMap(c=>ownAnswers(c).map(a=>({...a,concernId:c.id}))),viewer());}
-function allNotifications(){return [...activity(),...serviceNoticeFeed(state)];}
-function notificationChannel(){return route().params.get('tab')==='service'?'service':'activity';}
+function allNotifications(){return [...activity(),...serviceNoticeFeed(state)].sort((a,b)=>(Date.parse(b.at)||0)-(Date.parse(a.at)||0));}
 function notificationReturn(){
   const value=route().params.get('return')??notificationVisit?.returnTo??'/listen';
   return typeof value==='string'&&value.length<700&&!/[#<>"'\\]/.test(value)&&/^\/(?:listen|mine|connections|me|write|concern|chat|connection|profile(?:\/edit|\/preview)?|settings(?:\/notifications|\/privacy|\/account)?|preferences|billing(?:\/history)?|support(?:\/write|\/history|\/notices)?|legal|about|notice)(?:\?|$)/.test(value)?value:'/listen';
 }
-function notificationInboxRoute(channel='activity',returnTo=notificationReturn()){
-  return '/notifications?'+new URLSearchParams({tab:channel,return:returnTo});
+function notificationInboxRoute(returnTo=notificationReturn()){
+  return '/notifications?'+new URLSearchParams({return:returnTo});
 }
 function readNotifications(ids){
   const pending=ids.filter(id=>state.notificationReads[id]!==true);if(!pending.length)return true;
@@ -1869,9 +1866,9 @@ function readPageNotifications(path,params){
 function notificationButton(){
   const unread=allNotifications().some(item=>!item.read&&shouldSignalNotification(item,state.notificationSettings));
   const returnTo=location.hash.slice(1)||'/listen';
-  return `<a href="#${esc(notificationInboxRoute('activity',returnTo))}" data-action="open-notifications" class="icon-button notification-trigger" aria-label="${unread?'알림, 읽지 않은 소식 있음':'알림'}">${icon('bell')}${unread?'<span class="notification-dot" aria-hidden="true"></span>':''}</a>`;
+  return `<a href="#${esc(notificationInboxRoute(returnTo))}" data-action="open-notifications" class="icon-button notification-trigger" aria-label="${unread?'알림, 읽지 않은 소식 있음':'알림'}">${icon('bell')}${unread?'<span class="notification-dot" aria-hidden="true"></span>':''}</a>`;
 }
-const NOTIFICATION_KINDS={answer:['받은 답변','답변 확인'],chat:['대화 시작','채팅방 열기'],message:['새 메시지','메시지 확인'],reveal:['프로필 공개 제안','제안 확인'],profile:['프로필 공개 완료','프로필 보기']};
+const NOTIFICATION_KINDS={answer:['받은 답변','답변 보기'],chat:['대화 시작','채팅 열기'],message:['새 메시지','채팅 열기'],reveal:['프로필 공개 제안','공개 제안 보기'],profile:['프로필 공개 완료','프로필 보기']};
 const SERVICE_KINDS={notice:'공지',maintenance:'점검 안내',update:'업데이트'};
 function notificationTime(at,now=Date.now()){
   const date=new Date(at),time=date.getTime();if(!at||!Number.isFinite(time))return '';
@@ -1880,24 +1877,24 @@ function notificationTime(at,now=Date.now()){
 }
 function notificationRows(items,{serviceList=false}={}){
   return `<ul class="notification-list" aria-label="${serviceList?'서비스 공지':'도착한 알림'}">${items.map(item=>{
-    const kind=item.type==='service'?SERVICE_KINDS[item.kind]:NOTIFICATION_KINDS[item.type][0],action=item.type==='service'?'자세히 보기':NOTIFICATION_KINDS[item.type][1];
+    const kind=item.type==='service'?SERVICE_KINDS[item.kind]:NOTIFICATION_KINDS[item.type][0],action=item.type==='service'?SERVICE_KINDS[item.kind]+' 보기':NOTIFICATION_KINDS[item.type][1];
     const when=notificationTime(item.at),href=serviceList?'/notice?id='+encodeURIComponent(item.noticeId)+'&from=notices':item.href+'&return='+encodeURIComponent(notificationReturn());
-    return `<li><a class="notification-row ${item.read?'is-read':'is-unread'}" href="#${esc(href)}" data-action="read-notification" data-id="${esc(item.id)}"><span class="notification-copy"><span class="notification-meta"><span>${esc(kind)}${item.type==='message'&&item.unreadCount>1?' · '+item.unreadCount+'개':''}</span>${when?`<time datetime="${esc(item.at)}" title="${esc(new Date(item.at).toLocaleString('ko-KR'))}">${esc(when)}</time>`:''}</span><strong>${esc(item.title)}</strong><span class="notification-excerpt">${esc(item.copy)}</span>${item.preview?`<span class="notification-answer-preview">${esc(item.preview)}</span>`:''}<span class="notification-destination">${action}</span></span>${item.read?'':'<span class="notification-unread"><span class="sr-only">읽지 않음</span></span>'}</a></li>`;
+    return `<li><a id="notification-${encodeURIComponent(item.id)}" class="notification-row ${item.read?'is-read':'is-unread'}" href="#${esc(href)}" data-action="read-notification" data-id="${esc(item.id)}"><span class="notification-copy"><span class="notification-meta"><span>${esc(kind)}${item.type==='message'&&item.unreadCount>1?' · '+item.unreadCount+'개':''}</span>${when?`<time datetime="${esc(item.at)}" title="${esc(new Date(item.at).toLocaleString('ko-KR'))}">${esc(when)}</time>`:''}</span><strong>${esc(item.title)}</strong><span class="notification-excerpt">${esc(item.copy)}</span>${item.preview?`<span class="notification-answer-preview">${esc(item.preview)}</span>`:''}<span class="notification-destination">${action}</span></span>${item.read?'':'<span class="notification-unread"><span class="sr-only">읽지 않음</span></span>'}</a></li>`;
   }).join('')}</ul>`;
 }
 function notifications(){
-  const channel=notificationChannel(),all=allNotifications(),items=all.filter(item=>item.channel===channel),unread=items.filter(item=>!item.read).length;
-  const tabs=[['activity','활동'],['service','서비스 소식']].map(([key,label])=>{const count=all.filter(item=>item.channel===key&&!item.read).length;return `<a href="#${esc(notificationInboxRoute(key))}" ${channel===key?'aria-current="page" class="active"':''}>${label}${count?`<span class="notification-tab-count"><span class="sr-only">읽지 않음 </span>${count>99?'99+':count}</span>`:''}</a>`;}).join('');
-  const intro=channel==='activity'?'내 고민과 대화에 도착한 소식이에요':'사친사친의 공지·점검·업데이트를 전해요';
-  const body=items.length?notificationRows(items):`<section class="letter-empty notification-empty">${doodleSvg('envelope')}<h2>${channel==='activity'?'아직 도착한 알림이 없어요':'아직 새로운 서비스 소식이 없어요'}</h2><p>${channel==='activity'?'내 고민에 답변이 오거나 대화가 시작되면<br>여기에 알려드릴게요':'공지사항과 점검, 업데이트 소식을<br>여기에 모아둘게요'}</p></section>`;
-  return shell('알림',`<nav class="notification-tabs" aria-label="알림 종류">${tabs}</nav><div class="notification-list-heading"><p>${intro}</p>${unread?button('read-all-notifications','모두 읽음','notification-read-all',`aria-label="${channel==='activity'?'활동':'서비스 소식'} 알림 모두 읽음"`):''}</div>${body}`,{back:notificationReturn(),tools:link('/settings/notifications?from=notifications&tab='+channel+'&return='+encodeURIComponent(notificationReturn()),'설정','notification-settings-link'),screen:'notifications-page'});
+  const items=allNotifications(),unread=items.filter(item=>!item.read).length;
+  const summary=unread?`읽지 않은 알림 <strong>${unread}</strong>`:'모두 확인했어요';
+  const body=items.length?`<div class="notification-list-heading"><p>${summary}</p>${unread?button('read-all-notifications','모두 읽음','notification-read-all','aria-label="전체 알림 모두 읽음"'):''}</div>${notificationRows(items)}`:`<section class="letter-empty notification-empty">${doodleSvg('envelope')}<h2>아직 도착한 알림이 없어요</h2><p>답변, 메시지와 서비스 소식을<br>한곳에서 확인할 수 있어요</p></section>`;
+  const settings=link('/settings/notifications?from=notifications&return='+encodeURIComponent(notificationReturn()),'설정','notification-settings-link').replace('class="notification-settings-link"','class="notification-settings-link" data-action="remember-notifications"');
+  return shell('알림',body,{back:notificationReturn(),tools:settings,screen:'notifications-page'});
 }
 function serviceNotices(){
   const items=serviceNoticeFeed(state);
   return shell('공지사항',items.length?notificationRows(items,{serviceList:true}):`<section class="letter-empty service-empty">${doodleSvg('megaphone')}<h2>등록된 공지사항이 없어요</h2><p>공지·점검·업데이트 소식을 여기에 모아둘게요</p></section>`,{back:'/support',screen:'service-page'});
 }
 function serviceNoticeDetail(){
-  const item=serviceNoticeFeed(state).find(item=>item.noticeId===route().params.get('id')),back=route().params.get('from')==='notices'?'/support/notices':notificationInboxRoute('service');
+  const item=serviceNoticeFeed(state).find(item=>item.noticeId===route().params.get('id')),back=route().params.get('from')==='notices'?'/support/notices':notificationInboxRoute();
   if(!item)return shell('서비스 소식',`<section class="letter-empty service-empty"><h2>지금은 볼 수 없는 소식이에요</h2><p>삭제되었거나 아직 공개되지 않은 소식이에요</p>${link(esc(back),'목록으로','text-link')}</section>`,{back,screen:'service-page'});
   return shell('서비스 소식',`<article class="service-notice-article"><p class="service-notice-kind">${SERVICE_KINDS[item.kind]}</p><h2>${esc(item.title)}</h2><time datetime="${esc(item.at)}">${esc(new Date(item.at).toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'}))}</time><div class="service-notice-body">${item.body.split(/\n\s*\n/).map(text=>`<p>${esc(text)}</p>`).join('')}</div></article>`,{back,screen:'service-page notice-detail-page'});
 }
@@ -2283,7 +2280,7 @@ function settings(){
 }
 function notificationPreferences(){
   const choices=[['answers','받은 답변','내 고민에 도착한 새로운 답변'],['chats','새 채팅방','내 답변을 상대가 선택해 시작된 대화'],['messages','새 메시지','상대가 보내온 이야기'],['profiles','프로필 공개','공개 제안과 서로의 동의'],['service','서비스 소식','공지사항, 점검 안내와 업데이트']];
-  return shell('알림 설정',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('bell')}</span><h2>알림을 받을 항목</h2><p>앱 안에서 새 소식을 표시할 항목을 선택해 주세요</p></div><fieldset class="notification-switches"><legend class="sr-only">앱 안 알림 종류</legend>${choices.map(([key,title,copy])=>`<label class="setting-switch-row"><span><strong>${title}</strong><small>${copy}</small></span><span class="pen-switch"><input type="checkbox" role="switch" data-notification-setting="${key}" aria-label="${title}" ${state.notificationSettings[key]?'checked':''}><i aria-hidden="true"></i></span></label>`).join('')}</fieldset><p class="notification-preference-note">끄더라도 알림함에서 소식을 확인할 수 있어요</p>`,{back:route().params.get('from')==='notifications'?notificationInboxRoute(notificationChannel()):'/me',screen:'service-page'});
+  return shell('알림 설정',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('bell')}</span><h2>알림을 받을 항목</h2><p>앱 안에서 새 소식을 표시할 항목을 선택해 주세요</p></div><fieldset class="notification-switches"><legend class="sr-only">앱 안 알림 종류</legend>${choices.map(([key,title,copy])=>`<label class="setting-switch-row"><span><strong>${title}</strong><small>${copy}</small></span><span class="pen-switch"><input type="checkbox" role="switch" data-notification-setting="${key}" aria-label="${title}" ${state.notificationSettings[key]?'checked':''}><i aria-hidden="true"></i></span></label>`).join('')}</fieldset><p class="notification-preference-note">끄더라도 알림함에서 소식을 확인할 수 있어요</p>`,{back:route().params.get('from')==='notifications'?notificationInboxRoute():'/me',screen:'service-page'});
 }
 function privacySettings(){
   return shell('안전과 프로필 공개',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('lock')}</span><h2>내 정보의 공개 범위</h2></div><div class="service-explanations"><section><h3>고민은 기본적으로 익명이에요</h3><p>연령대·하는 일·지역만 함께 전해져요<br>이름과 사진은 고민 카드에 나오지 않아요</p></section><section><h3>서로 동의해야 프로필이 열려요</h3><p>익명 대화에서 상대별로 공개 여부를 선택해요<br>마이페이지에서 사진을 올려도 바로 공개되지 않아요</p></section><section><h3>편하지 않은 대화는 멈출 수 있어요</h3><p>채팅방 오른쪽 위 나가기 버튼으로 대화를 끝낼 수 있어요</p></section></div>${serviceRow('/profile','상대에게 보일 내 프로필')}${serviceRow('/support?topic=safety','안전 관련 도움받기')}${serviceRow('/legal?doc=privacy&from=privacy','개인정보처리방침')}`,{back:'/settings',screen:'service-page'});
@@ -2647,6 +2644,11 @@ function render({keepScroll=false,focus=null}={}){
   if(path==='/chat')$('#chat-messages')?.scrollTo({top:$('#chat-messages').scrollHeight});
   const chosenAnswer=path==='/concern'&&['received','notifications'].includes(params.get('from'))?document.getElementById?.('received-'+params.get('answer')):null;if(chosenAnswer){chosenAnswer.focus({preventScroll:true});chosenAnswer.scrollIntoView({block:'start',behavior:'instant'});}
   $('#announcer').textContent=document.title;updatePageNotice(path);initLanding();initIntro();initHeaderBrand();initSwipe();initPostcardReading();resizeWritingTitle();resizeReplyInput();initComposerViewport();resizeChatInput();resizeProfileText();syncProfileToolbar();
+  if(path==='/notifications'&&!keepScroll&&notificationListPosition?.returnTo===notificationReturn()){
+    window.scrollTo({top:notificationListPosition.scrollY,behavior:'instant'});
+    if(notificationListPosition.id)document.getElementById?.('notification-'+encodeURIComponent(notificationListPosition.id))?.focus({preventScroll:true});
+    notificationListPosition=null;
+  }
   if(notificationVisit?.returnTo===location.hash.slice(1)){window.scrollTo({top:notificationVisit.scrollY,behavior:"instant"});const area=$(".viewport-composer .app-main");if(area&&notificationVisit.scrollTop!==undefined)area.scrollTop=notificationVisit.scrollTop;notificationVisit=null;}
 }
 function resizeChatInput(){
@@ -2769,9 +2771,11 @@ document.addEventListener('click',event=>{
   const choice=event.target.closest('[data-choice]');if(choice){openChoice(choice);return;}
   const target=event.target.closest('[data-action]');if(!target||target.disabled)return;const action=target.dataset.action,id=target.dataset.id;
 
-  if(action==='open-notifications'){notificationVisit={returnTo:location.hash.slice(1),scrollY:window.scrollY,scrollTop:$('.viewport-composer .app-main')?.scrollTop};return;}
+  if(action==='open-notifications'){notificationListPosition=null;notificationVisit={returnTo:location.hash.slice(1),scrollY:window.scrollY,scrollTop:$('.viewport-composer .app-main')?.scrollTop};return;}
+  if(['read-notification','remember-notifications'].includes(action)&&route().path==='/notifications')notificationListPosition={returnTo:notificationReturn(),scrollY:window.scrollY,id:action==='read-notification'?id:null};
+  if(action==='remember-notifications')return;
   if(action==='read-notification'){const item=allNotifications().find(item=>item.id===id);if(item)readNotifications([item.id]);return;}
-  if(action==='read-all-notifications'){if(readNotifications(allNotifications().filter(item=>item.channel===notificationChannel()).map(item=>item.id))){render({keepScroll:true});toast((notificationChannel()==='service'?'서비스 소식':'활동 알림')+'을 모두 읽었어요');}return;}
+  if(action==='read-all-notifications'){if(readNotifications(allNotifications().map(item=>item.id))){render({keepScroll:true});toast('알림을 모두 읽었어요');}return;}
   if(action==='dismiss-toast'){dismissToast();return;}
   if(action==='pick-occupation'){
     const form=target.closest('form'),input=form?.querySelector('[name="occupation"]');if(!input)return;
