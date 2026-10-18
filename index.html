@@ -867,6 +867,16 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 .conversation-home .compact-card-actions .card-secondary:hover{background:#d8d4e3}
 .conversation-home .compact-card-actions .card-secondary:active{background:#d3cde0}
 @media(max-width:370px),(max-height:700px) and (max-width:650px){.conversation-home .compact-card-actions .card-secondary{width:64px;height:52px;min-height:52px!important;font-size:13px;padding-inline:8px}}
+
+
+/* Writing is optional: a quiet, always reachable route to other concerns. */
+.compose-browse{display:flex;flex-direction:column;gap:4px;margin-top:4px;text-align:center}
+.compose-browse p{font-size:11px;line-height:1.6;color:var(--muted);margin:0;word-break:keep-all}
+.compose-browse-link{display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;padding:8px 12px;color:var(--blue);font-size:14px;line-height:1.6;border:1px solid #b9b3c7;border-radius:var(--radius-control);background:transparent;text-align:center}
+.compose-browse-link:hover{background:#d3cde040}
+.compose-browse-link:active{background:#d3cde070}
+.is-compact-viewport .compose-browse{margin-top:0;gap:0}
+.is-compact-viewport .compose-browse p{display:none}
 </style>
   
 </head>
@@ -2007,7 +2017,7 @@ function replyComposer(c){
 function write(){
   const d=state.draft,tab=route().params.get('tab');
   const back=route().params.get('from')==='mine'&&['received','answers'].includes(tab)?'/mine?tab='+tab:'/mine';
-  return shell('고민 쓰기',`<form id="concern-form" class="compose-form" novalidate><p class="compose-salutation" lang="en">${typed("dear, friend","write")}</p><div class="compose-sheet"><div class="compose-toolbar">${choiceSelect('concern-topic','category','고민 주제',d.category,TOPICS.map(t=>({value:t.id,label:t.name,icon:t.icon})),'주제 선택')}</div><label class="sr-only" for="concern-title">고민 제목</label><textarea id="concern-title" name="title" rows="1" placeholder="오늘, 어떤 마음인가요?" minlength="5" maxlength="80" required>${esc(d.title)}</textarea><label class="sr-only" for="concern-body">고민 내용</label><textarea id="concern-body" name="body" placeholder="잘 정리된 이야기가 아니어도 괜찮아요.\n지금 마음에 남은 일을 편하게 들려주세요" minlength="20" maxlength="2000" required>${esc(d.body)}</textarea><div class="compose-bottom"><label class="sr-only" for="concern-tags">해시태그</label><input id="concern-tags" name="tags" value="${esc(d.tags)}" placeholder="#태그 추가"></div></div><div class="compose-footer fixed-actions"><p class="form-privacy">${icon('lock')}이 주제를 선택한 이성에게만 전해져요</p><p id="form-error" class="danger" role="alert"></p><button type="submit" class="btn btn-primary btn-block">고민 보내기</button></div></form>`,{back,screen:'compose-page has-fixed-actions'});
+  return shell('고민 쓰기',`<form id="concern-form" class="compose-form" novalidate><p class="compose-salutation" lang="en">${typed("dear, friend","write")}</p><div class="compose-sheet"><div class="compose-toolbar">${choiceSelect('concern-topic','category','고민 주제',d.category,TOPICS.map(t=>({value:t.id,label:t.name,icon:t.icon})),'주제 선택')}</div><label class="sr-only" for="concern-title">고민 제목</label><textarea id="concern-title" name="title" rows="1" placeholder="오늘, 어떤 마음인가요?" minlength="5" maxlength="80" required>${esc(d.title)}</textarea><label class="sr-only" for="concern-body">고민 내용</label><textarea id="concern-body" name="body" placeholder="잘 정리된 이야기가 아니어도 괜찮아요.\n지금 마음에 남은 일을 편하게 들려주세요" minlength="20" maxlength="2000" required>${esc(d.body)}</textarea><div class="compose-bottom"><label class="sr-only" for="concern-tags">해시태그</label><input id="concern-tags" name="tags" value="${esc(d.tags)}" placeholder="#태그 추가"></div></div><div class="compose-footer fixed-actions"><p class="form-privacy">${icon('lock')}이 주제를 선택한 이성에게만 전해져요</p><p id="form-error" class="danger" role="alert"></p><button type="submit" class="btn btn-primary btn-block">고민 보내기</button><div class="compose-browse"><p id="compose-browse-note">고민을 쓰지 않아도 괜찮아요</p><a href="#/listen" class="compose-browse-link" aria-describedby="compose-browse-note">먼저 다른 고민 들어보기</a></div></div></form>`,{back,screen:'compose-page has-fixed-actions'});
 }
 function detail(){
   const c=getConcern(route().params.get('id'));
