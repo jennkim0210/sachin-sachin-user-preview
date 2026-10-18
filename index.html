@@ -506,8 +506,9 @@
 
 /* Soft rectangular controls, quiet panels and lightly rounded paper corners. */
 :root{--radius-control:12px;--radius-field:10px;--radius-panel:16px;--radius-dock:20px;--radius-postcard:7px 10px 8px 6px}
-.tabbar{border-radius:var(--radius-dock)}
-.tabbar a{border-radius:var(--radius-control)}
+.tabbar{--nav-radius:18px;--nav-border:1px;--nav-padding:5px;border-width:var(--nav-border);padding:var(--nav-padding);border-radius:var(--nav-radius)}
+.tabbar a{border-radius:calc(var(--nav-radius) - var(--nav-border) - var(--nav-padding));transition:background .15s,color .15s,filter .15s}
+.tabbar a:active{transform:none;filter:brightness(.95)}
 .btn,.card-primary,.card-secondary,
 .full-welcome .welcome-start,.intro-controls .intro-next,.intro-back,
 .profile-wizard .fixed-actions .btn,.postcard-reader .reader-actions .btn,
