@@ -1109,6 +1109,20 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 .stamp-next{right:22px;left:auto;transform:rotate(6deg);opacity:var(--swipe-left,0)}
 .stamp-previous{left:22px;right:auto;transform:rotate(-6deg);opacity:var(--swipe-right,0)}
 .conversation-home.is-browsing .arrival-note .deck-order{margin-left:auto;flex:none;font-size:12px;line-height:1.5;color:#756982;white-space:nowrap}
+
+/* End of the concern queue: a calm resting state with an explicit way back. */
+.conversation-home.is-deck-empty .app-main{margin-top:0}
+.conversation-home.is-deck-empty .deck-end-card{width:100%;max-width:420px;margin:0 auto}
+.conversation-home.is-deck-empty .deck-empty{display:flex;flex-direction:column;align-items:center;min-height:0;padding:clamp(32px,8svh,72px) 12px 28px;text-align:center;cursor:default}
+.is-deck-empty .deck-empty .empty-art{display:block;margin:0 0 24px}
+.is-deck-empty .deck-empty .empty-art>.pen-doodle{width:72px;height:72px;transform:rotate(-6deg)}
+.is-deck-empty .deck-empty h2{color:var(--blue);font-size:clamp(1.5rem,6.2vw,1.875rem);line-height:1.5;margin:0;font-weight:400;word-break:keep-all}
+.is-deck-empty .deck-empty .deck-empty-copy{font-size:.9375rem;line-height:1.9;margin:14px 0 0;color:#676070;word-break:keep-all;overflow-wrap:anywhere}
+.is-deck-empty .deck-empty-actions{width:100%;max-width:320px;margin-top:28px}
+.is-deck-empty .deck-empty-actions .btn{margin:0;min-height:54px;font-size:1rem;border-radius:15px;white-space:normal}
+.is-deck-empty .deck-empty-actions .deck-empty-count{font-size:.75rem;line-height:1.7;margin:12px 0 0;color:#756982}
+.is-deck-empty .deck-empty-actions .text-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin-top:14px;font-size:.875rem;color:#676070}
+@media(max-height:650px){.conversation-home.is-deck-empty .deck-empty{padding:12px 4px}.is-deck-empty .deck-empty .empty-art{margin-bottom:8px}.is-deck-empty .deck-empty .empty-art>.pen-doodle{width:48px;height:48px}.is-deck-empty .deck-empty h2{font-size:1.375rem}.is-deck-empty .deck-empty .deck-empty-copy{font-size:.8125rem;line-height:1.75;margin-top:8px}.is-deck-empty .deck-empty-actions{margin-top:18px}.is-deck-empty .deck-empty-actions .btn{min-height:50px}.is-deck-empty .deck-empty-actions .deck-empty-count{margin-top:8px}.is-deck-empty .deck-empty-actions .text-link{margin-top:4px}}
 </style>
   
 </head>
@@ -1347,6 +1361,19 @@ function concernTime(c){const value=typeof c.createdAt==='number'?c.createdAt:Da
 function recommendedConcerns(items,state,viewer=DEMO_USER) {
   const selected=new Set(state.topics??[]), skipped=new Set(state.skipped??[]),answered=new Set((state.answers??[]).map(a=>a.concernId));
   return items.filter(c=>canRespond(c,viewer)&&selected.has(c.category)&&!skipped.has(c.id)&&!answered.has(c.id)).sort((a,b)=>{const at=concernTime(a),bt=concernTime(b);if(at!==bt)return at>bt?-1:1;return String(a.id)<String(b.id)?-1:String(a.id)>String(b.id)?1:0;});
+}
+// Revisit only still-eligible skipped concerns; answers and drafts are never reset.
+function skippedConcerns(items,state,viewer=DEMO_USER){
+  const skipped=new Set(state.skipped??[]);
+  return recommendedConcerns(items,{...state,skipped:[]},viewer).filter(c=>skipped.has(c.id));
+}
+function revisitSkippedConcerns(items,state,viewer=DEMO_USER){
+  const ids=new Set(skippedConcerns(items,state,viewer).map(c=>c.id));
+  if(!ids.size)return false;
+  state.skipped=state.skipped.filter(id=>!ids.has(id));
+  state.deckNavigation=null;
+  state.deckNavigation=concernDeck(items,state,viewer).navigation;
+  return true;
 }
 // Navigation history stays separate from answers and is scoped to the chosen topics.
 function concernDeck(items,state,viewer=DEMO_USER){
@@ -2282,7 +2309,7 @@ function postcardFace(c,{preview=false,composing=false}={}){
   return `<div class="card-open"${focus}><div class="postcard-topline"><span class="card-topic">${topic(c.category)}</span>${read}</div><div class="card-story postcard-copy"><h2${preview?'':' id="card-title"'}>${esc(c.title)}</h2><p${preview?'':' id="card-body"'} class="card-excerpt">${esc(c.body)}</p></div><div class="postcard-sender"><div class="postcard-facts"><strong>${esc(c.ageBand)} · ${esc(c.occupation)}</strong><span>${esc(c.region)}</span></div><span class="postcard-signature" aria-hidden="true">${concernDoodle(c)}</span></div></div>`;
 }
 function deckUnderlays(deck){
-  const preview=(c,direction)=>`<div class="letter-underlay underlay-1 sachin-postcard deck-preview preview-${direction}" data-preview-id="${esc(c?.id??'end')}" aria-hidden="true" inert>${c?postcardFace(c,{preview:true}):`<div class="deck-preview-end">${doodleSvg('envelope')}<p>지금 볼 수 있는 고민을<br>모두 만났어요</p></div>`}</div>`;
+  const preview=(c,direction)=>`<div class="letter-underlay underlay-1 sachin-postcard deck-preview preview-${direction}" data-preview-id="${esc(c?.id??'end')}" aria-hidden="true" inert>${c?postcardFace(c,{preview:true}):`<div class="deck-preview-end">${doodleSvg('envelope')}<p>새 고민이 없어요</p></div>`}</div>`;
   return (deck.depth>1?'<div class="letter-underlay underlay-2" aria-hidden="true"></div>':'')+preview(deck.next,'next')+(deck.previous?preview(deck.previous,'previous'):'');
 }
 function listen(){
@@ -2295,7 +2322,11 @@ function listen(){
 
   if(c?.id!==discovery.id)discovery={id:c?.id??null,expanded:false,reply:false,sent:false};
   const options={screen:'deck-page text-deck conversation-home',compact:true};
-  if(!c)return shell('홈',`<div class="deck-end-card" data-concern=""><div class="card-open deck-empty" tabindex="0" aria-label="모든 고민을 만났어요, 오른쪽으로 밀면 이전 고민"><span class="empty-art">${doodleSvg('envelope')}</span><h2>지금 볼 수 있는 고민을<br>모두 만났어요</h2>${deck.previous?'<p class="deck-return-hint">오른쪽으로 밀면 이전 고민 →</p>':''}${link('/me','마이페이지로','btn btn-primary')}</div></div>`,options);
+  if(!c){
+    const skipped=skippedConcerns(sampleConcerns(),state,viewer());
+    options.screen+=' is-deck-empty';
+    return shell('홈',`<section class="deck-end-card" data-concern="" aria-labelledby="deck-empty-title"><div class="card-open deck-empty" tabindex="0" aria-label="새 고민이 없어요${deck.previous?', 오른쪽으로 밀면 이전 고민':''}"><span class="empty-art" aria-hidden="true">${doodleSvg('envelope')}</span><h2 id="deck-empty-title">새 고민이 없어요</h2><p class="deck-empty-copy">${skipped.length?'지금 도착한 고민을 모두 봤어요<br>새로운 이야기가 오면 여기에 보여드릴게요':'관심 주제에 맞는 새로운 이야기를<br>기다리고 있어요'}</p><div class="deck-empty-actions">${skipped.length?button('revisit-skipped','넘긴 고민 다시 보기','btn btn-primary btn-block')+'<p class="deck-empty-count">넘겨 둔 고민 '+skipped.length+'개를 다시 볼 수 있어요</p>':''}${link('/preferences','관심 주제 바꾸기','text-link')}</div></div></section>`,options);
+  }
   const id=esc(c.id);
   const response=`<div class="card-actions arrival-actions compact-card-actions" role="group" aria-label="고민에 답하기 또는 넘기기">${button('skip-card','넘기기','card-secondary',`data-id="${id}" aria-label="넘기기"`)}${button('reply-card',`<span>${state.replyDrafts[c.id]?'답변 이어쓰기':'답변하기'}</span>`,'card-primary',`data-id="${id}"`)}</div>`;
   options.screen+=' is-browsing';
@@ -3031,6 +3062,12 @@ document.addEventListener('click',event=>{
   if(action==='reply-card'&&discovery.id===id)openCardReply();
   if(action==='next-concern'){discovery={id:null,expanded:false,reply:false,sent:false};render();}
   if(action==='skip-card'&&discovery.id===id)commitSwipe?.('next');
+  if(action==='revisit-skipped'&&route().path==='/listen'){
+    const before={skipped:state.skipped,navigation:state.deckNavigation};
+    if(!revisitSkippedConcerns(sampleConcerns(),state,viewer())){render();return;}
+    if(!save()){state.skipped=before.skipped;state.deckNavigation=before.navigation;return;}
+    deckArrival='';render();$('.concern-card .card-open')?.focus({preventScroll:true});return;
+  }
   if(action==='demo-answer'){const c=state.concerns.find(c=>c.id===id);if(c){c.mockAnswers=true;c.answersReceivedAt=new Date().toISOString();save();render();}}
   if(action==='helpful'){const c=getConcern(route().params.get('id'));if(!c?.own||!ownAnswers(c).some(a=>connectionKey(c.id,a.id)===id))return;state.helpfulAnswers[id]=!state.helpfulAnswers[id];save();target.setAttribute('aria-pressed',String(state.helpfulAnswers[id]));target.classList.toggle('is-helpful',state.helpfulAnswers[id]);}
   if(action==='accept-answer'){
