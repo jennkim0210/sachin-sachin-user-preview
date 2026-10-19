@@ -1104,6 +1104,11 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 .profile-consent .reveal-letter-actions>.quiet-link{display:flex;justify-content:center;align-items:center;width:100%;min-height:44px;margin-top:7px;font-size:.8125rem}
 .profile-consent .invitation-scope{font-size:.6875rem;color:#7b7387;line-height:1.7;margin:10px 0 0}
 @media(max-width:370px),(max-height:740px){.is-profile-private .profile-consent{padding-top:14px}.reveal-invitation-art{width:min(100%,260px);margin:8px auto 10px}.is-profile-private .profile-consent h2{font-size:1.75rem}.is-profile-private .profile-consent .reveal-description{font-size:.875rem;margin-top:12px}.is-profile-private .profile-consent .reveal-letter-actions{margin-top:12px}.profile-consent .sharing-profile-link{margin-top:10px}.profile-consent .reveal-agreement{font-size:.75rem}.profile-consent .reveal-letter-actions>.btn{font-size:.9375rem}}
+
+/* Book-like card gesture: drag left for next, right for the card just read. */
+.stamp-next{right:22px;left:auto;transform:rotate(6deg);opacity:var(--swipe-left,0)}
+.stamp-previous{left:22px;right:auto;transform:rotate(-6deg);opacity:var(--swipe-right,0)}
+.conversation-home.is-browsing .arrival-note .deck-order{margin-left:auto;flex:none;font-size:12px;line-height:1.5;color:#756982;white-space:nowrap}
 </style>
   
 </head>
@@ -1247,7 +1252,7 @@ const SAMPLES = [
   {"id":"health-1","category":"health","title":"몸을 돌보느라 약속을 줄였더니 마음도 허전해요.","body":"요즘은 제 컨디션을 먼저 생각하며 지내고 있어요. 만나자는 연락을 자주 거절하다 보니 가까운 사람들과 멀어질까 걱정돼요. 미안한 마음을 어떻게 이야기하면 좋을까요?","tags":["나돌보기","관계의거리"],"answers":0},
   {"id":"future-1","category":"future","title":"아직 일어나지 않은 일을 자꾸 걱정하게 돼요.","body":"잠들기 전에 앞으로의 생활을 상상하다 보면 생각이 길어져요. 당장 정할 수 없는 일까지 미리 답을 찾고 있는 것 같아요. 걱정을 정리하거나 잠들기 전에 해보는 습관이 있나요?","tags":["미래걱정","오늘의마음"],"answers":0},
   {"id":"etc-1","category":"etc","title":"어디서부터 말해야 할지 모르겠는 마음도 괜찮을까요?","body":"큰일이 있었던 건 아닌데 며칠째 마음에 뭔가 남아 있어요. 이름을 붙이기 어려운 기분이라 말할 타이밍을 놓치게 되네요. 정리되지 않은 이야기부터 나눠보고 싶어요.","tags":["말해보기","복잡한마음"],"answers":0},
-].map((c,i)=>({...c,authorId:'sample-'+c.id,authorGender:'female',ageBand:i%3===1?'30대':'20대',occupation:c.category==='career'?'취업 준비생':i%4===3?'프리랜서':'직장인',region:i%3===2?'경기':'서울'}));
+].map((c,i)=>({...c,createdAt:new Date(Date.parse('2026-10-18T09:00:00Z')+(c.id==='daily-1'?1:-i)*60000).toISOString(),authorId:'sample-'+c.id,authorGender:'female',ageBand:i%3===1?'30대':'20대',occupation:c.category==='career'?'취업 준비생':i%4===3?'프리랜서':'직장인',region:i%3===2?'경기':'서울'}));
 const DEMO_USER = {id:'preview-user',gender:'male'};
 const MY_SAMPLE = {id:'my-first',authorId:DEMO_USER.id,authorGender:DEMO_USER.gender,category:'relationship',title:'괜찮은 척하는 게 익숙해진 것 같아요.',body:'친구들 앞에서는 항상 이야기를 들어주는 편이에요. 그런데 막상 제 이야기를 하려면 분위기가 무거워질까 봐 웃고 넘기게 돼요.\n\n누군가에게 기대고 싶다는 말을 어떻게 시작하면 좋을까요?',tags:['마음알아가기','관계의거리'],own:true,answers:2};
 const SAMPLE_ANSWERS = [
@@ -1336,14 +1341,17 @@ function validateMember(value){
   if(!occupation||occupation.length>24||/[\r\n\x00-\x1f]/.test(occupation))return {error:'하는 일을 1~24자로 적어 주세요',field:'occupation'};
   return {value:{id:DEMO_USER.id,nickname,gender,ageBand,region,occupation}};
 }
+// Immutable publication time determines delivery order; edits never bump a concern.
+// Missing legacy timestamps sort last. A stable ID breaks exact-time ties.
+function concernTime(c){const value=typeof c.createdAt==='number'?c.createdAt:Date.parse(c.createdAt);return Number.isFinite(value)?value:-Infinity;}
 function recommendedConcerns(items,state,viewer=DEMO_USER) {
   const selected=new Set(state.topics??[]), skipped=new Set(state.skipped??[]),answered=new Set((state.answers??[]).map(a=>a.concernId));
-  return items.filter(c=>canRespond(c,viewer)&&selected.has(c.category)&&!skipped.has(c.id)&&!answered.has(c.id));
+  return items.filter(c=>canRespond(c,viewer)&&selected.has(c.category)&&!skipped.has(c.id)&&!answered.has(c.id)).sort((a,b)=>{const at=concernTime(a),bt=concernTime(b);if(at!==bt)return at>bt?-1:1;return String(a.id)<String(b.id)?-1:String(a.id)>String(b.id)?1:0;});
 }
 // Navigation history stays separate from answers and is scoped to the chosen topics.
 function concernDeck(items,state,viewer=DEMO_USER){
   const allowed=recommendedConcerns(items,{...state,skipped:[]},viewer),byId=new Map(allowed.map(c=>[c.id,c]));
-  const queue=recommendedConcerns(items,state,viewer),scope=viewer.gender+':'+[...state.topics].sort().join(',');
+  const queue=recommendedConcerns(items,state,viewer),scope='newest-v1:'+viewer.gender+':'+[...state.topics].sort().join(',');
   const raw=state.deckNavigation?.scope===scope?state.deckNavigation:null;
   const clean=ids=>[...new Set((Array.isArray(ids)?ids:[]).filter(id=>byId.has(id)))];
   const current=byId.get(raw?.current)??queue[0]??null;
@@ -1507,7 +1515,7 @@ function swipeDecision(dx,dy,width,velocity=0){
   if(!Number.isFinite(dx)||!Number.isFinite(dy)||!Number.isFinite(width)||width<=0||Math.abs(dx)<Math.abs(dy)*1.35)return null;
   const flick=Number.isFinite(velocity)&&Math.abs(velocity)>=.55&&Math.abs(dx)>=50;
   if(Math.abs(dx)<threshold&&!flick)return null;
-  return dx<0?'previous':'next';
+  return dx<0?'next':'previous';
 }
 
 // Original hand-ink drawings, inspired by everyday hand-drawn objects.
@@ -2274,23 +2282,25 @@ function postcardFace(c,{preview=false,composing=false}={}){
   return `<div class="card-open"${focus}><div class="postcard-topline"><span class="card-topic">${topic(c.category)}</span>${read}</div><div class="card-story postcard-copy"><h2${preview?'':' id="card-title"'}>${esc(c.title)}</h2><p${preview?'':' id="card-body"'} class="card-excerpt">${esc(c.body)}</p></div><div class="postcard-sender"><div class="postcard-facts"><strong>${esc(c.ageBand)} · ${esc(c.occupation)}</strong><span>${esc(c.region)}</span></div><span class="postcard-signature" aria-hidden="true">${concernDoodle(c)}</span></div></div>`;
 }
 function deckUnderlays(deck){
-  const preview=(c,direction)=>`<div class="letter-underlay underlay-1 sachin-postcard deck-preview preview-${direction}" data-preview-id="${esc(c?.id??'end')}" aria-hidden="true" inert>${c?postcardFace(c,{preview:true}):`<div class="deck-preview-end">${doodleSvg('envelope')}<p>오늘 도착한 고민을<br>모두 만났어요</p></div>`}</div>`;
+  const preview=(c,direction)=>`<div class="letter-underlay underlay-1 sachin-postcard deck-preview preview-${direction}" data-preview-id="${esc(c?.id??'end')}" aria-hidden="true" inert>${c?postcardFace(c,{preview:true}):`<div class="deck-preview-end">${doodleSvg('envelope')}<p>지금 볼 수 있는 고민을<br>모두 만났어요</p></div>`}</div>`;
   return (deck.depth>1?'<div class="letter-underlay underlay-2" aria-hidden="true"></div>':'')+preview(deck.next,'next')+(deck.previous?preview(deck.previous,'previous'):'');
 }
 function listen(){
   if(!state.topics.length)return preferences();
   const arriving=deckArrival;deckArrival='';
   const deck=concernDeck(sampleConcerns(),state,viewer());
+  // Pin the card being read; a new arrival cannot replace it mid-read.
+  state.deckNavigation=deck.navigation;
   const c=deck.current;
 
   if(c?.id!==discovery.id)discovery={id:c?.id??null,expanded:false,reply:false,sent:false};
   const options={screen:'deck-page text-deck conversation-home',compact:true};
-  if(!c)return shell('홈',`<div class="deck-end-card" data-concern=""><div class="card-open deck-empty" tabindex="0" aria-label="모든 고민을 만났어요, 왼쪽으로 밀면 이전 고민"><span class="empty-art">${doodleSvg('envelope')}</span><h2>오늘 도착한 고민을<br>모두 만났어요</h2>${deck.previous?'<p class="deck-return-hint">← 왼쪽으로 밀면 이전 고민</p>':''}${link('/me','마이페이지로','btn btn-primary')}</div></div>`,options);
+  if(!c)return shell('홈',`<div class="deck-end-card" data-concern=""><div class="card-open deck-empty" tabindex="0" aria-label="모든 고민을 만났어요, 오른쪽으로 밀면 이전 고민"><span class="empty-art">${doodleSvg('envelope')}</span><h2>지금 볼 수 있는 고민을<br>모두 만났어요</h2>${deck.previous?'<p class="deck-return-hint">오른쪽으로 밀면 이전 고민 →</p>':''}${link('/me','마이페이지로','btn btn-primary')}</div></div>`,options);
   const id=esc(c.id);
   const response=`<div class="card-actions arrival-actions compact-card-actions" role="group" aria-label="고민에 답하기 또는 넘기기">${button('skip-card','넘기기','card-secondary',`data-id="${id}" aria-label="넘기기"`)}${button('reply-card',`<span>${state.replyDrafts[c.id]?'답변 이어쓰기':'답변하기'}</span>`,'card-primary',`data-id="${id}"`)}</div>`;
   options.screen+=' is-browsing';
-  const arrival='<div class="arrival-intro arrival-note"><p>'+typed('오늘, 당신에게 온 이야기','home-arrival',64)+'</p></div>';
-  return shell('홈',`<div class="discovery-stage">${arrival}<div class="concern-stack" data-depth="${deck.depth}" data-preview="next">${deckUnderlays(deck)}<article class="concern-card text-card sachin-postcard ${arriving?'card-arriving arrive-'+arriving:''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-previous" aria-hidden="true">이전 고민</span><span class="swipe-stamp stamp-next" aria-hidden="true">다음 고민</span>${postcardFace(c)}<span class="postcard-scroll-hint" aria-hidden="true" hidden>아래로 더 읽기</span></article></div><div class="deck-controls"><p class="deck-swipe-guide" id="swipe-help">← 이전 고민 <span aria-hidden="true">·</span> 다음 고민 →</p>${response}</div></div>`,options);
+  const arrival='<div class="arrival-intro arrival-note"><p>'+typed('당신에게 온 이야기','home-arrival',64)+'</p><span class="deck-order">최신순</span></div>';
+  return shell('홈',`<div class="discovery-stage">${arrival}<div class="concern-stack" data-depth="${deck.depth}" data-preview="next">${deckUnderlays(deck)}<article class="concern-card text-card sachin-postcard ${arriving?'card-arriving arrive-'+arriving:''}" data-concern="${id}" aria-roledescription="스와이프 카드" aria-labelledby="card-title"><span class="swipe-stamp stamp-previous" aria-hidden="true">이전 고민</span><span class="swipe-stamp stamp-next" aria-hidden="true">다음 고민</span>${postcardFace(c)}<span class="postcard-scroll-hint" aria-hidden="true" hidden>아래로 더 읽기</span></article></div><div class="deck-controls"><p class="deck-swipe-guide" id="swipe-help">← 다음 고민 <span aria-hidden="true">·</span> 이전 고민 →</p>${response}</div></div>`,options);
 }
 function concernContext(c,{open=false}={}){
   return `<details class="reply-source" ${open?'open':''}><summary><span class="reply-source-meta"><span>${esc(topic(c.category))}${c.own?'':' · '+publicFacts(c)}</span><span class="reply-recipient-mark" aria-hidden="true">${concernDoodle(c)}</span></span><h2>${esc(c.title)}</h2><span class="reply-source-toggle"><span class="when-closed">고민 펼쳐보기</span><span class="when-open">고민 접기</span>${icon('chevron')}</span></summary><p class="prose">${esc(c.body)}</p></details>`;
@@ -2672,10 +2682,10 @@ function initSwipe(){
   const finish=direction=>{
     if(busy||!card.isConnected||discovery.sent||discovery.reply)return;
     const deck=concernDeck(sampleConcerns(),state,viewer());
-    if((direction==='previous'&&!deck.previous)||(direction==='next'&&!deck.current)){reset();toast(direction==='previous'?'처음 도착한 고민이에요':'새로운 고민을 기다리고 있어요');return;}
+    if((direction==='previous'&&!deck.previous)||(direction==='next'&&!deck.current)){reset();toast(direction==='previous'?'되돌아갈 고민이 없어요':'새로운 고민을 기다리고 있어요');return;}
     busy=true;start=null;showPreview(direction);stack?.style.setProperty('--drag-progress','1');card.classList.remove('card-arriving');card.classList.remove('is-dragging');card.classList.add('is-leaving');
-    card.style.setProperty(direction==='previous'?'--swipe-left':'--swipe-right','1');
-    card.style.transform=`translateX(${(direction==='previous'?-1:1)*(window.innerWidth+card.offsetWidth)}px) rotate(${direction==='previous'?-9:9}deg)`;
+    card.style.setProperty(direction==='next'?'--swipe-left':'--swipe-right','1');
+    card.style.transform=`translateX(${(direction==='next'?-1:1)*(window.innerWidth+card.offsetWidth)}px) rotate(${direction==='next'?-9:9}deg)`;
     const id=card.dataset.concern;
     timer=setTimeout(()=>{if(!card.isConnected||route().path!=='/listen')return;if(!moveConcernDeck(sampleConcerns(),state,viewer(),direction,id)){busy=false;card.classList.remove('is-leaving');reset();return;}deckArrival=direction;save();render();},reduced?0:240);
   };
@@ -2688,7 +2698,7 @@ function initSwipe(){
   const move=(x,y,event)=>{
     if(!start||busy)return;dx=x-start.x;dy=y-start.y;
     if(!dragging){if(Math.abs(dy)>12&&Math.abs(dy)>Math.abs(dx)){suppressClick=true;start=null;return;}if(Math.abs(dx)<10||Math.abs(dx)<Math.abs(dy)*1.35)return;dragging=true;card.classList.add('is-dragging');if(start.kind==='pointer')card.setPointerCapture(event.pointerId);}
-    showPreview(dx<0?'previous':'next');
+    showPreview(dx<0?'next':'previous');
     if(event.cancelable)event.preventDefault();card.style.transform=`translateX(${dx}px) translateY(${Math.abs(dx)*-.02}px) rotate(${Math.max(-8,Math.min(8,dx/38))}deg)`;
     card.style.setProperty('--swipe-left',Math.min(1,Math.max(0,-dx)/90));card.style.setProperty('--swipe-right',Math.min(1,Math.max(0,dx)/90));
     stack?.style.setProperty('--drag-progress',Math.min(1,Math.abs(dx)/card.offsetWidth*2));
