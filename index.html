@@ -1123,6 +1123,172 @@ html.has-app-modal .viewport-composer :is(.app-main,.chat-body,textarea){overflo
 .is-deck-empty .deck-empty-actions .deck-empty-count{font-size:.75rem;line-height:1.7;margin:12px 0 0;color:#756982}
 .is-deck-empty .deck-empty-actions .text-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin-top:14px;font-size:.875rem;color:#676070}
 @media(max-height:650px){.conversation-home.is-deck-empty .deck-empty{padding:12px 4px}.is-deck-empty .deck-empty .empty-art{margin-bottom:8px}.is-deck-empty .deck-empty .empty-art>.pen-doodle{width:48px;height:48px}.is-deck-empty .deck-empty h2{font-size:1.375rem}.is-deck-empty .deck-empty .deck-empty-copy{font-size:.8125rem;line-height:1.75;margin-top:8px}.is-deck-empty .deck-empty-actions{margin-top:18px}.is-deck-empty .deck-empty-actions .btn{min-height:50px}.is-deck-empty .deck-empty-actions .deck-empty-count{margin-top:8px}.is-deck-empty .deck-empty-actions .text-link{margin-top:4px}}
+
+/* Store, checkout and one-to-one support use the same calm paper surfaces. */
+.commerce-page .page,.support-center-page .page,.support-history-page .page,.support-detail-page .page,.policy-page .page{padding-bottom:28px}
+.commerce-intro,.support-welcome{padding:10px 0 24px}
+.service-eyebrow{font-size:13px;color:var(--blue);margin:0 0 12px}
+.commerce-intro h2,.support-welcome h2{font-size:clamp(26px,7vw,32px);line-height:1.55;font-weight:400;letter-spacing:-.5px}
+.commerce-intro>p:last-child,.support-welcome>p:last-child{font-size:15px;line-height:1.8;color:#655e6d;margin:13px 0 0}
+.commerce-preview-note{font-size:12px;line-height:1.8;color:#675d7c;padding:12px 14px;background:#dcd6ed;border-radius:12px;margin:0 0 20px;overflow-wrap:anywhere}
+.store-products{display:grid;gap:12px;margin-bottom:30px}
+.store-product{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:22px 18px;border:1px solid #c9c4d5;border-radius:20px;background:#eeece8;color:inherit;text-decoration:none}
+.store-product-main{background:#d9d1ed;border-color:#b4a6d6}
+.store-product-copy small{font-size:12px;color:#696171;display:block;margin-bottom:6px}
+.store-product h3{font-size:20px;color:var(--blue);font-weight:400;line-height:1.6;margin:0 0 7px}
+.store-product p{font-size:14px;line-height:1.7;color:#655e6d;margin:0;word-break:keep-all;overflow-wrap:anywhere}
+.store-product-price{text-align:right;align-self:start;padding-top:24px}
+.store-product-price strong{font-size:16px;font-weight:400;color:var(--blue);white-space:nowrap}
+.store-product-price small{display:block;font-size:11px;color:#726978;margin-top:5px}
+.store-product:hover{border-color:var(--blue)}
+.product-detail-heading{text-align:center;padding:14px 0 20px}
+.product-detail-heading h2{font-size:29px;line-height:1.5;color:var(--blue);font-weight:400;margin:12px 0}
+.product-detail-heading>p:last-child{font-size:16px;line-height:1.85;color:#62596d;word-break:keep-all}
+.product-ink{width:72px;height:72px;display:grid;place-items:center;margin:28px auto 20px;color:var(--blue)}
+.product-ink svg{width:58px;height:58px}
+.highlight-preview{margin:24px auto;max-width:290px;text-align:left;padding:22px;background:#ddd5f2;border:1.5px solid #8d74c7;border-radius:17px 21px 16px 20px;box-shadow:5px 5px 0 #cbc2df}
+.highlight-preview>div{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--blue)}
+.highlight-preview .highlight-label{font-size:11px;border-bottom:1px solid #8972bd;padding-bottom:3px}
+.highlight-preview p{font-size:20px;line-height:1.8;color:var(--blue);margin:22px 0}
+.highlight-preview>small{font-size:11px;color:#756982}
+.product-points{padding:0;margin:0 0 28px;list-style:none}
+.product-points li{position:relative;font-size:15px;line-height:1.85;margin:10px 0;padding-left:16px;color:#514b5b;word-break:keep-all;overflow-wrap:anywhere}
+.product-points li::before{content:"";width:4px;height:4px;background:#8c79b3;border-radius:50%;position:absolute;top:12px;left:1px}
+.purchase-options>h3,.payment-methods legend{font-size:17px;font-weight:400;margin-bottom:14px}
+.purchase-options fieldset{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;border:0;padding:0;margin:0 0 16px}
+.quantity-choice{position:relative;min-width:0;cursor:pointer}
+.quantity-choice input{position:absolute;opacity:0;width:1px;height:1px}
+.quantity-choice>span{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:88px;padding:12px 5px;border:1px solid #bfb9c8;border-radius:14px;background:#eeece8}
+.quantity-choice strong{font-size:19px;font-weight:400}
+.quantity-choice small{font-size:13px;white-space:nowrap}
+.quantity-choice input:checked+span{border:1.5px solid var(--blue);background:#dcd5ef;color:var(--blue)}
+.quantity-choice input:focus-visible+span{outline:2px solid var(--blue);outline-offset:3px}
+.commerce-footnote{font-size:12px;line-height:1.8;color:#706877;margin:15px 0;word-break:keep-all;overflow-wrap:anywhere}
+.commerce-page .btn,.support-shortcuts .btn,.inquiry-detail-actions .btn{min-height:52px;border-radius:16px;font-size:16px}
+.commerce-page .quiet-link,.support-compose-page .quiet-link,.inquiry-detail-actions .quiet-link{display:flex;align-items:center;justify-content:center;min-height:48px;margin:8px 0}
+.checkout-card{background:#eeece8;border:1px solid #c9c4d5;border-radius:20px;padding:22px;margin:0 0 24px}
+.checkout-card>small{font-size:12px;color:#726979}
+.checkout-card h2{font-size:24px;font-weight:400;line-height:1.5;margin:10px 0;color:var(--blue)}
+.checkout-card>p:not(.commerce-footnote){font-size:14px;line-height:1.8;color:#685f74}
+.checkout-facts{margin:24px 0 0}
+.checkout-facts>div{display:flex;justify-content:space-between;gap:20px;align-items:baseline;margin:14px 0;font-size:15px;line-height:1.65}
+.checkout-facts dt{color:#716779;flex:1}.checkout-facts dd{margin:0;text-align:right;overflow-wrap:anywhere}
+.checkout-facts .checkout-total{border-top:1px solid #cfc9d7;margin-top:20px;padding-top:18px;color:var(--blue);font-size:19px}
+.checkout-total dt{color:var(--blue)}
+.payment-methods{display:grid;grid-template-columns:1fr 1fr;gap:12px;border:0;margin:25px 0;padding:0}
+.payment-methods label{display:flex;align-items:center;gap:9px;min-height:54px;padding:12px;background:#eeece8;border:1px solid #c9c4d5;border-radius:14px;font-size:15px}
+.payment-methods input,.purchase-consent input{accent-color:var(--blue);width:18px;height:18px;flex:none}
+.purchase-consent{border-top:1px solid #c7c1cf;padding-top:20px;margin-bottom:24px}
+.purchase-consent label{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.8}
+.purchase-consent input{margin-top:4px}
+.purchase-consent .text-link{display:inline-flex;min-height:44px;align-items:center;font-size:13px;color:#6c6277;margin-left:28px}
+.checkout-complete{text-align:center;padding:16px 0 28px}
+.completion-ink{display:inline-flex;color:var(--blue);margin:12px}
+.completion-ink svg{height:50px;width:50px}
+.checkout-complete h2{font-size:28px;line-height:1.65;font-weight:400;color:var(--blue);margin:10px 0 16px}
+.checkout-complete p{font-size:16px;color:#675d74}
+.history-tabs{display:flex;gap:24px;border-bottom:1px solid #c9c4d5}
+.history-tabs a{min-height:46px;display:inline-flex;align-items:center;color:#746b7d;font-size:16px}
+.history-tabs .active{border-bottom:2px solid var(--blue);color:var(--blue)}
+.support-shortcuts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.support-center-page .faq-section{margin-top:36px}
+.support-center-page .faq-item summary{font-size:16px;line-height:1.7;padding:20px 0;display:flex;gap:14px;align-items:center;justify-content:space-between}
+.support-center-page .faq-item summary svg{flex:none;width:18px;height:18px}
+.support-center-page .faq-item p{font-size:15px;line-height:1.9;padding:0 0 20px;color:#655d6d}
+.support-compose-page .support-form{padding-top:10px;display:flex;flex-direction:column;gap:22px}
+.support-compose-page .service-field{display:flex;flex-direction:column;gap:10px;min-width:0}
+.support-compose-page .service-field>span{font-size:15px}
+.support-compose-page input,.support-compose-page textarea{font-size:16px!important;line-height:1.8;border:1px solid #c9c4d5;border-radius:14px;background:#eeece8;padding:12px 14px;width:100%;box-sizing:border-box}
+.support-compose-page textarea{min-height:200px;resize:vertical}
+.support-compose-page .service-field small{font-size:12px;color:#796e85}
+.support-compose-page .inquiry-counter{text-align:right}
+.support-compose-page .field-note{font-size:12px;line-height:1.8;color:#756982;margin-top:-18px}
+.support-compose-page .support-channel-note{font-size:13px;line-height:1.85;margin:0;background:#dcd6ed;border-radius:12px;padding:13px}
+.support-form-actions{padding-bottom:12px}
+.support-form-actions .btn{min-height:54px;border-radius:16px;font-size:16px}
+.inquiry-list{list-style:none;padding:0;margin:0 0 24px}
+.inquiry-list li{border-bottom:1px solid #c6bfce;padding:21px 0}
+.inquiry-list a{display:block;color:inherit}
+.inquiry-list a>div,.inquiry-meta{display:flex;justify-content:space-between;gap:12px;font-size:12px;line-height:1.8;color:#6b5d81}
+.inquiry-list h2{font-size:19px;font-weight:400;line-height:1.6;margin:10px 0}
+.inquiry-list p{font-size:14px;line-height:1.8;color:#6c6474;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.inquiry-list time,.inquiry-detail time{font-size:12px;display:block;margin-top:12px;color:#756982}
+.inquiry-draft{display:block;padding:18px;border:1px solid #bdb3cc;border-radius:15px;margin:20px 0;background:#dcd6ed}
+.inquiry-draft span,.inquiry-draft small{display:block;font-size:12px;color:#695b7d}
+.inquiry-draft strong{display:block;font-weight:400;font-size:17px;line-height:1.7;margin:6px 0}
+.inquiry-detail{padding:24px 20px;background:#eeece8;border:1px solid #c9c4d5;border-radius:18px;overflow-wrap:anywhere}
+.inquiry-detail h2{font-size:23px;font-weight:400;line-height:1.6;margin:16px 0 6px}
+.inquiry-body{font-size:16px;line-height:1.9;white-space:pre-wrap;margin:26px 0}
+.inquiry-email{border-top:1px solid #d0cad8;padding-top:15px;font-size:13px;line-height:1.8;color:#6f657b}
+.inquiry-answer{margin:26px 0}
+.inquiry-answer h3{font-weight:400;font-size:18px;margin-bottom:10px}
+.inquiry-answer p{font-size:14px;line-height:1.9;color:#6c6277}
+.policy-summary{padding:18px;background:#dcd6ed;border-radius:15px;margin-bottom:24px}
+.policy-summary p{font-size:14px;line-height:1.9;margin:0}
+.policy-toc{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid #c9c4d5}
+.policy-toc summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-size:16px}
+.policy-toc nav{display:flex;flex-direction:column;gap:3px;padding-top:10px}
+.policy-toc button{background:none;border:0;text-align:left;font:inherit;font-size:14px;line-height:1.7;padding:9px 0;color:var(--blue);cursor:pointer}
+.policy-page .policy-copy section{scroll-margin-top:90px}
+.policy-page .policy-copy h2{font-size:18px;line-height:1.65;font-weight:400;margin:26px 0 12px}
+.policy-page .policy-copy p{font-size:15px;line-height:1.95;white-space:pre-line;word-break:keep-all;overflow-wrap:anywhere}
+.policy-contact{margin-top:32px;border-top:1px solid #c9c4d5;padding-top:20px;font-size:13px;line-height:1.9;color:#716779}
+@media(max-width:350px){.store-product{grid-template-columns:1fr;gap:8px;padding:18px}.store-product-price{padding-top:0;text-align:left;display:flex;align-items:center;gap:8px}.store-product-price small{margin:0}.support-shortcuts{grid-template-columns:1fr}.purchase-options fieldset{gap:7px}.quantity-choice small{font-size:12px}}
+
+
+/* My: one profile, a floating point card and a quiet menu hierarchy. */
+.my-hub-v2 .my-centered-profile{padding:14px 12px 24px;text-align:center}
+.my-centered-portrait{display:inline-flex;position:relative;margin-bottom:12px}
+.my-centered-portrait .own-portrait,.my-centered-portrait .own-photo{width:92px;height:104px;border-radius:30px 28px 32px 27px;object-fit:cover;background:#d8d2e7}
+.my-centered-portrait .my-profile-edit{position:absolute;bottom:-5px;right:-36px}
+.my-centered-profile h2{font-size:23px;line-height:1.5}
+.my-centered-profile p{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.8}
+.my-point-card{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 21px;margin:0 0 16px;background:var(--sheet);border:1px solid #d5d0de;border-radius:21px 19px 23px 20px;box-shadow:0 8px 22px #28204c0a}
+.my-point-balance{display:flex;flex-direction:column;gap:2px;min-width:0}
+.my-point-balance>span{font-size:12px;color:var(--muted)}
+.my-point-balance strong{font-size:28px;color:var(--blue);line-height:1.4}
+.my-point-balance strong small{font-size:16px}
+.my-point-card>.btn{min-height:44px;padding:10px 18px;font-size:14px;flex:none;border-radius:13px}
+.my-main-menu .service-row{min-height:56px;padding:12px 2px}
+.my-main-menu .service-row:first-child{margin-bottom:10px;border-bottom:1px solid var(--line)}
+.my-hub-v2 .my-service-footer{flex-wrap:wrap;gap:0 16px;margin-top:14px}
+.settings-identity-rows{border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:12px}
+.settings-identity-rows .service-row,.settings-primary-rows .service-row,.settings-secondary-rows .service-row{min-height:58px;border-bottom:0}
+.settings-primary-rows .service-row-value{max-width:35%;overflow-wrap:anywhere;text-align:right}
+.settings-secondary-rows{display:block;border-top:1px solid var(--line);margin-top:12px;padding-top:12px}
+.settings-secondary-rows .service-row strong{font-size:14px;color:var(--muted)}
+.support-menu .service-row{min-height:70px}
+.support-hub-page .quiet-link{display:flex;justify-content:flex-start;margin-top:22px}
+.point-wallet-summary{text-align:center;padding:18px 0 8px}
+.point-wallet-summary h2{font-size:16px;font-weight:400;margin-top:20px}
+.point-wallet-summary>strong{display:block;color:var(--blue);font-size:52px;line-height:1.6}
+.point-wallet-summary>strong small{font-size:25px}
+.point-wallet-summary>p:not(.service-eyebrow){font-size:13px;color:var(--muted);line-height:1.8;margin:6px 0 24px}
+.point-charge-heading,.simple-service-intro{padding:20px 0 24px}
+.point-charge-heading h2,.simple-service-intro h2,.account-editor-heading h2,.support-guide-intro h2{font-size:26px;line-height:1.65;word-break:keep-all;margin:10px 0}
+.point-charge-heading>p:last-child,.simple-service-intro>p,.account-editor-heading>p,.support-guide-intro>p{font-size:14px;line-height:1.9;color:var(--muted)}
+.point-packs{border:0;padding:0;margin:25px 0}
+.point-packs legend{font-size:14px;margin-bottom:10px}
+.point-packs label{display:block;position:relative;margin-top:10px}
+.point-packs input{position:absolute;left:18px;top:50%;transform:translateY(-50%);accent-color:var(--blue);width:19px;height:19px;margin:0}
+.point-packs label>span{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:22px 18px 22px 50px;background:var(--sheet);border:1px solid var(--line);border-radius:15px}
+.point-packs strong{font-size:20px;color:var(--blue)}
+.point-packs small{font-size:12px;color:var(--muted)}
+.point-packs input:checked+span{border-color:var(--blue);background:#e2dcef}
+.point-packs input:focus-visible+span{outline:2px solid var(--blue);outline-offset:3px}
+.service-status-card{padding:22px;background:var(--sheet);border:1px solid var(--line);border-radius:17px;margin:15px 0 25px}
+.service-status-card h3{font-size:17px;line-height:1.7}
+.service-status-card p{font-size:14px;line-height:1.9;color:var(--muted)}
+.service-status-card h3+p{margin-top:8px}
+.invite-link-card{padding:28px 24px;border:1px solid #d0c9df;border-radius:18px;background:#dfd8f0;margin:5px 0 25px}
+.invite-link-card>span{font-size:28px;color:var(--blue);font-family:Georgia,serif}
+.invite-link-card p{font-size:14px;margin-top:10px;line-height:1.7}
+.account-editor-heading{margin:22px 0 28px}
+.nickname-page .service-field small{display:block;line-height:1.8;color:var(--muted);font-size:12px;margin:10px 0}
+.nickname-page #nickname-error{min-height:20px;margin:10px 0}
+.nickname-page input[readonly]{background:#dedbdf;color:var(--muted)}
+.support-guide-intro{padding:20px 0 28px}
+@media(max-width:370px){.my-hub-v2 .my-centered-profile{padding-top:4px;padding-bottom:18px}.my-centered-portrait .own-portrait,.my-centered-portrait .own-photo{width:78px;height:88px}.my-point-card{padding:15px 17px}.my-main-menu .service-row{min-height:52px}.my-centered-profile h2{font-size:21px}.point-packs label>span{padding-right:14px}.point-packs small{font-size:11px}.point-charge-heading h2,.simple-service-intro h2,.account-editor-heading h2{font-size:23px}}
 </style>
   
 </head>
@@ -1275,8 +1441,9 @@ const SAMPLE_ANSWERS = [
 ].map(a=>({...a,alias:'익명의 사친',authorId:'sample-'+a.id,authorGender:'female',chatConsent:true}));
 const DEFAULT_NOTIFICATION_SETTINGS={answers:true,chats:true,messages:true,profiles:true,service:true};
 function notificationSettings(value={}){return Object.fromEntries(Object.entries(DEFAULT_NOTIFICATION_SETTINGS).map(([key,fallback])=>[key,typeof value?.[key]==='boolean'?value[key]:fallback]));}
-function supportDraft(value={}){return {category:['usage','account','payment','safety','feedback'].includes(value?.category)?value.category:'usage',body:String(value?.body??'').slice(0,2000),email:String(value?.email??'').slice(0,120),savedAt:typeof value?.savedAt==='string'?value.savedAt:''};}
-function initialState() { return {version:3, member:null, profile:{bio:'',prompt:'',photo:''}, profileDraft:null, signupDraft:{}, replyDrafts:{}, chatDrafts:{}, topics:[], skipped:[], concerns:[], answers:[], connections:{}, messages:[], helpfulAnswers:{}, notificationReads:{}, notificationSettings:{...DEFAULT_NOTIFICATION_SETTINGS}, supportDraft:supportDraft(), draft:{category:'',title:'',body:'',tags:''}}; }
+function supportDraft(value={}){return {category:['usage','account','payment','safety','privacy','feedback'].includes(value?.category)?value.category:'usage',title:String(value?.title??'').slice(0,80),body:String(value?.body??'').slice(0,2000),email:String(value?.email??'').slice(0,120),savedAt:typeof value?.savedAt==='string'?value.savedAt:''};}
+function supportTickets(value){const seen=new Set();return (Array.isArray(value)?value:[]).slice(0,40).flatMap(raw=>{if(!raw||typeof raw!=='object'||typeof raw.id!=='string'||!/^[a-zA-Z0-9_-]{1,80}$/.test(raw.id)||seen.has(raw.id)||!Number.isFinite(Date.parse(raw.savedAt)))return [];seen.add(raw.id);const d=supportDraft(raw);return [{...d,id:raw.id,title:d.title.trim()||'저장한 문의',status:'draft'}];});}
+function initialState() { return {version:3, member:null, nicknameChangedAt:'', profile:{bio:'',prompt:'',photo:''}, profileDraft:null, signupDraft:{}, replyDrafts:{}, chatDrafts:{}, topics:[], skipped:[], concerns:[], answers:[], connections:{}, messages:[], helpfulAnswers:{}, notificationReads:{}, notificationSettings:{...DEFAULT_NOTIFICATION_SETTINGS}, supportDraft:supportDraft(), supportTickets:[], draft:{category:'',title:'',body:'',tags:''}}; }
 function safeProfilePhoto(value){return typeof value==='string'&&value.length<=700000&&/^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(value)?value:'';}
 const OCCUPATIONS=['디자이너','개발자','사업가','기획자','마케터','연구원','교사','의료인','공무원','회계사','작가','영상 제작자','요리사','서비스직','프리랜서','학생','대학원생','취업 준비생','직장인','자영업','휴식 중','전업 돌봄'];
 const PROFILE_FIELDS=[['school','학교',40],['major','전공',40],['company','회사·활동',40],['hometown','고향',30],['interests','좋아하는 것',80],['mbti','MBTI',20],['weekend','주말의 나',80],['values','소중한 가치',80]];
@@ -1474,6 +1641,7 @@ function restoreState(saved) {
   result.member=saved.member&&validateMember(saved.member).value?validateMember(saved.member).value:!Object.hasOwn(saved,'member')&&hasLegacyActivity?legacyMember:null;
   result.profile={bio:String(saved.profile?.bio??'').slice(0,1000),prompt:String(saved.profile?.prompt??'').slice(0,80),photo:safeProfilePhoto(saved.profile?.photo)};
   result.peerProfiles=Object.fromEntries(Object.entries(saved.peerProfiles&&typeof saved.peerProfiles==='object'&&!Array.isArray(saved.peerProfiles)?saved.peerProfiles:{}).slice(0,200).flatMap(([id,raw])=>{const profile=normalizeSharedProfile(raw);return profile?.personId===id?[[id,profile]]:[];}));
+  result.nicknameChangedAt=typeof saved.nicknameChangedAt==='string'&&Number.isFinite(Date.parse(saved.nicknameChangedAt))?saved.nicknameChangedAt:'';
   result.profileDraft=saved.profileDraft&&typeof saved.profileDraft==='object'&&!Array.isArray(saved.profileDraft)?{nickname:String(saved.profileDraft.nickname??'').slice(0,12),region:String(saved.profileDraft.region??''),occupation:String(saved.profileDraft.occupation??''),bio:String(saved.profileDraft.bio??'').slice(0,1000),prompt:String(saved.profileDraft.prompt??'').slice(0,80),photo:safeProfilePhoto(saved.profileDraft.photo)}:null;
   if(saved.profile?.layout||saved.profile?.details||saved.profile?.blocks||saved.profile?.selections||saved.profile?.bioMode)Object.assign(result.profile,profileExtras(saved.profile));
   if(result.profileDraft&&(saved.profileDraft.layout||saved.profileDraft.details||saved.profileDraft.blocks||saved.profileDraft.selections||saved.profileDraft.bioMode))Object.assign(result.profileDraft,profileExtras(saved.profileDraft));
@@ -1484,6 +1652,7 @@ function restoreState(saved) {
   result.notificationReads=Object.fromEntries(Object.entries(saved.notificationReads&&typeof saved.notificationReads==='object'&&!Array.isArray(saved.notificationReads)?saved.notificationReads:{}).filter(([key,value])=>key.length<300&&value===true));
   result.notificationSettings=notificationSettings(saved.notificationSettings);
   result.supportDraft=supportDraft(saved.supportDraft);
+  result.supportTickets=supportTickets(saved.supportTickets);
   if(saved.version===1) {
     result.concerns=result.concerns.map(c=>({...c,authorId:DEMO_USER.id,authorGender:DEMO_USER.gender}));
     result.connections=Object.fromEntries(Object.entries(result.connections).map(([id,c])=>{
@@ -1994,7 +2163,7 @@ function activity(){return notificationFeed(state,state.concerns.flatMap(c=>ownA
 function allNotifications(){return [...activity(),...serviceNoticeFeed(state)].sort((a,b)=>(Date.parse(b.at)||0)-(Date.parse(a.at)||0));}
 function notificationReturn(){
   const value=route().params.get('return')??notificationVisit?.returnTo??'/listen';
-  return typeof value==='string'&&value.length<700&&!/[#<>"'\\]/.test(value)&&/^\/(?:listen|mine|connections|me|write|concern|chat|connection|profile(?:\/edit|\/preview)?|settings(?:\/notifications|\/privacy|\/account)?|preferences|billing(?:\/history)?|support(?:\/write|\/history|\/notices)?|legal|about|notice)(?:\?|$)/.test(value)?value:'/listen';
+  return typeof value==='string'&&value.length<700&&!/[#<>"'\\]/.test(value)&&/^\/(?:listen|mine|connections|me|write|concern|chat|connection|profile(?:\/edit|\/preview)?|settings(?:\/notifications|\/privacy|\/account|\/nickname|\/email|\/phone|\/password|\/contacts|\/logout)?|wallet(?:\/charge)?|quests|invite|preferences|billing(?:\/history|\/product|\/checkout|\/complete)?|support(?:\/write|\/history|\/detail|\/notices|\/guide)?|legal|about|notice)(?:\?|$)/.test(value)?value:'/listen';
 }
 function notificationInboxRoute(returnTo=notificationReturn()){
   return '/notifications?'+new URLSearchParams({return:returnTo});
@@ -2469,17 +2638,9 @@ function serviceRow(href,title,{note='',symbol='',value=''}={}){
   return `<a class="service-row" href="#${esc(href)}">${symbol?`<span class="service-row-mark">${doodleSvg(symbol)}</span>`:''}<span class="service-row-copy"><strong>${esc(title)}</strong>${note?`<small>${esc(note)}</small>`:''}</span>${value?`<span class="service-row-value">${esc(value)}</span>`:''}<span class="service-chevron">${icon('back')}</span></a>`;
 }
 function serviceSection(title,body){return `<section class="service-section"><h2>${esc(title)}</h2><div class="service-rows">${body}</div></section>`;}
-function me(){
-  const m=viewer(),p=state.profile,hasBio=Boolean(profileIntroduction(p)),hasPhoto=Boolean(p.photo);
-  const next=[m.ageBand,m.region,m.occupation].filter(Boolean).join(' · ');
-  return shell('마이',`<section class="my-identity" aria-label="내 프로필"><div class="my-identity-line">${ownPortrait(p.photo)}<div class="my-identity-copy"><h2>${esc(m.nickname)}</h2><p>${esc(next)}</p></div><a class="my-profile-edit" href="#/profile/edit" aria-label="프로필 편집" title="프로필 편집">${icon('edit')}</a></div></section>${serviceSection('이용 관리',serviceRow('/settings/notifications','알림 설정',{symbol:'bell'})+serviceRow('/billing','결제 관리',{symbol:'coin'}))}${serviceSection('도움과 설정',serviceRow('/support','고객센터',{symbol:'headphones'})+serviceRow('/settings','설정',{note:'관심 주제 · 계정 · 개인정보',symbol:'settings'}))}<footer class="my-service-footer">${link('/legal?doc=terms','이용약관','')}${link('/legal?doc=privacy','개인정보처리방침','')}<a href="./about/">사친사친 소개</a></footer>`,{screen:'my-page my-hub'});
-}
-function settings(){
-  return shell('설정',`${serviceSection('나에게 맞게',serviceRow('/preferences?from=settings','관심 주제',{note:state.topics.map(topic).join(' · ')}))}${serviceSection('계정과 개인정보',serviceRow('/settings/account','계정 관리')+serviceRow('/settings/privacy','안전과 프로필 공개'))}${serviceSection('서비스 정보',serviceRow('/about?from=settings','사친사친 소개')+serviceRow('/legal','약관 및 정책'))}`,{back:'/me',screen:'service-page'});
-}
 function notificationPreferences(){
   const choices=[['answers','받은 답변','내 고민에 도착한 새로운 답변'],['chats','새 채팅방','내 답변을 상대가 선택해 시작된 대화'],['messages','새 메시지','상대가 보내온 이야기'],['profiles','프로필 공개','공개 제안과 서로의 동의'],['service','서비스 소식','공지사항, 점검 안내와 업데이트']];
-  return shell('알림 설정',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('bell')}</span><h2>알림을 받을 항목</h2><p>앱 안에서 새 소식을 표시할 항목을 선택해 주세요</p></div><fieldset class="notification-switches"><legend class="sr-only">앱 안 알림 종류</legend>${choices.map(([key,title,copy])=>`<label class="setting-switch-row"><span><strong>${title}</strong><small>${copy}</small></span><span class="pen-switch"><input type="checkbox" role="switch" data-notification-setting="${key}" aria-label="${title}" ${state.notificationSettings[key]?'checked':''}><i aria-hidden="true"></i></span></label>`).join('')}</fieldset><p class="notification-preference-note">끄더라도 알림함에서 소식을 확인할 수 있어요</p>`,{back:route().params.get('from')==='notifications'?notificationInboxRoute():'/me',screen:'service-page'});
+  return shell('알림 설정',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('bell')}</span><h2>알림을 받을 항목</h2><p>앱 안에서 새 소식을 표시할 항목을 선택해 주세요</p></div><fieldset class="notification-switches"><legend class="sr-only">앱 안 알림 종류</legend>${choices.map(([key,title,copy])=>`<label class="setting-switch-row"><span><strong>${title}</strong><small>${copy}</small></span><span class="pen-switch"><input type="checkbox" role="switch" data-notification-setting="${key}" aria-label="${title}" ${state.notificationSettings[key]?'checked':''}><i aria-hidden="true"></i></span></label>`).join('')}</fieldset><p class="notification-preference-note">끄더라도 알림함에서 소식을 확인할 수 있어요</p>`,{back:route().params.get('from')==='notifications'?notificationInboxRoute():route().params.get('from')==='settings'?'/settings':'/me',screen:'service-page'});
 }
 function privacySettings(){
   return shell('안전과 프로필 공개',`<div class="service-intro"><span class="service-intro-mark">${doodleSvg('lock')}</span><h2>내 정보의 공개 범위</h2></div><div class="service-explanations"><section><h3>고민은 기본적으로 익명이에요</h3><p>연령대·하는 일·지역만 함께 전해져요<br>이름과 사진은 고민 카드에 나오지 않아요</p></section><section><h3>서로 동의해야 프로필이 열려요</h3><p>익명 대화에서 상대별로 공개 여부를 선택해요<br>마이페이지에서 사진을 올려도 바로 공개되지 않아요</p></section><section><h3>편하지 않은 대화는 멈출 수 있어요</h3><p>채팅방 오른쪽 위 대화 메뉴(···)에서 ‘채팅방 나가기’를 선택해 주세요</p></section></div>${serviceRow('/profile?from=privacy','상대에게 보일 내 프로필')}${serviceRow('/support?topic=safety','안전 관련 도움받기')}${serviceRow('/legal?doc=privacy&from=privacy','개인정보처리방침')}`,{back:'/settings',screen:'service-page'});
@@ -2487,6 +2648,52 @@ function privacySettings(){
 function accountSettings(){
   return shell('계정 관리',`<dl class="account-facts"><div><dt>닉네임</dt><dd>${esc(viewer().nickname)}</dd></div><div><dt>하는 일</dt><dd>${esc(viewer().occupation)}</dd></div><div><dt>지역</dt><dd>${esc(viewer().region)}</dd></div></dl>${serviceRow('/profile/edit?from=account','기본 정보 수정')}${serviceRow('/legal?doc=privacy&from=account','내 정보와 개인정보 보호')}<section class="account-access"><h2>로그인 계정</h2><p>아직 연결된 로그인 계정이 없어요</p><div><button disabled>로그아웃</button><button disabled>회원 탈퇴</button></div><small>로그인 계정이 연결되면 이용할 수 있어요</small></section>`,{back:'/settings',screen:'service-page'});
 }
+function me(){
+  const m=viewer(),p=state.profile;
+  const identity=[m.ageBand,m.region,m.occupation].filter(Boolean).join(' · ');
+  return shell('마이',`<section class="my-centered-profile" aria-label="내 프로필"><div class="my-centered-portrait">${ownPortrait(p.photo)}<a class="my-profile-edit" href="#/profile/edit" aria-label="프로필 편집" title="프로필 편집">${icon('edit')}</a></div><h2>${esc(m.nickname)}</h2><p>${esc(identity)}</p></section><section class="my-point-card" aria-label="내 포인트"><a class="my-point-balance" href="#/wallet"><span>보유 포인트</span><strong>— <small>P</small></strong></a>${link('/wallet/charge','충전하기','btn btn-primary')}</section><nav class="my-main-menu" aria-label="마이 메뉴">${serviceRow('/profile/edit','프로필 수정')}${serviceRow('/quests','퀘스트')}${serviceRow('/invite','친구 초대')}${serviceRow('/support','공지/문의')}${serviceRow('/settings','설정')}</nav><footer class="my-service-footer">${link('/legal?doc=terms','이용약관','')}${link('/legal?doc=privacy','개인정보처리방침','')}<a href="./about/">사친사친 소개</a></footer>`,{screen:'my-page my-hub my-hub-v2'});
+}
+function settings(){
+  return shell('설정',`<div class="settings-identity-rows">${serviceRow('/settings/email','이메일',{value:'연결 전'})}${serviceRow('/settings/phone','휴대폰 번호',{value:'인증 전'})}</div><nav class="settings-primary-rows" aria-label="계정 설정">${serviceRow('/settings/nickname','닉네임 설정',{note:'2주마다 변경할 수 있어요',value:viewer().nickname})}${serviceRow('/settings/notifications?from=settings','알림 설정')}${serviceRow('/settings/password','비밀번호 변경')}${serviceRow('/settings/contacts','지인 연락처 차단')}${serviceRow('/legal?doc=terms&from=settings','서비스 이용약관')}${serviceRow('/settings/logout','로그아웃')}</nav><nav class="settings-secondary-rows" aria-label="추가 설정">${serviceRow('/preferences?from=settings','관심 주제',{note:state.topics.map(topic).join(' · ')})}${serviceRow('/settings/privacy','안전과 프로필 공개')}${serviceRow('/legal?doc=privacy&from=settings','개인정보 처리방침')}</nav><p class="commerce-footnote">현재는 화면 미리보기예요 실제 로그인·본인인증은 연결 전이에요</p>`,{back:'/me',screen:'service-page settings-v2'});
+}
+function pointWallet(){
+  return shell('내 포인트',`<section class="point-wallet-summary"><p class="service-eyebrow">필요한 만큼 조금씩</p><h2>보유 포인트</h2><strong>— <small>P</small></strong><p>계정 연결 후 보유 포인트가 표시돼요</p>${link('/wallet/charge','충전하기','btn btn-primary btn-block')}</section>${serviceSection('이용 내역',serviceRow('/billing/history','충전·결제 내역')+serviceRow('/billing','이용권 둘러보기'))}<p class="commerce-footnote">충전과 사용 내역은 실제 결제 서비스가 연결되면 확인할 수 있어요</p>`,{back:'/me',screen:'service-page point-wallet-page'});
+}
+function pointCharge(){
+  return shell('포인트 충전',`<section class="point-charge-heading"><p class="service-eyebrow">사친사친 포인트</p><h2>조금 더 가까워지고<br>싶은 순간을 위해</h2><p>고민과 답변은 무료로 나눠요</p></section><p class="commerce-preview-note">충전 구성 예시 · 수량과 판매가는 아직 확정 전이에요</p><fieldset class="point-packs"><legend>충전할 포인트</legend>${[100,300,500].map((amount,i)=>`<label><input type="radio" name="point-pack" value="${amount}" ${i===0?'checked':''}><span><strong>${amount} P</strong><small>판매가 미정</small></span></label>`).join('')}</fieldset><button type="button" class="btn btn-primary btn-block" disabled>충전 준비 중</button><p class="commerce-footnote">실제 충전이나 금액 청구는 발생하지 않아요</p>${serviceRow('/billing','이용권과 결제 화면 보기')}${serviceRow('/legal?doc=refund&from=wallet','결제·환불 안내')}`,{back:'/wallet',screen:'service-page point-charge-page'});
+}
+function quests(){
+  return shell('퀘스트',`<section class="simple-service-intro"><span class="service-eyebrow">함께 만드는 사친사친</span><h2>작은 참여가<br>따뜻한 대화로</h2><p>새로운 퀘스트를 준비하고 있어요</p></section><section class="service-status-card"><h3>아직 열린 퀘스트가 없어요</h3><p>참여 방법과 보상은 퀘스트가 열릴 때 안내할게요</p></section>${link('/listen','고민 들어보기','btn btn-primary btn-block')}`,{back:'/me',screen:'service-page quest-page'});
+}
+const INVITE_URL='https://jennkim0210.github.io/sachin-sachin-user-preview/about/';
+function inviteFriends(){
+  return shell('친구 초대',`<section class="simple-service-intro"><span class="service-eyebrow">작은 고민도 함께 나누도록</span><h2>사친사친을<br>친구에게 소개해요</h2><p>친구에게 서비스 소개 링크를 전해 주세요</p></section><div class="invite-link-card"><span lang="en">sachin sachin</span><p>고민으로 시작하는 편안한 대화</p></div>${button('copy-invite','소개 링크 복사하기','btn btn-primary btn-block')}<p class="commerce-footnote">현재는 서비스 소개 링크만 공유해요<br>초대 보상은 아직 운영하지 않아요</p>`,{back:'/me',screen:'service-page invite-page'});
+}
+function nicknameAvailableAt(){const changed=Date.parse(state.nicknameChangedAt);return Number.isFinite(changed)?changed+14*24*60*60*1000:0;}
+function nicknameChangeError(next){return next!==viewer().nickname&&nicknameAvailableAt()>Date.now()?'닉네임은 2주마다 변경할 수 있어요':'';}
+function nicknameSettings(){
+  const next=nicknameAvailableAt(),locked=next>Date.now();
+  return shell('닉네임 설정',`<section class="account-editor-heading"><h2>어떻게 불러드릴까요?</h2><p>닉네임은 서로 프로필을 공개한 뒤 보여요</p></section><form id="nickname-form" novalidate><label class="service-field"><span>닉네임</span><input name="nickname" value="${esc(viewer().nickname)}" minlength="2" maxlength="12" autocomplete="nickname" ${locked?'readonly':''}><small>2~12자 · 변경한 날부터 2주 후 다시 바꿀 수 있어요</small></label>${locked?`<p class="support-channel-note">${esc(new Date(next).toLocaleString('ko-KR'))}부터 변경할 수 있어요</p>`:''}<p id="nickname-error" class="danger" role="alert"></p><button class="btn btn-primary btn-block" type="submit" ${locked?'disabled':''}>닉네임 저장하기</button></form>`,{back:'/settings',screen:'service-page nickname-page'});
+}
+function accountConnectionPage(){
+  const key=route().path.split('/').at(-1);
+  const content={
+    email:['이메일','로그인할 이메일을<br>관리하는 곳이에요','실제 로그인 계정이 연결되면 이메일을 확인하고 인증할 수 있어요','연결된 이메일 없음'],
+    phone:['휴대폰 번호','내 번호로<br>본인을 확인해요','정식 서비스에서는 만 19세 이상 확인과 계정 보호를 위해 휴대폰 본인인증을 진행해요','휴대폰 인증 연결 전'],
+    password:['비밀번호 변경','계정을 안전하게<br>관리해요','로그인 서비스 연결 후 현재 비밀번호를 확인하고 새 비밀번호로 변경할 수 있어요','비밀번호 변경 연결 전'],
+    contacts:['지인 연락처 차단','아는 사람과는<br>마주치지 않도록','연락처 접근은 직접 동의한 뒤에만 진행해요 현재는 연락처를 읽거나 차단하지 않아요','연락처 차단 준비 중'],
+    logout:['로그아웃','아직 로그인 계정이<br>연결되지 않았어요','현재 미리보기에서는 실제 로그인이 일어나지 않아요 작성한 내용은 이 브라우저에 남아 있어요','로그인 서비스 연결 전']
+  }[key];
+  if(!content)return settings();
+  return shell(content[0],`<section class="account-editor-heading"><h2>${content[1]}</h2><p>${content[2]}</p></section><div class="service-status-card"><p>${content[3]}</p></div>${link('/settings','설정으로 돌아가기','btn btn-secondary btn-block')}`,{back:'/settings',screen:'service-page account-connection-page'});
+}
+function support(){
+  return shell('공지/문의',`<nav class="support-menu" aria-label="공지와 도움말">${serviceRow('/support/notices','공지사항')}${serviceRow('/about?from=support','사친사친이란?')}${serviceRow('/support/guide','이용안내')}${serviceRow('/support/write'+(route().params.get('topic')==='safety'?'?category=safety':''),'문의하기')}</nav>${link('/support/history','내 문의 내역','quiet-link')}<p class="commerce-footnote">${supportChannelNote()}</p>`,{back:'/me',screen:'service-page support-hub-page'});
+}
+function supportGuide(){
+  return shell('이용안내',`<section class="support-guide-intro"><h2>고민에서 시작해<br>서로를 알아가요</h2><p>고민과 답변 → 익명 대화 → 서로 동의하면 프로필 공개</p></section><section class="faq-section"><h2>궁금한 내용을 확인해 주세요</h2>${FAQ.map(([q,a])=>`<details class="faq-item"><summary>${q}${icon('plus')}</summary><p>${a}</p></details>`).join('')}</section>${serviceRow('/support/write','더 궁금한 점 문의하기')}${serviceRow('/legal','약관 및 정책')}`,{back:'/support',screen:'service-page support-guide-page'});
+}
+
 function storyHub(){
   const tab=['received','answers'].includes(route().params.get('tab'))?route().params.get('tab'):'mine';
   const owned=[...state.concerns].reverse().concat(allConnections().some(c=>c.concernId===MY_SAMPLE.id)?[MY_SAMPLE]:[]);
@@ -2496,34 +2703,153 @@ function storyHub(){
   const list=items.length?`<ul class="story-ledger">${items.map(({c,a})=>{const target='/concern?id='+encodeURIComponent(c.id)+'&from='+tab+(tab==='received'?'&answer='+encodeURIComponent(a.id):'');const connected=allConnections().some(room=>room.concernId===c.id&&(tab!=='received'||room.answerId===a.id)&&chatAllowed(room,viewer()));return `<li><a href="#${target}"><span class="story-ledger-mark">${tab==='received'?icon('me'):concernDoodle(c)}</span><span class="story-ledger-copy"><small>${topic(c.category)}${tab==='mine'?' · '+(ownAnswers(c).length?'답변 도착':'답변 기다리는 중'):connected?' · 대화 중':''}</small><strong>${esc(c.title)}</strong>${a?`<span>${esc(a.body)}</span>`:''}</span>${icon('back')}</a></li>`;}).join('')}</ul>`:`<section class="letter-empty story-hub-empty">${doodleSvg(tab==='answers'?'paperplane':'envelope')}<h2>${tab==='answers'?'아직 보낸 답변이 없어요':tab==='received'?'아직 받은 답변이 없어요':'아직 작성한 고민이 없어요'}</h2><p>${tab==='answers'?'홈에서 고민을 읽고 답변할 수 있어요':tab==='received'?'내 고민에 도착한 답변을 확인할 수 있어요':'작성한 고민을 이곳에서 관리할 수 있어요'}</p>${tab==='answers'?link('/listen','고민 만나보기','text-link'):''}</section>`;
   return shell('내 고민',`<nav class="story-hub-tabs" aria-label="고민과 답변 종류">${tabs.map(([id,label,path])=>`<a href="#${path}" ${tab===id?'aria-current="page" class="active"':''}>${label}</a>`).join('')}</nav>${draft}${list}<div class="story-fab-wrap">${link('/write?from=mine'+(tab==='mine'?'':'&tab='+tab),'<span>고민 쓰기</span>','story-write-fab')}</div>`,{screen:'story-hub-page'});
 }
-function billing(){
-  return shell('결제 관리',`<section class="billing-summary"><span>${doodleSvg('coin')}</span><small>이용 중인 상품</small><h2>유료 상품이 없어요</h2><p>새로운 상품은 여기에서 안내할게요</p></section>${serviceSection('내 결제',serviceRow('/billing/history','결제 내역')+serviceRow('/support/write?category=payment','결제·환불 문의'))}`,{back:'/me',screen:'service-page'});
+// Shared catalogue for the store, checkout and completion preview.
+// Preview amounts are not live offers; no payment, entitlement or disclosure is mutated here.
+const SERVICE_RELEASE = Object.freeze({
+  preview: true,
+  supportEmail: '',
+  company: '(주)언어론', englishName:'UnAlone', representative: '', registration: '', address: '', privacyOfficer: '',
+  policyVersion: '2026-10-20 검토본'
+});
+const SERVICE_PRODUCTS = Object.freeze([
+  {id:'reveal',name:'프로필 공개권',eyebrow:'서로를 조금 더 알고 싶을 때',copy:'한 사람이 사용하면 상대는 무료로 수락해요',amount:5900,unit:'회',mark:'heart',details:['두 사람 모두 동의해야 사진과 소개가 함께 열려요','구매만으로 내 프로필이나 상대 프로필이 공개되지 않아요','상대가 원하지 않아도 익명 대화는 계속할 수 있어요']},
+  {id:'highlight',name:'고민 강조 노출권',eyebrow:'내 이야기가 더 잘 보이도록',copy:'다른 카드와 구분되는 작은 표시와 색으로 눈에 띄게',amount:1900,unit:'회',mark:'envelope',details:['내가 고른 고민 카드에 강조 디자인을 적용해요','답변이나 연결을 보장하는 상품은 아니에요','노출 기간과 적용 범위는 정식 판매 전에 안내해요']},
+  {id:'chat',name:'추가 대화권',eyebrow:'마음에 닿는 답변이 또 있다면',copy:'다른 답변자와도 새로운 대화를 시작해요',amount:2900,unit:'회',mark:'chat',details:['내 고민에 도착한 답변에서 상대를 선택해요','기존 대화는 유지하고 다른 답변자와 연결해요','추가 대화만으로 사진이나 프로필이 공개되지 않아요']},
+  {id:'verified',name:'검증 결과 열람권',eyebrow:'확인된 정보를 조금 더 자세히',copy:'검증 배지가 있는 항목의 상세 결과를 확인해요',amount:2900,unit:'항목',mark:'check',details:['상대가 공개에 동의한 검증 항목만 볼 수 있어요','개별 결제·열람 사실은 상대방에게 알리지 않아요','검증된 내용과 확인 일자를 함께 표시해요','검증 배지가 사람의 안전이나 만남을 보장하지는 않아요']},
+  {id:'gift',name:'고마운 마음 선물',eyebrow:'들어줘서 고마운 마음을',copy:'정성스러운 답변과 대화에 작은 선물을 건네요',amount:3000,unit:'개',mark:'heart',details:['상대에게 보낼 선물과 금액을 확인하고 선택해요','선물을 보내도 답변이나 공개 동의 의무는 생기지 않아요','선물 종류와 수수료·교환 조건은 출시 전에 안내해요']}
+]);
+function serviceProduct(id){return SERVICE_PRODUCTS.find(p=>p.id===id)??null;}
+function serviceQuantity(value){return ['1','3','5'].includes(String(value))?Number(value):1;}
+function won(value){return Number(value).toLocaleString('ko-KR')+'원';}
+function productHref(id,quantity=1){return '/billing/checkout?'+new URLSearchParams({product:id,quantity:String(serviceQuantity(quantity))});}
+function commerceNotice(){return '<p class="commerce-preview-note">화면 미리보기 · 표시 금액은 예시이며 실제 결제되지 않아요</p>';}
+function productVisual(p){
+  if(p.id==='highlight')return `<div class="highlight-preview" aria-label="강조된 고민 카드 예시"><div><span>일상</span><span class="highlight-label">눈여겨볼 이야기</span></div><p>새로운 사람과<br>천천히 친해지고 싶어요</p><small>강조 디자인 예시</small></div>`;
+  return `<div class="product-ink" aria-hidden="true">${p.mark==='envelope'?doodleSvg('envelope'):icon(p.mark)}</div>`;
 }
-function billingHistory(){return shell('결제 내역',`<section class="letter-empty service-empty">${doodleSvg('receipt')}<h2>아직 결제 내역이 없어요</h2><p>상품을 이용하면 결제일과 영수증을<br>여기에서 확인할 수 있어요</p></section>`,{back:'/billing',screen:'service-page'});}
-const SUPPORT_CATEGORIES=[{value:'usage',label:'이용 방법'},{value:'account',label:'계정·프로필'},{value:'payment',label:'결제·환불'},{value:'safety',label:'안전·불편 신고'},{value:'feedback',label:'의견 보내기'}];
+function billing(){
+  return shell('결제 관리',`<section class="commerce-intro"><p class="service-eyebrow">사친사친 이용권</p><h2>마음이 닿은 다음<br>조금 더 가까이</h2><p>고민을 나누고 답변하는 건 무료예요</p></section>${commerceNotice()}<div class="store-products">${SERVICE_PRODUCTS.map(p=>`<a class="store-product ${p.id==='reveal'?'store-product-main':''}" href="#/billing/product?id=${p.id}"><span class="store-product-copy"><small>${p.eyebrow}</small><h3>${p.name}</h3><p>${p.copy}</p></span><span class="store-product-price"><strong>${won(p.amount)}</strong><small>예시 · ${p.id==='verified'?'1항목':'1'+p.unit}</small></span></a>`).join('')}</div>${serviceSection('내 이용 내역',serviceRow('/billing/history','결제 내역')+serviceRow('/support/write?category=payment','결제·환불 문의'))}${serviceRow('/legal?doc=refund&from=billing','결제·환불 안내')}`,{back:'/me',screen:'service-page commerce-page'});
+}
+function billingProduct(){
+  const p=serviceProduct(route().params.get('id'));
+  if(!p)return shell('이용권',empty('이용권을 찾을 수 없어요','이용권 목록에서 다시 선택해 주세요',link('/billing','이용권 보기')),{back:'/billing',screen:'service-page'});
+  return shell(p.name,`<section class="product-detail-heading"><p class="service-eyebrow">${p.eyebrow}</p>${productVisual(p)}<h2>${p.name}</h2><p>${p.copy}</p></section><ul class="product-points">${p.details.map(t=>`<li>${t}</li>`).join('')}</ul><section class="purchase-options" aria-labelledby="quantity-title"><h3 id="quantity-title">${p.id==='verified'?'열람할 항목 수':'필요한 만큼 선택해요'}</h3><form id="product-form" data-product="${p.id}"><fieldset><legend class="sr-only">구매 수량</legend>${[1,3,5].map((n,i)=>`<label class="quantity-choice"><input type="radio" name="quantity" value="${n}" ${i===0?'checked':''}><span><strong>${n}${p.unit}</strong><small>${won(p.amount*n)}</small></span></label>`).join('')}</fieldset>${commerceNotice()}<button class="btn btn-primary btn-block" type="submit">결제 화면 보기</button></form></section><p class="commerce-footnote">이용권은 실제 결제 서비스가 연결된 뒤 구매할 수 있어요</p>`,{back:'/billing',screen:'service-page commerce-page product-detail-page'});
+}
+function billingCheckout(){
+  const p=serviceProduct(route().params.get('product')),quantity=serviceQuantity(route().params.get('quantity'));
+  if(!p)return shell('결제 확인',empty('선택한 상품이 없어요','이용권을 먼저 선택해 주세요',link('/billing','이용권 보기')),{back:'/billing',screen:'service-page'});
+  const order=state.commercePreview?.product===p.id&&state.commercePreview?.quantity===quantity?state.commercePreview:{};
+  return shell('결제 확인',`${commerceNotice()}<section class="checkout-card"><small>선택한 이용권</small><h2>${p.name}</h2><p>${p.copy}</p><dl class="checkout-facts"><div><dt>수량</dt><dd>${quantity}${p.unit}</dd></div><div><dt>예시 상품 금액</dt><dd>${won(p.amount*quantity)}</dd></div><div class="checkout-total"><dt>예시 결제 금액</dt><dd>${won(p.amount*quantity)}</dd></div></dl><p class="commerce-footnote">할인·유효기간·최종 금액은 정식 판매 전에 확정돼요</p></section><form id="checkout-form" data-product="${p.id}" data-quantity="${quantity}"><fieldset class="payment-methods"><legend>결제 방법</legend>${[['card','카드'],['simple','간편결제']].map(([v,t])=>`<label><input type="radio" name="method" value="${v}" ${(order.method??'card')===v?'checked':''}><span>${t}</span></label>`).join('')}</fieldset><div class="purchase-consent"><label><input type="checkbox" name="confirmed" ${order.confirmed?'checked':''}><span>상품 내용과 결제·환불 안내를 확인했어요</span></label>${link('/legal?doc=refund&from=checkout&product='+p.id+'&quantity='+quantity,'결제·환불 안내 보기','text-link')}</div><p class="danger" id="checkout-error" role="alert"></p><button type="submit" class="btn btn-primary btn-block">결제 완료 화면 미리보기</button><p class="commerce-footnote">카드 정보를 입력하거나 실제 금액을 청구하지 않아요</p></form>`,{back:'/billing/product?id='+p.id,screen:'service-page commerce-page checkout-page'});
+}
+function billingComplete(){
+  const order=state.commercePreview,p=order?.completed&&serviceProduct(order.product);
+  if(!p)return shell('결제 확인',empty('확인할 결제가 없어요','결제 화면에서 이용권을 먼저 확인해 주세요',link('/billing','이용권 보기')),{back:'/billing',screen:'service-page'});
+  return shell('결제 완료 미리보기',`${commerceNotice()}<section class="checkout-complete"><span class="completion-ink">${icon('check')}</span><h2>결제 후에는<br>여기에서 확인해요</h2><p>${p.name} ${serviceQuantity(order.quantity)}${p.unit}</p></section><dl class="checkout-card checkout-facts"><div><dt>상품</dt><dd>${p.name}</dd></div><div><dt>예시 금액</dt><dd>${won(p.amount*serviceQuantity(order.quantity))}</dd></div><div><dt>결제 방법</dt><dd>${order.method==='simple'?'간편결제':'카드'}</dd></div><div><dt>현재 상태</dt><dd>미결제 · 이용권 미발급</dd></div></dl><p class="commerce-footnote">정식 결제 후에는 이용권과 영수증이 결제 내역에 표시돼요</p>${link('/billing','이용권으로 돌아가기','btn btn-primary btn-block')}${link('/billing/history','결제 내역 보기','quiet-link')}`,{back:productHref(p.id,order.quantity),screen:'service-page commerce-page'});
+}
+function billingHistory(){
+  return shell('결제 내역',`<div class="history-tabs" aria-label="결제 내역 유형"><a class="${route().params.get('tab')!=='cancelled'?'active':''}" href="#/billing/history">전체</a><a class="${route().params.get('tab')==='cancelled'?'active':''}" href="#/billing/history?tab=cancelled">취소·환불</a></div><section class="letter-empty service-empty"><h2>${route().params.get('tab')==='cancelled'?'취소·환불 내역이 없어요':'아직 결제 내역이 없어요'}</h2><p>실제로 결제한 상품과 영수증을<br>여기에서 확인할 수 있어요</p>${link('/billing','이용권 둘러보기','text-link')}</section>${serviceRow('/support/write?category=payment','결제·환불 문의')}`,{back:'/billing',screen:'service-page commerce-page'});
+}
+const SUPPORT_CATEGORIES=[{value:'usage',label:'이용 방법'},{value:'account',label:'계정·프로필'},{value:'payment',label:'결제·환불'},{value:'safety',label:'안전·불편 신고'},{value:'privacy',label:'개인정보·권리 요청'},{value:'feedback',label:'의견 보내기'}];
 const FAQ=[
+  ['프로필 공개권은 두 사람 모두 구매해야 하나요?','한 명이 이용권을 사용하면 상대는 무료로 수락하는 방식이에요. 구매만으로 공개되지 않고 두 사람 모두 동의해야 사진과 소개가 열려요'],
+  ['검증 결과를 보면 상대가 알 수 있나요?','개별 결제와 열람 사실은 상대에게 알리지 않는 방식이에요. 상대가 사전에 공개에 동의한 검증 항목만 열람할 수 있어요'],
   ['내 고민은 누가 보나요?','선택한 고민 주제에 관심이 있는 이성에게 전해져요. 고민 카드에는 연령대·하는 일·지역만 보여요'],
   ['언제 채팅방이 열리나요?','고민을 쓴 사람이 마음에 드는 답변을 선택하면 익명 채팅방이 열려요'],
   ['사진을 등록하면 바로 공개되나요?','아니요. 사진과 소개는 대화 중인 상대와 서로 공개에 동의했을 때만 열려요'],
-  ['받은 답변과 보낸 답변은 어디서 보나요?','하단 내 고민에서 작성한 고민, 받은 답변, 보낸 답변을 나눠 볼 수 있어요'],
-  ['불편한 대화는 어떻게 멈추나요?','채팅방 오른쪽 위 대화 메뉴(···)에서 ‘채팅방 나가기’를 선택해 주세요. 나간 대화와 상대의 프로필은 다시 열 수 없어요']
+  ['결제 취소나 환불은 어디서 요청하나요?','1:1 문의에서 결제·환불을 선택해 주세요. 카드번호나 비밀번호는 적지 않아도 돼요. 현재 미리보기에서는 실제 결제가 발생하지 않아요'],
+  ['불편한 대화는 어떻게 멈추나요?','채팅방 오른쪽 위 대화 메뉴에서 채팅방 나가기를 선택할 수 있어요. 신고가 필요한 내용은 1:1 문의의 안전·불편 신고에서 작성해 주세요']
 ];
-function support(){return shell('고객센터',`<div class="support-heading">${doodleSvg('headphones')}<h2>어떤 도움이 필요하세요?</h2></div>${serviceSection('문의와 답변',serviceRow('/support/write'+(route().params.get('topic')==='safety'?'?category=safety':''),'문의 작성')+serviceRow('/support/history','내 문의 내역',{value:state.supportDraft.body?'작성 중':''}))}<section class="faq-section"><h2>자주 묻는 질문</h2>${FAQ.map(([q,a])=>`<details class="faq-item"><summary>${q}${icon('plus')}</summary><p>${a}</p></details>`).join('')}</section>${serviceSection('서비스 안내',serviceRow('/support/notices','공지사항')+serviceRow('/legal?doc=community','커뮤니티 가이드'))}`,{back:'/me',screen:'service-page'});}
+function supportChannelNote(){return SERVICE_RELEASE.supportEmail?'메일 앱에서 내용을 확인하고 보내기를 눌러 주세요':'문의 채널을 준비하고 있어요 지금 작성한 내용은 이 기기에만 저장돼요';}
+function inquiryForRoute(){return (state.supportTickets??[]).find(t=>t.id===route().params.get('id'))??null;}
 function supportCompose(){
-  const d=state.supportDraft,requested=route().params.get('category'),category=SUPPORT_CATEGORIES.some(c=>c.value===requested)?requested:d.category;
-  return shell('문의 작성',`<form id="support-form" class="support-form" novalidate><label class="service-field"><span>어떤 문의인가요?</span>${choiceSelect('support-category','category','문의 유형',category,SUPPORT_CATEGORIES)}</label><label class="service-field"><span>문의 내용</span><textarea name="body" rows="7" maxlength="2000" placeholder="어떤 상황이었는지 알려주세요">${esc(d.body)}</textarea></label><label class="service-field"><span>답변받을 이메일 <small>선택</small></span><input name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" value="${esc(d.email)}" placeholder="name@example.com"></label><p class="support-channel-note">문의 접수 창구가 열리기 전까지 내용을 저장해둘 수 있어요</p><div class="fixed-actions"><p class="danger" id="support-error" role="alert"></p><button type="submit" class="btn btn-primary btn-block">문의 임시저장</button></div></form>`,{back:requested==='payment'?'/billing':'/support',screen:'service-page support-compose-page has-fixed-actions'});
+  const saved=inquiryForRoute(),d=saved??state.supportDraft,requested=route().params.get('category'),category=SUPPORT_CATEGORIES.some(c=>c.value===requested)?requested:d.category;
+  return shell('1:1 문의하기',`<form id="support-form" class="support-form" data-ticket="${esc(saved?.id??'')}" novalidate><label class="service-field"><span>문의 유형</span>${choiceSelect('support-category','category','문의 유형',category,SUPPORT_CATEGORIES)}</label><label class="service-field"><span>제목</span><input name="title" maxlength="80" value="${esc(d.title)}" placeholder="어떤 도움이 필요하세요?"></label><label class="service-field"><span>문의 내용</span><textarea name="body" rows="7" maxlength="2000" placeholder="어느 화면에서 어떤 일이 있었는지 알려주세요">${esc(d.body)}</textarea><small class="inquiry-counter"><span id="inquiry-count">${d.body.length}</span> / 2,000</small></label><p class="field-note">주민등록번호·카드번호·비밀번호는 적지 말아 주세요</p><label class="service-field"><span>답변받을 이메일 <small>선택</small></span><input name="email" type="email" inputmode="email" autocomplete="email" maxlength="120" value="${esc(d.email)}" placeholder="name@example.com"></label><p class="support-channel-note">${supportChannelNote()}</p><div class="support-form-actions"><p class="danger" id="support-error" role="alert"></p><button type="submit" class="btn btn-primary btn-block">문의 저장하기</button>${link('/legal?doc=privacy&from=support','개인정보 처리방침','quiet-link')}</div></form>`,{back:saved?'/support/detail?id='+encodeURIComponent(saved.id):category==='payment'?'/billing':'/support',screen:'service-page support-compose-page'});
 }
-function supportHistory(){const d=state.supportDraft;return shell('내 문의 내역',d.body?`<ul class="service-draft-list"><li><a href="#/support/write"><span class="draft-state">작성 중 · 미접수</span><h2>${esc(SUPPORT_CATEGORIES.find(c=>c.value===d.category)?.label??'문의')}</h2><p>${esc(d.body)}</p><span class="text-link">이어서 작성하기</span></a></li></ul>`:`<section class="letter-empty service-empty">${doodleSvg('envelope')}<h2>아직 작성한 문의가 없어요</h2>${link('/support/write','문의 작성하기','text-link')}</section>`,{back:'/support',screen:'service-page'});}
+function supportHistory(){
+  const tickets=state.supportTickets??[],hasDraft=Boolean(state.supportDraft.body||state.supportDraft.title);
+  return shell('내 문의 내역',`<p class="commerce-footnote">${supportChannelNote()}</p>${hasDraft?`<a class="inquiry-draft" href="#/support/write"><span>작성 중인 문의</span><strong>${esc(state.supportDraft.title||'이어서 작성해 주세요')}</strong><small>임시저장 · 미접수</small></a>`:''}${tickets.length?`<ul class="inquiry-list">${tickets.map(t=>`<li><a href="#/support/detail?id=${encodeURIComponent(t.id)}"><div><span>${esc(SUPPORT_CATEGORIES.find(c=>c.value===t.category)?.label??'문의')}</span><small>저장됨 · 미접수</small></div><h2>${esc(t.title)}</h2><p>${esc(t.body)}</p><time>${esc(new Date(t.savedAt).toLocaleDateString('ko-KR'))}</time></a></li>`).join('')}</ul>`:!hasDraft?`<section class="letter-empty service-empty"><h2>아직 남긴 문의가 없어요</h2><p>도움이 필요할 때 편하게 남겨 주세요</p></section>`:''}${button('new-inquiry','새 문의 작성하기','btn btn-primary btn-block')}`,{back:'/support',screen:'service-page support-history-page'});
+}
+function supportDetail(){
+  const t=inquiryForRoute();if(!t)return shell('문의 내용',empty('문의 내역을 찾을 수 없어요','이 기기에 저장한 문의를 확인해 주세요',link('/support/history','내 문의 내역')),{back:'/support/history',screen:'service-page'});
+  return shell('문의 내용',`<article class="inquiry-detail"><div class="inquiry-meta"><span>${esc(SUPPORT_CATEGORIES.find(c=>c.value===t.category)?.label??'문의')}</span><span>저장됨 · 미접수</span></div><h2>${esc(t.title)}</h2><time>${esc(new Date(t.savedAt).toLocaleString('ko-KR'))}</time><p class="inquiry-body">${esc(t.body)}</p>${t.email?`<p class="inquiry-email">답변받을 이메일<br>${esc(t.email)}</p>`:''}</article><section class="inquiry-answer"><h3>아직 접수되지 않은 문의예요</h3><p>${supportChannelNote()}</p></section><div class="inquiry-detail-actions">${SERVICE_RELEASE.supportEmail?`<a class="btn btn-primary btn-block" href="mailto:${esc(SERVICE_RELEASE.supportEmail)}?subject=${encodeURIComponent('[사친사친 문의] '+t.title)}&body=${encodeURIComponent(t.body+(t.email?'\n\n답변받을 이메일: '+t.email:''))}">메일로 문의 보내기</a>`:''}${button('copy-inquiry','문의 내용 복사하기','btn btn-secondary btn-block',`data-id="${esc(t.id)}"`)}${link('/support/write?id='+encodeURIComponent(t.id),'내용 수정하기','quiet-link')}</div>`,{back:'/support/history',screen:'service-page support-detail-page'});
+}
+
 const LEGAL_CONTENT={
-  terms:{title:'이용약관',note:'정식 이용약관은 서비스 오픈 전에 안내돼요',sections:[['사친사친에서 나누는 것','고민을 이성이 들어주고, 마음에 닿는 답변에서 익명 대화를 시작해요. 사진과 소개는 서로 원할 때 열어요'],['내가 쓰는 이야기','본인의 경험을 바탕으로 이야기를 나누고, 타인의 개인정보나 동의받지 않은 사진은 올리지 않아요'],['서로를 대하는 방식','모욕이나 혐오, 강요 없이 대화해요. 원치 않는 만남이나 프로필 공개를 재촉하지 않아요'],['정식 약관에서 안내할 내용','이용 자격, 게시물의 권리, 서비스 제한, 결제·환불, 탈퇴와 분쟁 처리 기준을 운영 정보와 함께 안내할 예정이에요']]},
-  privacy:{title:'개인정보처리방침',note:'정식 개인정보처리방침은 서비스 오픈 전에 안내돼요',sections:[['고민에 함께 보이는 정보','고민 카드에는 연령대·하는 일·지역만 표시돼요. 닉네임과 사진은 표시하지 않아요'],['프로필이 공개되는 순간','대화 중인 두 사람이 모두 동의하면 그 상대에게 사진과 소개, 내가 공개로 고른 항목이 열려요'],['현재 입력한 정보의 저장','현재 화면에서 입력한 프로필, 고민, 답변, 대화와 설정은 이용 중인 브라우저에 저장돼요'],['정식 운영 전에 안내할 내용','운영 주체, 수집 항목과 목적, 보관·삭제 기간, 처리 위탁, 문의 담당자와 권리 행사 방법을 확정해 안내할 예정이에요']]},
-  community:{title:'커뮤니티 가이드',note:'서로의 이야기가 편안한 자리가 되도록',sections:[['해답보다 먼저, 들어주세요','평가하거나 단정하기보다 상대가 어떤 마음이었을지 생각하며 답변해요'],['익명 뒤에도 사람이 있어요','조롱·비하·혐오 표현과 원치 않는 성적인 이야기를 하지 않아요'],['마음을 서두르지 않아요','연락처나 사진, 만남을 요구하지 않아요. 프로필 공개와 관계의 속도는 함께 정해요'],['나와 타인의 정보를 지켜요','이름·연락처·계정과 사적인 대화 내용을 동의 없이 공유하지 않아요']]}
+  terms:{
+    title:'이용약관',
+    note:'2026년 10월 20일 검토본 · 정식 시행일 미정',
+    summary:'고민과 답변은 무료로 나누고 프로필은 서로 동의할 때만 공개해요 현재는 화면 미리보기이며 실제 결제와 문의 접수는 제공하지 않아요',
+    sections:[
+      ['제1조 목적과 운영 주체','이 약관은 (주)언어론(UnAlone, 이하 “회사”)이 제공하는 사친사친 서비스와 회원의 권리·의무 및 이용 조건을 정합니다. 사친사친은 고민과 답변을 매개로 익명 대화와 상호 동의에 따른 프로필 공개를 제공하는 서비스입니다.\n현재 문서는 정식 서비스 개시를 위한 검토본입니다. 화면 미리보기는 브라우저에 저장된 데이터로 작동하며 실제 계정 간 대화, 결제, 신원 검증 및 상담원 접수는 아직 연결되지 않았습니다.'],
+      ['제2조 용어','“회원”은 이용 조건에 동의하고 가입한 사람을 말합니다. “고민”과 “답변”은 회원이 작성한 게시물이며 “대화”는 답변 선택 등을 통해 연결된 회원 사이의 채팅을 말합니다.\n“프로필 공개”는 해당 관계에서 양쪽이 동의한 사진·소개·선택 정보를 함께 여는 행위입니다. “이용권”은 구매 화면에서 정한 기능을 정해진 범위만큼 이용할 수 있는 권리입니다. “검증 결과”는 공개에 동의한 특정 항목의 확인 내용과 확인 시점을 말합니다.'],
+      ['제3조 약관의 안내와 변경','회사는 약관을 회원이 쉽게 확인할 수 있는 화면에 게시합니다. 약관을 변경하는 경우 변경 내용, 적용일과 이유를 안내하고, 회원에게 불리한 변경은 충분한 사전 안내와 필요한 동의 절차를 거칩니다.\n이 약관으로 관계 법령이 보장하는 소비자 권리나 개인정보 권리를 제한하지 않습니다. 정식 시행일과 확정된 변경 고지 기간은 서비스 개시 전에 게시합니다.'],
+      ['제4조 이용 자격과 계정','정식 서비스는 만 19세 이상을 대상으로 하며 가입 과정에서 본인 및 성인 확인을 거칩니다. 확인된 생년월일·성별 정보의 오류는 정정 절차로 처리합니다. 명의 대여, 타인 사칭, 허위 인증과 계정의 매매는 허용되지 않습니다.\n회원은 본인의 계정 접근 수단을 보호해야 합니다. 현재 미리보기의 자기 입력 정보나 예시 계정은 본인인증을 완료했다는 의미가 아닙니다.'],
+      ['제5조 고민·답변과 익명 대화','고민을 읽고 작성하거나 답변하는 기본 기능은 무료입니다. 고민 카드에는 안내된 연령대·하는 일·지역이 함께 표시되며, 사진과 상세 소개는 익명 단계에서 공개하지 않습니다.\n고민 작성자가 답변을 선택하면 대화를 시작합니다. 배분 대상, 작성 제한 및 추가 대화 조건은 해당 기능에서 안내합니다. 회사는 특정 답변 수, 관계 성립이나 만남을 보장하지 않습니다.'],
+      ['제6조 프로필 공개와 동의','사진이나 소개를 저장하거나 이용권을 구매하는 것만으로 프로필이 공개되지 않습니다. 관계마다 두 사람이 모두 동의한 뒤 서로의 공개 설정 범위가 열립니다.\n한 사람이 공개권을 사용하면 상대방은 별도 구매 없이 동의할 수 있습니다. 상대방은 공개를 거절하고 익명 대화를 계속할 수 있습니다. 차감 시점, 제안 취소·미응답·거절 시의 이용권 처리 기준은 정식 판매 전에 구매 화면과 환불 안내에 명시합니다.\n관계를 종료하거나 접근을 차단한 뒤의 열람을 제한합니다. 이미 상대방이 확인하거나 별도로 저장한 정보까지 회수되는 것은 아닙니다.'],
+      ['제7조 검증 정보의 열람','검증은 정보 주체가 동의한 항목과 범위에서 제공합니다. 검증 배지와 상세 결과 열람은 구분되며, 열람 전 대상 항목·확인 시점·금액을 안내합니다. 개별 결제·열람 사실은 대화 상대에게 알리지 않습니다.\n검증은 표시된 특정 사실을 확인하는 절차이며 사람의 인격, 안전, 현재 관계 상태 전체나 만남의 결과를 보장하지 않습니다. 현재 미리보기에는 실제 검증 기관의 결과가 연결되지 않았습니다.'],
+      ['제8조 유료 상품과 결제','고민 강조 노출, 추가 대화, 프로필 공개, 검증 결과 열람과 선물에 유료 상품을 제공할 수 있습니다. 실제 판매 시 상품 내용, 적용 대상, 유효기간, 최종 금액, 차감 조건과 취소·환불 기준을 결제 전에 표시합니다.\n고민 강조 노출은 일반 카드와 구분되는 표시를 적용하는 상품으로 답변이나 연결을 보장하지 않습니다. 대화 연장·정기 구독·광고 제거는 현재 판매 상품에 포함하지 않습니다. 화면의 예시 금액은 확정 가격이나 결제 청구가 아닙니다.'],
+      ['제9조 선물과 보상','회원은 상대방에게 자발적으로 선물을 보낼 수 있으며, 선물을 받았다는 이유로 답변·통화·만남이나 프로필 공개에 응할 의무가 생기지 않습니다.\n선물의 금액, 전달 시점, 수수료, 취소 가능 범위와 교환 조건은 실제 판매 전에 안내합니다. 허위 거래, 결제 도용, 보상 반복 취득이나 이용권의 무단 양도는 제한할 수 있습니다.'],
+      ['제10조 취소·환불과 서비스 오류','청약철회, 미사용 상품 취소, 공급되지 않은 기능 및 중복 결제는 결제·환불 안내와 관계 법령에 따라 처리합니다. 디지털 기능이 시작되었다는 이유만으로 모든 환불 권리가 사라지는 것은 아닙니다.\n회원의 차단·신고 권리는 결제 여부와 무관하게 행사할 수 있습니다. 서비스 미제공이나 오류, 사칭·부정 이용에 관한 이의는 별도로 확인하며 안전 조치를 취했다는 이유만으로 정당한 환불 요청을 배제하지 않습니다.'],
+      ['제11조 게시물의 권리와 이용 범위','회원이 작성한 글과 사진의 권리는 해당 권리자에게 있습니다. 회사는 서비스를 제공하기 위해 필요한 범위에서만 게시물을 저장·전달·표시합니다.\n회원의 고민이나 대화를 외부 광고 소재로 사용하거나 식별 가능한 내용을 공개하려는 경우 별도로 허락을 받습니다. 타인의 사진·연락처·사적 대화나 저작물을 권한 없이 게시하거나 외부에 유포해서는 안 됩니다.'],
+      ['제12조 금지 행위와 이용 제한','성희롱, 협박, 혐오, 사기, 스토킹, 원치 않는 성적 접근, 광고 도배, 연락처·만남·공개 강요 및 불법 콘텐츠는 허용되지 않습니다. 회사는 위반 정도와 위험에 따라 게시물 비노출, 기능 제한이나 계정 조치를 할 수 있습니다.\n조치 사유와 범위, 이의 제기 방법을 알리며 긴급한 보호 조치는 먼저 시행할 수 있습니다. 판단 오류에 대한 이의와 관련 자료를 고객센터에서 접수할 수 있도록 합니다.'],
+      ['제13조 탈퇴·중단과 책임','회원은 정식 서비스의 계정 관리 또는 고객센터를 통해 탈퇴를 요청할 수 있습니다. 개인정보 삭제와 법정 보존은 개인정보 처리방침에 따르며, 이용권 잔액과 환불 가능 내역은 탈퇴 전에 안내합니다.\n회사는 고의·과실로 발생한 손해에 대해 관계 법령에 따른 책임을 부담합니다. 서비스 중단이 필요한 경우 이유와 일정, 유료 상품 처리 방법을 안내합니다. 이 서비스는 전문 의료·심리치료나 응급 구조를 제공하는 서비스가 아닙니다.'],
+      ['제14조 문의와 분쟁 처리','이용·결제·개인정보 관련 문의는 마이 > 고객센터 > 1:1 문의에서 작성할 수 있습니다. 실제 접수 수단과 담당 연락처는 개시 전에 게시합니다. 회사와 회원은 분쟁을 합리적으로 해결하기 위해 협의하고, 해결되지 않는 사항은 대한민국 법령과 법정 관할에 따릅니다.\n운영 주체: (주)언어론 / UnAlone\n대표자·사업자등록번호·사업장 주소·통신판매업 신고정보: 미정\n고객센터 수신 주소 및 정식 시행일: 미정']
+    ]
+  },
+  privacy:{
+    title:'개인정보 처리방침',
+    note:'2026년 10월 20일 검토본 · 운영 정보 확인 중',
+    summary:'사진과 소개는 상대별 상호 동의 후 공개돼요 현재 입력 내용은 이용 중인 브라우저에 저장되며 미리보기에서 실제 인증·결제 정보를 받지 않아요',
+    sections:[
+      ['1. 운영 주체와 적용 범위','(주)언어론(UnAlone)은 사친사친의 개인정보 처리 목적, 항목, 공개 범위, 보유와 삭제 및 권리 행사 방법을 안내합니다.\n현재 미리보기의 실제 처리와 정식 서비스의 예정 처리를 아래에서 구분합니다. 정식 시행 전 공급사·보관 기간·연락처 등 미정 사항을 확정하여 다시 게시합니다.'],
+      ['2. 현재 미리보기에서 처리하는 정보','브라우저에 입력한 닉네임·성별·연령대·지역·직업, 관심 주제, 사진·소개·선택 프로필 항목, 고민·답변·대화, 설정 및 문의 초안을 저장합니다. 문의에는 제목·유형·본문과 선택 입력한 이메일이 포함됩니다.\n목적은 화면 체험, 작성 내용 유지와 초안 복원입니다. 저장 위치는 이용 중인 브라우저의 로컬 저장소이며, 다른 회원이나 상담원에게 실제로 전달하지 않습니다. 카드번호·주민등록번호·신분증과 실제 검증 결과는 수집하지 않습니다. 호스팅 사업자의 접속 기록 처리는 별도로 확인하여 정식 방침에 반영합니다.'],
+      ['3. 정식 서비스의 처리 항목과 목적','가입 및 성인 확인: 본인확인 결과, 생년월일·성별, 계정 식별정보 등 계약된 인증 방식에 필요한 최소 항목을 사용합니다. 공급사와 최종 응답 항목은 미정이며 실제 수집 전 안내합니다.\n서비스 제공: 프로필·관심 주제·고민·답변·대화 및 공개 동의 기록을 이용해 배분, 대화, 선택 공개와 이용 내역을 제공합니다.\n결제·환불: 주문번호, 상품, 금액, 결제 상태와 거래 식별정보를 처리합니다. 카드번호 등 결제 원문은 결제사가 직접 처리하는 방식을 우선하며 실제 연동에 맞춰 고지합니다.\n고객지원: 문의 유형·제목·내용·연락처와 처리 내역을 사용합니다. 필수·선택 항목, 동의 또는 계약 이행 등 구체적 처리 근거는 정식 수집 화면에서 구분합니다.'],
+      ['4. 선택 정보와 민감한 내용','사진, 소개, 취향 및 추가 프로필 항목은 선택하여 작성하고 공개 범위를 정할 수 있습니다. 작성하지 않은 선택 정보 때문에 무료 고민·답변 이용을 제한하지 않습니다.\n건강 등 민감한 내용을 고민에 적을 수 있으므로 작성 시 필요한 범위만 남겨 주세요. 민감정보의 별도 처리 근거와 동의가 필요한 기능은 해당 절차를 마련한 뒤 제공합니다. 신분증이나 주민등록번호를 문의에 첨부하도록 요구하지 않습니다.'],
+      ['5. 다른 회원에게 보이는 정보','고민에는 연령대·하는 일·지역과 작성한 내용이 함께 표시됩니다. 익명 대화 단계에서는 사진과 상세 소개를 공개하지 않습니다.\n사진·소개와 선택 항목은 관계별로 양쪽이 동의한 뒤 공개합니다. 구매나 프로필 저장만으로 상대에게 전송하지 않습니다. 검증 결과는 본인이 사전에 공개에 동의한 범위에서만 열람하도록 하며, 개별 열람자의 결제·열람 사실은 상대에게 알리지 않습니다.'],
+      ['6. 보유 기간과 삭제','현재 미리보기의 데이터는 해당 브라우저에 남으며, 브라우저의 사이트 데이터 삭제로 지울 수 있습니다. 브라우저·기기를 바꾸면 자동으로 이어지지 않으며 서버 백업이나 복구를 보장하지 않습니다.\n정식 서비스에서는 목적 달성 또는 탈퇴 시 지체 없이 삭제하는 것을 원칙으로 합니다. 거래 관련 법정 보존 대상이 있는 경우 계약·청약철회 및 대금결제·공급 기록 5년, 소비자 불만·분쟁 처리 기록 3년, 표시·광고 기록 6개월을 구분해 보관합니다. 모든 일반 문의를 일괄 3년 보관한다는 뜻은 아닙니다.\n일반 문의, 접속·보안 기록, 인증 결과와 검증 자료의 구체적 기간은 운영 방식 확정 후 게시합니다. 보존이 필요한 정보는 다른 용도로 사용하지 않으며 기간이 끝나면 복구가 어려운 방법으로 삭제합니다.'],
+      ['7. 처리 위탁·제3자 제공과 국외 처리','본인확인, 결제, 호스팅, 고객지원 및 검증 공급사의 명칭·위탁 업무·보관 위치는 계약 확정 후 공개합니다. 상대 회원에게 공개하는 범위는 위 5항에 따릅니다. 법적 근거가 있거나 별도 동의를 받은 경우 외에는 개인정보를 외부에 제공하지 않습니다.\n국외 보관·처리가 발생하는 경우 해당 국가, 이전받는 자, 항목, 목적, 시기·방법, 보유 기간과 거부 방법 등 필요한 사항을 실제 계약에 맞춰 안내합니다. 현재 미리보기에서 정식 인증·결제·검증 공급사로 회원 정보를 보내지 않습니다.'],
+      ['8. 개인정보 권리와 행사 방법','본인은 개인정보 열람, 정정·삭제, 처리 정지와 동의 철회를 요청할 수 있습니다. 정식 서비스에서는 계정·프로필 화면과 고객센터를 통해 요청하며 본인 확인에 필요한 최소 절차를 거칩니다. 법률상 예외가 적용되면 그 이유를 안내합니다.\n현재 브라우저에 저장된 내용은 해당 화면에서 수정하거나 사이트 데이터를 삭제할 수 있습니다. 미리보기 문의 저장만으로 회사에 권리 요청이 접수되지는 않습니다. 정식 연락처를 게시한 뒤 실제 접수를 제공합니다.'],
+      ['9. 안전성 확보와 관리자 접근','정식 운영 시 담당자별 접근 권한, 접근 기록, 암호화와 전송 보호, 내부 교육 및 사고 대응 절차를 갖춥니다. 원문 대화나 검증 자료에 대한 운영자 접근은 업무상 필요한 범위로 제한합니다.\n현재 로컬 저장 정보는 같은 브라우저를 사용하는 사람이 볼 수 있으므로 공용 기기에서는 실제 개인정보 입력을 피하고 사용 후 사이트 데이터를 삭제해 주세요.'],
+      ['10. 자동 수집과 자동화된 처리','현재 미리보기는 화면 상태 유지를 위해 브라우저 로컬 저장소를 사용하며 광고·행태 분석 SDK를 추가하지 않았습니다. 브라우저 설정에서 사이트 데이터를 삭제할 수 있고 이 경우 작성한 내용과 설정도 사라집니다.\n정식 운영에서 쿠키·통계 도구·알림 토큰을 사용하면 도구와 수집 항목·목적·보관 기간·거부 방법을 안내합니다. 이용 권리에 영향을 주는 자동화된 결정 기능을 도입할 때에는 적용 여부와 설명·검토 요청 절차를 별도로 고지합니다.'],
+      ['11. 보호책임자·문의와 변경','운영 주체: (주)언어론 / UnAlone\n개인정보 보호책임자·담당 부서·연락처: 미정\n사업장 주소: 미정\n문의 화면: 마이 > 고객센터 > 1:1 문의 > 개인정보·권리 요청\n현재는 작성 내용 저장만 가능하며 실제 접수 채널은 개시 전에 연결합니다.\n처리 항목이나 목적, 공개 대상 등 중요한 내용이 바뀌면 시행일과 변경 사항을 안내하고 필요한 동의를 별도로 받습니다. 정식 시행일과 이전 방침 이력은 확정 후 게시합니다.']
+    ]
+  },
+  refund:{
+    title:'결제·환불 안내',
+    note:'정식 판매 전 검토본 · 현재 실제 결제 없음',
+    summary:'구매와 사용을 구분해 안내해요 이용권을 샀다고 프로필이 바로 열리거나 상대에게 응답 의무가 생기지 않아요',
+    sections:[
+      ['구매 전 확인할 내용','상품의 대상, 수량, 최종 금액, 적용 기간, 차감 시점과 취소 조건을 구매 전에 표시합니다. 현재 금액은 화면 예시이며 결제 승인·자동 청구·이용권 발급은 일어나지 않습니다.'],
+      ['미사용 상품과 청약철회','실제 판매가 시작되면 미사용 디지털 상품은 관계 법령에 따라 통상 계약 내용 수령일 등 법정 기산일부터 7일 이내 청약철회를 요청할 수 있습니다. 법령이 인정하는 별도의 철회·해제 사유는 그 기준에 따릅니다.'],
+      ['사용이 시작된 상품','디지털콘텐츠 제공 개시 등으로 청약철회가 제한되는 경우에는 법정 요건을 갖추고 결제 전에 제한 내용과 필요한 확인 절차를 제공합니다. 구매 즉시 모든 상품이 환불 불가한 것으로 처리하지 않습니다. 일부만 사용한 상품이나 서비스 오류는 실제 제공 범위와 관련 법령에 따라 확인합니다.'],
+      ['프로필 공개와 상대방의 선택','공개권 구매와 상대방의 공개 동의는 별개입니다. 상대에게 결제 의무가 생기지 않으며, 양쪽 동의 전에는 프로필이 열리지 않습니다. 제안 취소·거절·미응답 시의 차감·반환 조건은 정식 판매 전에 확정해 표시합니다.\n공개 후 차단하거나 신고하더라도 문의할 권리는 유지됩니다. 단순 변심, 미제공, 기술적 오류와 부정 이용을 구분하여 법령과 안내된 조건에 따라 처리합니다.'],
+      ['중복 결제·오류·선물','중복 결제, 승인 후 미지급 및 기능 미제공은 거래 내역과 실제 제공 상태를 확인해 취소·복원·환급 등으로 처리합니다. 선물의 전달·수령·사용에 따른 취소 범위와 수수료·교환 조건은 판매 전에 별도로 안내합니다.'],
+      ['문의 방법','고객센터의 1:1 문의에서 결제·환불을 선택하고 상품명·결제일·주문번호와 상황을 알려 주세요. 카드번호 전체나 비밀번호는 필요하지 않습니다. 앱 마켓에서 결제한 경우에는 해당 마켓의 환불 절차도 함께 안내합니다.\n현재는 실제 결제가 없으며 문의도 이 기기에 저장됩니다. 결제사·접수 채널·처리 일정은 정식 판매 전에 확정합니다.']
+    ]
+  },
+  community:{
+    title:'커뮤니티 가이드',note:'서로의 이야기가 편안한 자리가 되도록',
+    summary:'진솔하게 말하고 편안하게 들어주세요 관계의 속도와 공개 여부는 함께 정해요',
+    sections:[
+      ['먼저 들어주세요','평가하거나 단정하기보다 어떤 상황이었는지 생각하며 답변해요. 같은 경험이 있다면 내가 해본 방법과 느낀 점을 편안하게 나눠 주세요.'],
+      ['익명 뒤에도 사람이 있어요','조롱·비하·혐오·협박이나 원치 않는 성적인 이야기를 하지 않아요. 사칭, 광고 도배, 금전 요구와 불법 콘텐츠도 허용하지 않아요.'],
+      ['공개와 만남을 재촉하지 않아요','프로필 공개권이나 선물을 사용했어도 상대가 응할 의무는 없어요. 연락처·사진·만남과 공개를 강요하지 말아 주세요.'],
+      ['나와 타인의 정보를 지켜요','이름·연락처·신분증과 사적인 대화 내용을 동의 없이 공유하지 않아요. 고민에 다른 사람을 특정할 수 있는 정보는 남기지 말아 주세요.'],
+      ['불편한 일이 있으면 알려주세요','채팅 메뉴에서 대화를 종료할 수 있어요. 신고가 필요한 상황은 고객센터의 안전·불편 신고에 남겨 주세요. 현재 미리보기의 문의는 실제 접수되지 않는 저장 상태임을 확인해 주세요.']
+    ]
+  }
 };
-function legal(){
-  const doc=route().params.get('doc'),content=LEGAL_CONTENT[doc];
-  if(!content)return shell('약관 및 정책',serviceRow('/legal?doc=terms&from=policies','이용약관')+serviceRow('/legal?doc=privacy&from=policies','개인정보처리방침')+serviceRow('/legal?doc=community&from=policies','커뮤니티 가이드'),{back:'/settings',screen:'service-page'});
-  return shell(content.title,`<p class="policy-note">${esc(content.note)}</p><div class="service-explanations policy-copy">${content.sections.map(([title,copy])=>`<section><h2>${esc(title)}</h2><p>${esc(copy)}</p></section>`).join('')}</div>`,{back:route().params.get('from')==='landing'?'./about/':route().params.get('from')==='policies'?'/legal':route().params.get('from')==='privacy'?'/settings/privacy':route().params.get('from')==='account'?'/settings/account':doc==='community'?'/support':'/me',screen:'service-page'});
+function legalReturn(doc){
+  const params=route().params,from=params.get('from');
+  if(from==='checkout'&&serviceProduct(params.get('product')))return productHref(params.get('product'),params.get('quantity'));
+  return {settings:'/settings',wallet:'/wallet/charge',landing:'./about/',policies:'/legal',privacy:'/settings/privacy',account:'/settings/account',billing:'/billing',support:'/support/write'}[from]??(doc==='community'?'/support':'/me');
 }
+function legal(){
+  const doc=route().params.get('doc'),content=Object.hasOwn(LEGAL_CONTENT,doc)?LEGAL_CONTENT[doc]:null;
+  if(!content)return shell('약관 및 정책',`${serviceRow('/legal?doc=terms&from=policies','이용약관')}${serviceRow('/legal?doc=privacy&from=policies','개인정보 처리방침')}${serviceRow('/legal?doc=refund&from=policies','결제·환불 안내')}${serviceRow('/legal?doc=community&from=policies','커뮤니티 가이드')}<p class="policy-contact">(주)언어론 · UnAlone<br>정식 시행일과 사업자 상세 정보 확인 중</p>`,{back:'/settings',screen:'service-page policy-page'});
+  return shell(content.title,`<p class="policy-note">${esc(content.note)}</p><div class="policy-summary"><p>${esc(content.summary)}</p></div><details class="policy-toc"><summary>목차 보기</summary><nav aria-label="문서 목차">${content.sections.map(([title],i)=>button('policy-section',esc(title),'',`data-id="policy-section-${i}"`)).join('')}</nav></details><div class="service-explanations policy-copy">${content.sections.map(([title,copy],i)=>`<section id="policy-section-${i}" tabindex="-1"><h2>${esc(title)}</h2><p>${esc(copy)}</p></section>`).join('')}</div><p class="policy-contact">(주)언어론 · UnAlone<br>사업자 상세 정보와 접수 연락처는 확정 후 반영됩니다</p>${link('/support','고객센터','text-link')}`,{back:legalReturn(doc),screen:'service-page policy-page'});
+}
+
 
 function ownProfile(){
   const c=editingConnection(),open=c&&profilesVisible(c,viewer());
@@ -2562,7 +2888,7 @@ function profilePanel(title,body,actions='',options={}){
 }
 function profileBasicsPanel(){
   const d=ensureProfileDraft();
-  profilePanel('기본 정보',`<form id="profile-basics-form" novalidate><label class="profile-field"><span>닉네임</span><input name="nickname" value="${esc(d.nickname)}" minlength="2" maxlength="12" autocomplete="nickname" required></label><label class="profile-field"><span>거주 지역</span><span class="canvas-select"><select name="region" aria-label="거주 지역">${['서울','경기','인천','강원','충청','전라','경상','제주','해외'].map(v=>`<option ${v===d.region?'selected':''}>${v}</option>`).join('')}</select>${icon('chevron')}</span></label>${occupationField(d.occupation,'profile')}<p class="canvas-identity-source">${esc(viewer().ageBand)} · ${viewer().gender==='female'?'여성':'남성'}<small>나이와 성별은 프로필에서 수정할 수 없어요</small></p></form>`,`<p class="danger" id="profile-panel-error" role="alert"></p><button type="submit" form="profile-basics-form" class="btn btn-primary btn-block">적용</button>`);
+  profilePanel('기본 정보',`<form id="profile-basics-form" novalidate><label class="profile-field"><span>닉네임</span><input name="nickname" value="${esc(d.nickname)}" minlength="2" maxlength="12" autocomplete="nickname" ${nicknameAvailableAt()>Date.now()?'readonly':''} required><small>닉네임은 2주마다 변경할 수 있어요</small></label><label class="profile-field"><span>거주 지역</span><span class="canvas-select"><select name="region" aria-label="거주 지역">${['서울','경기','인천','강원','충청','전라','경상','제주','해외'].map(v=>`<option ${v===d.region?'selected':''}>${v}</option>`).join('')}</select>${icon('chevron')}</span></label>${occupationField(d.occupation,'profile')}<p class="canvas-identity-source">${esc(viewer().ageBand)} · ${viewer().gender==='female'?'여성':'남성'}<small>나이와 성별은 프로필에서 수정할 수 없어요</small></p></form>`,`<p class="danger" id="profile-panel-error" role="alert"></p><button type="submit" form="profile-basics-form" class="btn btn-primary btn-block">적용</button>`);
 }
 function profileFactPanel(key){
   const field=PROFILE_FIELDS.find(([id])=>id===key);if(!field)return;const [id,label,limit]=field,d=ensureProfileDraft(),existing=Boolean(d.details[id]);
@@ -2684,7 +3010,7 @@ function syncProfileToolbar({reveal=false}={}){
   if(Math.abs(delta)>1)window.scrollTo({top:window.scrollY+delta,behavior:'instant'});
 }
 
-function about(){return shell('사친사친 소개',`<section class="about-copy"><h2>작은 고민도<br>진지하게 들어드려요</h2><p>잘 들어줄 수 있는 주제를 고르면,<br>이성의 고민이 한 장씩 도착해요</p><p>마음에 남는 답변에서 익명 대화를 시작하고,<br>서로 원할 때 프로필을 열어요</p>${link('/listen','고민 만나보기','btn btn-primary')}<p><a href="./about/" class="text-link">사친사친 소개 자세히 보기</a></p></section>`,{back:route().params.get('from')==='settings'?'/settings':'/me'});}
+function about(){return shell('사친사친 소개',`<section class="about-copy"><h2>작은 고민도<br>진지하게 들어드려요</h2><p>잘 들어줄 수 있는 주제를 고르면,<br>이성의 고민이 한 장씩 도착해요</p><p>마음에 남는 답변에서 익명 대화를 시작하고,<br>서로 원할 때 프로필을 열어요</p>${link('/listen','고민 만나보기','btn btn-primary')}<p><a href="./about/" class="text-link">사친사친 소개 자세히 보기</a></p></section>`,{back:route().params.get('from')==='support'?'/support':route().params.get('from')==='settings'?'/settings':'/me'});}
 // The full letter stays in the card; only its reading surface scrolls.
 let postcardReadingCleanup;
 function initPostcardReading(){
@@ -2863,7 +3189,7 @@ function render({keepScroll=false,focus=null}={}){
   if(activeModal&&activeModal.hash!==location.hash)closeAppModal({restoreFocus:false});
   const {path,params}=route();
   if(state.member)readPageNotifications(path,params);
-  const pages={'/home':home,'/signup':signup,'/listen':listen,'/preferences':preferences,'/notifications':notifications,'/notice':serviceNoticeDetail,'/write':write,'/concern':detail,'/mine':storyHub,'/settings':settings,'/settings/notifications':notificationPreferences,'/settings/privacy':privacySettings,'/settings/account':accountSettings,'/billing':billing,'/billing/history':billingHistory,'/support':support,'/support/write':supportCompose,'/support/history':supportHistory,'/support/notices':serviceNotices,'/legal':legal,'/connections':connections,'/connection':connection,'/chat':chat,'/me':me,'/profile':ownProfile,'/profile/edit':profileEdit,'/profile/preview':profilePreview,'/about':about};
+  const pages={'/home':home,'/signup':signup,'/listen':listen,'/preferences':preferences,'/notifications':notifications,'/notice':serviceNoticeDetail,'/write':write,'/concern':detail,'/mine':storyHub,'/settings':settings,'/settings/notifications':notificationPreferences,'/settings/privacy':privacySettings,'/settings/account':accountSettings,'/settings/nickname':nicknameSettings,'/settings/email':accountConnectionPage,'/settings/phone':accountConnectionPage,'/settings/password':accountConnectionPage,'/settings/contacts':accountConnectionPage,'/settings/logout':accountConnectionPage,'/wallet':pointWallet,'/wallet/charge':pointCharge,'/quests':quests,'/invite':inviteFriends,'/billing':billing,'/billing/product':billingProduct,'/billing/checkout':billingCheckout,'/billing/complete':billingComplete,'/billing/history':billingHistory,'/support':support,'/support/write':supportCompose,'/support/history':supportHistory,'/support/detail':supportDetail,'/support/notices':serviceNotices,'/support/guide':supportGuide,'/legal':legal,'/connections':connections,'/connection':connection,'/chat':chat,'/me':me,'/profile':ownProfile,'/profile/edit':profileEdit,'/profile/preview':profilePreview,'/about':about};
   const needsMember=!state.member&&!['/home','/about','/legal'].includes(path);
   $('#app').innerHTML=needsMember?signup():(pages[path]??home)();
   const pageTitle=$('#app h1')?.textContent??'사친사친';
@@ -2902,8 +3228,12 @@ function saveOwnProfile(){
   if(route().path!=='/profile/edit'||!state.profileDraft)return;
   const result=validateProfile(state.profileDraft,viewer());
   if(result.error){$('#profile-save-error').textContent=result.error;return;}
-  const previous={member:state.member,profile:state.profile,draft:state.profileDraft};state.member=result.value.member;state.profile=result.value.profile;state.profileDraft=null;
-  if(!save()){state.member=previous.member;state.profile=previous.profile;state.profileDraft=previous.draft;$('#profile-save-error').textContent='저장 공간이 부족해요. 사진을 지우고 다시 저장해 주세요';return;}
+  const nicknameError=nicknameChangeError(result.value.member.nickname);if(nicknameError){$('#profile-save-error').textContent=nicknameError;return;}
+  const changed=result.value.member.nickname!==viewer().nickname;
+  const previous={member:state.member,profile:state.profile,draft:state.profileDraft,nicknameChangedAt:state.nicknameChangedAt};
+  if(changed)state.nicknameChangedAt=new Date().toISOString();
+  state.member=result.value.member;state.profile=result.value.profile;state.profileDraft=null;
+  if(!save()){state.member=previous.member;state.profile=previous.profile;state.profileDraft=previous.draft;state.nicknameChangedAt=previous.nicknameChangedAt;$('#profile-save-error').textContent='저장 공간이 부족해요. 사진을 지우고 다시 저장해 주세요';return;}
   navigate(editorReturn());toast('프로필을 저장했어요');
 }
 let photoTask=0;
@@ -2934,7 +3264,9 @@ document.addEventListener('change',async event=>{
 document.addEventListener('error',event=>{if(event.target.tagName==='IMG'){event.target.hidden=true;const frame=event.target.parentElement;frame?.classList.add('image-unavailable');if(frame?.classList.contains('portrait')){frame.setAttribute('role','img');frame.setAttribute('aria-label','프로필 사진을 불러오지 못했어요');frame.querySelector('.media-fallback')?.removeAttribute('aria-hidden');}}},true);
 document.addEventListener('input',event=>{
   const supportForm=event.target.closest('#support-form');
-  if(supportForm){state.supportDraft=supportDraft({...Object.fromEntries(new FormData(supportForm)),savedAt:state.supportDraft.savedAt});save();$('#support-error').textContent='';}
+  if(supportForm){state.supportDraft=supportDraft({...Object.fromEntries(new FormData(supportForm)),savedAt:state.supportDraft.savedAt});save();$('#support-error').textContent='';const counter=$('#inquiry-count');if(counter)counter.textContent=String(state.supportDraft.body.length);}
+  const checkout=event.target.closest('#checkout-form');
+  if(checkout){const formData=new FormData(checkout);state.commercePreview={product:checkout.dataset.product,quantity:serviceQuantity(checkout.dataset.quantity),method:formData.get('method')==='simple'?'simple':'card',confirmed:formData.has('confirmed'),completed:false};const error=$('#checkout-error');if(error)error.textContent='';}
   const profileForm=event.target.closest('#profile-form');if(profileForm&&event.target.type!=='file'){queueDraftNotice(captureProfile(profileForm));resizeProfileText();$('#profile-save-error').textContent='';}
   const form=event.target.closest('#concern-form');if(form)queueDraftNotice(captureDraft(form));
   if(event.target.closest('#signup-form')){state.signupDraft=Object.fromEntries(new FormData($('#signup-form')));$('#form-error').textContent='';save();}
@@ -2947,17 +3279,44 @@ document.addEventListener('input',event=>{
 });
 document.addEventListener('submit',event=>{
   const form=event.target;event.preventDefault();const f=new FormData(form);
+  if(form.id==='nickname-form'){
+    const next=String(f.get('nickname')??'').trim(),error=$('#nickname-error');
+    const result=validateMember({...viewer(),nickname:next});
+    const message=result.error||nicknameChangeError(next);
+    if(message){error.textContent=message;form.querySelector('[name="nickname"]')?.focus();return;}
+    if(next===viewer().nickname){navigate('/settings');return;}
+    const previous={member:state.member,draft:state.profileDraft,changed:state.nicknameChangedAt};
+    state.member=result.value;state.nicknameChangedAt=new Date().toISOString();
+    if(state.profileDraft)state.profileDraft={...state.profileDraft,nickname:next};
+    if(!save()){state.member=previous.member;state.profileDraft=previous.draft;state.nicknameChangedAt=previous.changed;error.textContent='변경 내용을 저장하지 못했어요';return;}
+    navigate('/settings');toast('닉네임을 변경했어요');return;
+  }
+  if(form.id==='product-form'){
+    const p=serviceProduct(form.dataset.product);if(p)navigate(productHref(p.id,f.get('quantity')));return;
+  }
+  if(form.id==='checkout-form'){
+    const p=serviceProduct(form.dataset.product);if(!p)return;
+    if(!f.has('confirmed')){$('#checkout-error').textContent='상품 내용과 결제·환불 안내를 확인해 주세요';form.querySelector('[name="confirmed"]')?.focus();return;}
+    state.commercePreview={product:p.id,quantity:serviceQuantity(form.dataset.quantity),method:f.get('method')==='simple'?'simple':'card',confirmed:true,completed:true};
+    navigate('/billing/complete');return;
+  }
   if(form.id==='support-form'){
     const draft=supportDraft(Object.fromEntries(f)),error=$('#support-error');
+    if(draft.title.trim().length<2){error.textContent='문의 제목을 2자 이상 적어 주세요';form.querySelector('[name="title"]')?.focus();return;}
     if(draft.body.trim().length<10){error.textContent='문의 내용을 10자 이상 적어 주세요';form.querySelector('[name="body"]')?.focus();return;}
     if(draft.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(draft.email)){error.textContent='이메일 주소를 확인해 주세요';form.querySelector('[name="email"]')?.focus();return;}
-    const previous=state.supportDraft;state.supportDraft={...draft,savedAt:new Date().toISOString()};
-    if(!save()){state.supportDraft=previous;return;}
-    navigate('/support/history');toast('문의 내용을 임시저장했어요');return;
+    const previousTickets=state.supportTickets??[],previousDraft=state.supportDraft;
+    const id=previousTickets.some(t=>t.id===form.dataset.ticket)?form.dataset.ticket:crypto.randomUUID();
+    if(previousTickets.length>=40&&!previousTickets.some(t=>t.id===id)){error.textContent='이 기기에 저장할 수 있는 문의는 40개예요';return;}
+    state.supportTickets=[{...draft,title:draft.title.trim(),body:draft.body.trim(),id,savedAt:new Date().toISOString(),status:'draft'},...previousTickets.filter(t=>t.id!==id)];
+    state.supportDraft=supportDraft();
+    if(!save()){state.supportTickets=previousTickets;state.supportDraft=previousDraft;return;}
+    navigate('/support/detail?id='+encodeURIComponent(id));toast('이 기기에 저장했어요 아직 접수되지 않았어요');return;
   }
   if(form.id==='profile-basics-form'){
     const result=validateMember({...viewer(),...Object.fromEntries(f),gender:viewer().gender,ageBand:viewer().ageBand});
     if(result.error){$('#profile-panel-error').textContent=result.error;form.querySelector('[name="'+result.field+'"]')?.focus();return;}
+    const nicknameError=nicknameChangeError(result.value.nickname);if(nicknameError){$('#profile-panel-error').textContent=nicknameError;return;}
     const previous=state.profileDraft;state.profileDraft={...ensureProfileDraft(),nickname:result.value.nickname,region:result.value.region,occupation:result.value.occupation};
     if(!save()){state.profileDraft=previous;$('#profile-panel-error').textContent='변경 내용을 저장할 공간이 부족해요';return;}
     closeProfilePanel();render({keepScroll:true});return;
@@ -3001,6 +3360,13 @@ document.addEventListener('click',event=>{
   const choice=event.target.closest('[data-choice]');if(choice){openChoice(choice);return;}
   const target=event.target.closest('[data-action]');if(!target||target.disabled)return;const action=target.dataset.action,id=target.dataset.id;
 
+  if(action==='copy-invite'){
+    if(navigator.clipboard?.writeText)navigator.clipboard.writeText(INVITE_URL).then(()=>toast('소개 링크를 복사했어요')).catch(()=>toast('복사하지 못했어요 잠시 후 다시 시도해 주세요'));
+    else toast('이 브라우저에서는 링크 복사를 지원하지 않아요');return;
+  }
+  if(action==='policy-section'){const section=document.getElementById(id);section?.scrollIntoView({behavior:'instant',block:'start'});section?.focus({preventScroll:true});return;}
+  if(action==='new-inquiry'){const previous=state.supportDraft;state.supportDraft=supportDraft();if(!save()){state.supportDraft=previous;return;}navigate('/support/write');return;}
+  if(action==='copy-inquiry'){const t=(state.supportTickets??[]).find(t=>t.id===id);if(!t)return;const text='['+(SUPPORT_CATEGORIES.find(c=>c.value===t.category)?.label??'문의')+'] '+t.title+'\n\n'+t.body+(t.email?'\n\n답변받을 이메일: '+t.email:'');if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text).then(()=>toast('문의 내용을 복사했어요')).catch(()=>toast('복사하지 못했어요 내용을 길게 눌러 복사해 주세요'));else toast('내용을 길게 눌러 복사해 주세요');return;}
   if(action==='open-notifications'){notificationListPosition=null;notificationVisit={returnTo:location.hash.slice(1),scrollY:window.scrollY,scrollTop:$('.viewport-composer .app-main')?.scrollTop};return;}
   if(['read-notification','remember-notifications'].includes(action)&&route().path==='/notifications')notificationListPosition={returnTo:notificationReturn(),scrollY:window.scrollY,id:action==='read-notification'?id:null};
   if(action==='remember-notifications')return;
