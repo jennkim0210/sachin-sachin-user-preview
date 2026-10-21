@@ -1698,7 +1698,11 @@ const SERVICE_NOTICES=[];
 // Actions are limited to existing app screens; no fabricated campaigns or reward payouts.
 function serviceNoticeAction(action){
   if(!action||!['/profile/edit','/invite','/listen','/write'].includes(action.href)||typeof action.label!=='string'||!action.label.trim())return null;
-  return {href:action.href,label:action.label.trim().slice(0,60)};
+  return {href:action.href,label:action.label.trim().slice(0,60),direct:action.direct===true};
+}
+function profileHasContent(profile={}){
+  const extra=profileExtras(profile);
+  return Boolean(profileIntroduction(profile).trim()||String(profile.prompt??'').trim()||safeProfilePhoto(profile.photo)||Object.values(extra.details).some(value=>value.trim())||extra.blocks.some(b=>b.photo||b.title.trim()||b.body.trim()||b.caption.trim()));
 }
 function serviceNoticeFeed(state,notices=SERVICE_NOTICES,now=Date.now()){
   if(!state.member||!Array.isArray(notices))return [];
@@ -1708,13 +1712,17 @@ function serviceNoticeFeed(state,notices=SERVICE_NOTICES,now=Date.now()){
     const published=Date.parse(n.publishedAt),expires=Date.parse(n.expiresAt);
     if(!Number.isFinite(published)||published>now)return false;
     if(n.kind==='event'||n.expiresAt!=null){if(!Number.isFinite(expires)||expires<=published||now>=expires)return false;}
+    if(n.audience!=null&&n.audience!=='profile-empty')return false;
+    if(n.audience==='profile-empty'&&profileHasContent(state.profile))return false;
     return true;
-  }).filter(n=>{if(seen.has(n.id))return false;seen.add(n.id);return true;}).map(n=>({
+  }).filter(n=>{if(seen.has(n.id))return false;seen.add(n.id);return true;}).map(n=>{
+    const action=n.kind==='event'?serviceNoticeAction(n.action):null;
+    return {
     id:'service:'+n.id,noticeId:n.id,channel:'service',type:'service',kind:n.kind,
     title:n.title.trim().slice(0,120),copy:String(n.summary??n.body).trim().slice(0,180),body:n.body.slice(0,20000),
-    at:n.publishedAt,expiresAt:n.expiresAt??null,action:n.kind==='event'?serviceNoticeAction(n.action):null,
-    read:state.notificationReads?.['service:'+n.id]===true,href:'/notice?id='+encodeURIComponent(n.id)+'&from=notifications'
-  })).sort((a,b)=>Date.parse(b.at)-Date.parse(a.at));
+    at:n.publishedAt,expiresAt:n.expiresAt??null,action,
+    read:state.notificationReads?.['service:'+n.id]===true,href:action?.direct?action.href+'?from=notifications':'/notice?id='+encodeURIComponent(n.id)+'&from=notifications'
+  };}).sort((a,b)=>Date.parse(b.at)-Date.parse(a.at));
 }
 
 // Preferences affect unread arrival signals, not the user's activity history.
@@ -2208,9 +2216,9 @@ function notificationTime(at,now=Date.now()){
 }
 function notificationRows(items,{serviceList=false}={}){
   return `<ul class="notification-list" aria-label="${serviceList?'서비스 공지':'도착한 알림'}">${items.map(item=>{
-    const kind=item.type==='service'?SERVICE_KINDS[item.kind]:NOTIFICATION_KINDS[item.type][0],action=item.type==='service'?SERVICE_KINDS[item.kind]+' 보기':NOTIFICATION_KINDS[item.type][1];
+    const kind=item.type==='service'?SERVICE_KINDS[item.kind]:NOTIFICATION_KINDS[item.type][0],action=item.type==='service'?(item.action?.direct?item.action.label:SERVICE_KINDS[item.kind]+' 보기'):NOTIFICATION_KINDS[item.type][1];
     const when=notificationTime(item.at),href=serviceList?'/notice?id='+encodeURIComponent(item.noticeId)+'&from=notices':item.href+'&return='+encodeURIComponent(notificationReturn());
-    return `<li><a id="notification-${encodeURIComponent(item.id)}" class="notification-row ${item.read?'is-read':'is-unread'}" href="#${esc(href)}" data-action="read-notification" data-id="${esc(item.id)}"><span class="notification-copy"><span class="notification-meta"><span>${esc(kind)}${item.type==='message'&&item.unreadCount>1?' · '+item.unreadCount+'개':''}</span>${when?`<time datetime="${esc(item.at)}" title="${esc(new Date(item.at).toLocaleString('ko-KR'))}">${esc(when)}</time>`:''}</span><strong>${esc(item.title)}</strong><span class="notification-excerpt">${esc(item.copy)}</span>${item.preview?`<span class="notification-answer-preview">${esc(item.preview)}</span>`:''}<span class="notification-destination">${action}</span></span>${item.read?'':'<span class="notification-unread"><span class="sr-only">읽지 않음</span></span>'}</a></li>`;
+    return `<li><a id="notification-${encodeURIComponent(item.id)}" class="notification-row ${item.read?'is-read':'is-unread'}" href="#${esc(href)}" data-action="read-notification" data-id="${esc(item.id)}"><span class="notification-copy"><span class="notification-meta"><span>${esc(kind)}${item.type==='message'&&item.unreadCount>1?' · '+item.unreadCount+'개':''}</span>${when?`<time datetime="${esc(item.at)}" title="${esc(new Date(item.at).toLocaleString('ko-KR'))}">${esc(when)}</time>`:''}</span><strong>${esc(item.title)}</strong><span class="notification-excerpt">${esc(item.copy)}</span>${item.preview?`<span class="notification-answer-preview">${esc(item.preview)}</span>`:''}<span class="notification-destination">${esc(action)}</span></span>${item.read?'':'<span class="notification-unread"><span class="sr-only">읽지 않음</span></span>'}</a></li>`;
   }).join('')}</ul>`;
 }
 function notifications(){
@@ -2580,8 +2588,8 @@ function profile(c){
 function ownPublicProfile(member,profile){return profileDisclosure(member,profile);}
 function profileEditorValue(){return state.profileDraft??{...viewer(),...state.profile};}
 function editingConnection(){const c=state.connections[route().params.get('connection')];return chatAllowed(c,viewer())?c:null;}
-function profileOrigin(){return {account:'/settings/account',privacy:'/settings/privacy'}[route().params.get('from')]??'/me';}
-function editorRoute(path){const c=editingConnection(),from=route().params.get('from');return path+(c?'?connection='+encodeURIComponent(c.id):['account','privacy'].includes(from)?'?from='+from:'');}
+function profileOrigin(){if(route().params.get('from')==='notifications')return notificationInboxRoute();return {account:'/settings/account',privacy:'/settings/privacy'}[route().params.get('from')]??'/me';}
+function editorRoute(path){const c=editingConnection(),from=route().params.get('from');if(!c&&from==='notifications')return path+'?'+new URLSearchParams({from,return:notificationReturn()});return path+(c?'?connection='+encodeURIComponent(c.id):['account','privacy'].includes(from)?'?from='+from:'');}
 function editorReturn(){const c=editingConnection();return c?'/connection?id='+encodeURIComponent(c.id):profileOrigin();}
 function sharingPreview(c){
   return link('/profile?connection='+encodeURIComponent(c.id),'<span>공개할 내 프로필 미리 보기</span>','sharing-profile-link');
