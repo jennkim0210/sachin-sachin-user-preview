@@ -1705,15 +1705,22 @@ function profileHasContent(profile={}){
   return Boolean(profileIntroduction(profile).trim()||String(profile.prompt??'').trim()||safeProfilePhoto(profile.photo)||Object.values(extra.details).some(value=>value.trim())||extra.blocks.some(b=>b.photo||b.title.trim()||b.body.trim()||b.caption.trim()));
 }
 // An account-specific setup reminder, not a timed campaign or a new alert on every visit.
-// Only committed profile content completes it; unsaved drafts remain available in the editor.
+// Both a saved primary photo and a visible introduction are required. Other profile
+// fields or unsaved drafts do not complete it; the editor preserves work in progress.
 function profileSetupNotification(state){
-  if(!state.member||profileHasContent(state.profile))return null;
+  if(!state.member)return null;
+  const profile=state.profile??{},hasPhoto=Boolean(safeProfilePhoto(profile.photo)),hasIntroduction=Boolean(profileIntroduction(profile).trim());
+  if(hasPhoto&&hasIntroduction)return null;
+  const [title,copy,label]=hasPhoto
+    ?['사진에 짧은 소개를 더해 보세요','좋아하는 것 하나나 요즘의 나를 짧게 적어 주세요 프로필은 서로 동의한 상대에게만 공개돼요','소개 작성하기']
+    :hasIntroduction
+      ?['소개에 사진 한 장을 더해 보세요','나를 보여주는 사진을 골라 주세요 프로필은 서로 동의한 상대에게만 공개돼요','사진 추가하기']
+      :['나만의 프로필을 꾸며 보세요','사진 한 장과 짧은 소개로 나를 알려 주세요 프로필은 서로 동의한 상대에게만 공개돼요','프로필 꾸미기'];
   const id='profile-setup';
   return {id,channel:'service',type:'service',kind:'profileSetup',
-    title:'나만의 프로필을 꾸며 보세요',
-    copy:'사진과 좋아하는 것으로 나를 소개해요 프로필은 서로 동의한 상대에게만 공개돼요',
+    title,copy,
     at:'',read:state.notificationReads?.[id]===true,
-    action:{label:'프로필 꾸미기',href:'/profile/edit',direct:true},
+    action:{label,href:'/profile/edit',direct:true},
     href:'/profile/edit?from=notifications'};
 }
 function serviceNoticeFeed(state,notices=SERVICE_NOTICES,now=Date.now()){
