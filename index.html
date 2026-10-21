@@ -1694,10 +1694,27 @@ function notificationFeed(state,receivedAnswers=[],viewer=state.member){
 // Published service content is supplied by the service, never by member drafts.
 // Keep empty until there is an actual announcement to publish.
 const SERVICE_NOTICES=[];
+// Participation invitations live in the inbox only while their published window is open.
+// Actions are limited to existing app screens; no fabricated campaigns or reward payouts.
+function serviceNoticeAction(action){
+  if(!action||!['/profile/edit','/invite','/listen','/write'].includes(action.href)||typeof action.label!=='string'||!action.label.trim())return null;
+  return {href:action.href,label:action.label.trim().slice(0,60)};
+}
 function serviceNoticeFeed(state,notices=SERVICE_NOTICES,now=Date.now()){
   if(!state.member||!Array.isArray(notices))return [];
   const seen=new Set();
-  return notices.filter(n=>n&&typeof n.id==='string'&&/^[a-zA-Z0-9-]{1,80}$/.test(n.id)&&['notice','maintenance','update'].includes(n.kind)&&typeof n.title==='string'&&n.title.trim()&&typeof n.body==='string'&&n.body.trim()&&Number.isFinite(Date.parse(n.publishedAt))&&Date.parse(n.publishedAt)<=now&&n.published!==false).filter(n=>{if(seen.has(n.id))return false;seen.add(n.id);return true;}).map(n=>({id:'service:'+n.id,noticeId:n.id,channel:'service',type:'service',kind:n.kind,title:n.title.trim().slice(0,120),copy:String(n.summary??n.body).trim().slice(0,180),body:n.body.slice(0,20000),at:n.publishedAt,read:state.notificationReads?.['service:'+n.id]===true,href:'/notice?id='+encodeURIComponent(n.id)+'&from=notifications'})).sort((a,b)=>Date.parse(b.at)-Date.parse(a.at));
+  return notices.filter(n=>{
+    if(!n||typeof n.id!=='string'||!/^[a-zA-Z0-9-]{1,80}$/.test(n.id)||!['notice','maintenance','update','event'].includes(n.kind)||typeof n.title!=='string'||!n.title.trim()||typeof n.body!=='string'||!n.body.trim()||n.published===false)return false;
+    const published=Date.parse(n.publishedAt),expires=Date.parse(n.expiresAt);
+    if(!Number.isFinite(published)||published>now)return false;
+    if(n.kind==='event'||n.expiresAt!=null){if(!Number.isFinite(expires)||expires<=published||now>=expires)return false;}
+    return true;
+  }).filter(n=>{if(seen.has(n.id))return false;seen.add(n.id);return true;}).map(n=>({
+    id:'service:'+n.id,noticeId:n.id,channel:'service',type:'service',kind:n.kind,
+    title:n.title.trim().slice(0,120),copy:String(n.summary??n.body).trim().slice(0,180),body:n.body.slice(0,20000),
+    at:n.publishedAt,expiresAt:n.expiresAt??null,action:n.kind==='event'?serviceNoticeAction(n.action):null,
+    read:state.notificationReads?.['service:'+n.id]===true,href:'/notice?id='+encodeURIComponent(n.id)+'&from=notifications'
+  })).sort((a,b)=>Date.parse(b.at)-Date.parse(a.at));
 }
 
 // Preferences affect unread arrival signals, not the user's activity history.
@@ -2163,7 +2180,7 @@ function activity(){return notificationFeed(state,state.concerns.flatMap(c=>ownA
 function allNotifications(){return [...activity(),...serviceNoticeFeed(state)].sort((a,b)=>(Date.parse(b.at)||0)-(Date.parse(a.at)||0));}
 function notificationReturn(){
   const value=route().params.get('return')??notificationVisit?.returnTo??'/listen';
-  return typeof value==='string'&&value.length<700&&!/[#<>"'\\]/.test(value)&&/^\/(?:listen|mine|connections|me|write|concern|chat|connection|profile(?:\/edit|\/preview)?|settings(?:\/notifications|\/privacy|\/account|\/nickname|\/email|\/phone|\/password|\/contacts|\/logout)?|wallet(?:\/charge)?|quests|invite|preferences|billing(?:\/history|\/product|\/checkout|\/complete)?|support(?:\/write|\/history|\/detail|\/notices|\/guide)?|legal|about|notice)(?:\?|$)/.test(value)?value:'/listen';
+  return typeof value==='string'&&value.length<700&&!/[#<>"'\\]/.test(value)&&/^\/(?:listen|mine|connections|me|write|concern|chat|connection|profile(?:\/edit|\/preview)?|settings(?:\/notifications|\/privacy|\/account|\/nickname|\/email|\/phone|\/password|\/contacts|\/logout)?|wallet(?:\/charge)?|invite|preferences|billing(?:\/history|\/product|\/checkout|\/complete)?|support(?:\/write|\/history|\/detail|\/notices|\/guide)?|legal|about|notice)(?:\?|$)/.test(value)?value:'/listen';
 }
 function notificationInboxRoute(returnTo=notificationReturn()){
   return '/notifications?'+new URLSearchParams({return:returnTo});
@@ -2183,7 +2200,7 @@ function notificationButton(){
   return `<a href="#${esc(notificationInboxRoute(returnTo))}" data-action="open-notifications" class="icon-button notification-trigger" aria-label="${unread?'알림, 읽지 않은 소식 있음':'알림'}">${icon('bell')}${unread?'<span class="notification-dot" aria-hidden="true"></span>':''}</a>`;
 }
 const NOTIFICATION_KINDS={answer:['받은 답변','답변 보기'],chat:['대화 시작','채팅 열기'],message:['새 메시지','채팅 열기'],reveal:['프로필 공개 제안','공개 제안 보기'],profile:['프로필 공개 완료','프로필 보기']};
-const SERVICE_KINDS={notice:'공지',maintenance:'점검 안내',update:'업데이트'};
+const SERVICE_KINDS={notice:'공지',maintenance:'점검 안내',update:'업데이트',event:'참여 안내'};
 function notificationTime(at,now=Date.now()){
   const date=new Date(at),time=date.getTime();if(!at||!Number.isFinite(time))return '';
   const minutes=Math.max(0,Math.floor((now-time)/60000));
@@ -2204,13 +2221,13 @@ function notifications(){
   return shell('알림',body,{back:notificationReturn(),tools:settings,screen:'notifications-page'});
 }
 function serviceNotices(){
-  const items=serviceNoticeFeed(state);
+  const items=serviceNoticeFeed(state).filter(item=>item.kind!=='event');
   return shell('공지사항',items.length?notificationRows(items,{serviceList:true}):`<section class="letter-empty service-empty">${doodleSvg('megaphone')}<h2>등록된 공지사항이 없어요</h2><p>공지·점검·업데이트 소식을 여기에 모아둘게요</p></section>`,{back:'/support',screen:'service-page'});
 }
 function serviceNoticeDetail(){
   const item=serviceNoticeFeed(state).find(item=>item.noticeId===route().params.get('id')),back=route().params.get('from')==='notices'?'/support/notices':notificationInboxRoute();
-  if(!item)return shell('서비스 소식',`<section class="letter-empty service-empty"><h2>지금은 볼 수 없는 소식이에요</h2><p>삭제되었거나 아직 공개되지 않은 소식이에요</p>${link(esc(back),'목록으로','text-link')}</section>`,{back,screen:'service-page'});
-  return shell('서비스 소식',`<article class="service-notice-article"><p class="service-notice-kind">${SERVICE_KINDS[item.kind]}</p><h2>${esc(item.title)}</h2><time datetime="${esc(item.at)}">${esc(new Date(item.at).toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'}))}</time><div class="service-notice-body">${item.body.split(/\n\s*\n/).map(text=>`<p>${esc(text)}</p>`).join('')}</div></article>`,{back,screen:'service-page notice-detail-page'});
+  if(!item)return shell('서비스 소식',`<section class="letter-empty service-empty"><h2>지금은 볼 수 없는 소식이에요</h2><p>안내 기간이 끝났거나 아직 공개되지 않은 소식이에요</p>${link(esc(back),'목록으로','text-link')}</section>`,{back,screen:'service-page'});
+  return shell(item.kind==='event'?'참여 안내':'서비스 소식',`<article class="service-notice-article"><p class="service-notice-kind">${SERVICE_KINDS[item.kind]}</p><h2>${esc(item.title)}</h2><time datetime="${esc(item.at)}">${esc(new Date(item.at).toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'}))}</time><div class="service-notice-body">${item.body.split(/\n\s*\n/).map(text=>`<p>${esc(text)}</p>`).join('')}</div>${item.expiresAt?`<p class="commerce-footnote">${esc(new Date(item.expiresAt).toLocaleString('ko-KR'))}까지</p>`:''}${item.action?link(item.action.href,esc(item.action.label),'btn btn-primary btn-block'):''}</article>`,{back,screen:'service-page notice-detail-page'});
 }
 
 const viewer=()=>state.member??DEMO_USER;
@@ -2651,7 +2668,7 @@ function accountSettings(){
 function me(){
   const m=viewer(),p=state.profile;
   const identity=[m.ageBand,m.region,m.occupation].filter(Boolean).join(' · ');
-  return shell('마이',`<section class="my-centered-profile" aria-label="내 프로필"><div class="my-centered-portrait">${ownPortrait(p.photo)}<a class="my-profile-edit" href="#/profile/edit" aria-label="프로필 편집" title="프로필 편집">${icon('edit')}</a></div><h2>${esc(m.nickname)}</h2><p>${esc(identity)}</p></section><section class="my-point-card" aria-label="내 포인트"><a class="my-point-balance" href="#/wallet"><span>보유 포인트</span><strong>— <small>P</small></strong></a>${link('/wallet/charge','충전하기','btn btn-primary')}</section><nav class="my-main-menu" aria-label="마이 메뉴">${serviceRow('/profile/edit','프로필 수정')}${serviceRow('/quests','퀘스트')}${serviceRow('/invite','친구 초대')}${serviceRow('/support','공지/문의')}${serviceRow('/settings','설정')}</nav><footer class="my-service-footer">${link('/legal?doc=terms','이용약관','')}${link('/legal?doc=privacy','개인정보처리방침','')}<a href="./about/">사친사친 소개</a></footer>`,{screen:'my-page my-hub my-hub-v2'});
+  return shell('마이',`<section class="my-centered-profile" aria-label="내 프로필"><div class="my-centered-portrait">${ownPortrait(p.photo)}<a class="my-profile-edit" href="#/profile/edit" aria-label="프로필 편집" title="프로필 편집">${icon('edit')}</a></div><h2>${esc(m.nickname)}</h2><p>${esc(identity)}</p></section><section class="my-point-card" aria-label="내 포인트"><a class="my-point-balance" href="#/wallet"><span>보유 포인트</span><strong>— <small>P</small></strong></a>${link('/wallet/charge','충전하기','btn btn-primary')}</section><nav class="my-main-menu" aria-label="마이 메뉴">${serviceRow('/profile/edit','프로필 수정')}${serviceRow('/invite','친구 초대')}${serviceRow('/support','공지/문의')}${serviceRow('/settings','설정')}</nav><footer class="my-service-footer">${link('/legal?doc=terms','이용약관','')}${link('/legal?doc=privacy','개인정보처리방침','')}<a href="./about/">사친사친 소개</a></footer>`,{screen:'my-page my-hub my-hub-v2'});
 }
 function settings(){
   return shell('설정',`<div class="settings-identity-rows">${serviceRow('/settings/email','이메일',{value:'연결 전'})}${serviceRow('/settings/phone','휴대폰 번호',{value:'인증 전'})}</div><nav class="settings-primary-rows" aria-label="계정 설정">${serviceRow('/settings/nickname','닉네임 설정',{note:'2주마다 변경할 수 있어요',value:viewer().nickname})}${serviceRow('/settings/notifications?from=settings','알림 설정')}${serviceRow('/settings/password','비밀번호 변경')}${serviceRow('/settings/contacts','지인 연락처 차단')}${serviceRow('/legal?doc=terms&from=settings','서비스 이용약관')}${serviceRow('/settings/logout','로그아웃')}</nav><nav class="settings-secondary-rows" aria-label="추가 설정">${serviceRow('/preferences?from=settings','관심 주제',{note:state.topics.map(topic).join(' · ')})}${serviceRow('/settings/privacy','안전과 프로필 공개')}${serviceRow('/legal?doc=privacy&from=settings','개인정보 처리방침')}</nav><p class="commerce-footnote">현재는 화면 미리보기예요 실제 로그인·본인인증은 연결 전이에요</p>`,{back:'/me',screen:'service-page settings-v2'});
@@ -2661,9 +2678,6 @@ function pointWallet(){
 }
 function pointCharge(){
   return shell('포인트 충전',`<section class="point-charge-heading"><p class="service-eyebrow">사친사친 포인트</p><h2>조금 더 가까워지고<br>싶은 순간을 위해</h2><p>고민과 답변은 무료로 나눠요</p></section><p class="commerce-preview-note">충전 구성 예시 · 수량과 판매가는 아직 확정 전이에요</p><fieldset class="point-packs"><legend>충전할 포인트</legend>${[100,300,500].map((amount,i)=>`<label><input type="radio" name="point-pack" value="${amount}" ${i===0?'checked':''}><span><strong>${amount} P</strong><small>판매가 미정</small></span></label>`).join('')}</fieldset><button type="button" class="btn btn-primary btn-block" disabled>충전 준비 중</button><p class="commerce-footnote">실제 충전이나 금액 청구는 발생하지 않아요</p>${serviceRow('/billing','이용권과 결제 화면 보기')}${serviceRow('/legal?doc=refund&from=wallet','결제·환불 안내')}`,{back:'/wallet',screen:'service-page point-charge-page'});
-}
-function quests(){
-  return shell('퀘스트',`<section class="simple-service-intro"><span class="service-eyebrow">함께 만드는 사친사친</span><h2>작은 참여가<br>따뜻한 대화로</h2><p>새로운 퀘스트를 준비하고 있어요</p></section><section class="service-status-card"><h3>아직 열린 퀘스트가 없어요</h3><p>참여 방법과 보상은 퀘스트가 열릴 때 안내할게요</p></section>${link('/listen','고민 들어보기','btn btn-primary btn-block')}`,{back:'/me',screen:'service-page quest-page'});
 }
 const INVITE_URL='https://jennkim0210.github.io/sachin-sachin-user-preview/about/';
 function inviteFriends(){
@@ -3189,7 +3203,7 @@ function render({keepScroll=false,focus=null}={}){
   if(activeModal&&activeModal.hash!==location.hash)closeAppModal({restoreFocus:false});
   const {path,params}=route();
   if(state.member)readPageNotifications(path,params);
-  const pages={'/home':home,'/signup':signup,'/listen':listen,'/preferences':preferences,'/notifications':notifications,'/notice':serviceNoticeDetail,'/write':write,'/concern':detail,'/mine':storyHub,'/settings':settings,'/settings/notifications':notificationPreferences,'/settings/privacy':privacySettings,'/settings/account':accountSettings,'/settings/nickname':nicknameSettings,'/settings/email':accountConnectionPage,'/settings/phone':accountConnectionPage,'/settings/password':accountConnectionPage,'/settings/contacts':accountConnectionPage,'/settings/logout':accountConnectionPage,'/wallet':pointWallet,'/wallet/charge':pointCharge,'/quests':quests,'/invite':inviteFriends,'/billing':billing,'/billing/product':billingProduct,'/billing/checkout':billingCheckout,'/billing/complete':billingComplete,'/billing/history':billingHistory,'/support':support,'/support/write':supportCompose,'/support/history':supportHistory,'/support/detail':supportDetail,'/support/notices':serviceNotices,'/support/guide':supportGuide,'/legal':legal,'/connections':connections,'/connection':connection,'/chat':chat,'/me':me,'/profile':ownProfile,'/profile/edit':profileEdit,'/profile/preview':profilePreview,'/about':about};
+  const pages={'/home':home,'/signup':signup,'/listen':listen,'/preferences':preferences,'/notifications':notifications,'/notice':serviceNoticeDetail,'/write':write,'/concern':detail,'/mine':storyHub,'/settings':settings,'/settings/notifications':notificationPreferences,'/settings/privacy':privacySettings,'/settings/account':accountSettings,'/settings/nickname':nicknameSettings,'/settings/email':accountConnectionPage,'/settings/phone':accountConnectionPage,'/settings/password':accountConnectionPage,'/settings/contacts':accountConnectionPage,'/settings/logout':accountConnectionPage,'/wallet':pointWallet,'/wallet/charge':pointCharge,'/quests':notifications,'/invite':inviteFriends,'/billing':billing,'/billing/product':billingProduct,'/billing/checkout':billingCheckout,'/billing/complete':billingComplete,'/billing/history':billingHistory,'/support':support,'/support/write':supportCompose,'/support/history':supportHistory,'/support/detail':supportDetail,'/support/notices':serviceNotices,'/support/guide':supportGuide,'/legal':legal,'/connections':connections,'/connection':connection,'/chat':chat,'/me':me,'/profile':ownProfile,'/profile/edit':profileEdit,'/profile/preview':profilePreview,'/about':about};
   const needsMember=!state.member&&!['/home','/about','/legal'].includes(path);
   $('#app').innerHTML=needsMember?signup():(pages[path]??home)();
   const pageTitle=$('#app h1')?.textContent??'사친사친';
