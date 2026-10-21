@@ -64,6 +64,27 @@ dialog{width:calc(100% - 36px);max-width:370px;max-height:calc(100dvh - 40px);pa
   .layout-a .greeting{padding-top:0}
 }
 
+/* Selected layout: a centered welcome above a lower, naturally flowing form. */
+.layout-a .page-header{min-height:54px;flex-shrink:0}
+.layout-a main{display:flex;flex:1;flex-direction:column}
+.layout-a .greeting{flex-shrink:0;padding-top:0;margin-bottom:0;text-align:center}
+.layout-a .greeting-signature{flex-direction:column;justify-content:center;gap:14px;margin-bottom:10px;min-height:0}
+.layout-a .wordmark{width:210px;max-width:100%}
+.layout-a .welcome-note{width:62px;height:60px;margin:0;transform:rotate(-7deg)}
+.layout-a .greeting h1{font-size:29px;line-height:1.5;letter-spacing:-1px}
+.layout-a .login-controls{flex-shrink:0;margin-top:auto;padding-top:clamp(44px,7svh,64px)}
+.layout-a form{gap:20px}
+.layout-a .account-help{margin-top:16px}
+.layout-a footer{flex-shrink:0;margin-top:0;padding-top:26px}
+@media(max-width:359px){
+  .layout-a .greeting{padding-top:0;margin-bottom:0}
+  .layout-a .greeting-signature{gap:10px;margin-bottom:8px}
+  .layout-a .wordmark{width:190px;max-width:100%}
+  .layout-a .welcome-note{width:57px;height:54px}
+  .layout-a .greeting h1{font-size:27px}
+}
+@media(min-width:700px){.layout-a .login-page{padding-top:12px}.layout-a .greeting{padding-top:0}}
+
 </style>
 </head>
 <body class="layout-a">
@@ -81,7 +102,7 @@ dialog{width:calc(100% - 36px);max-width:370px;max-height:calc(100dvh - 40px);pa
         </div>
         <h1 id="login-title">반가워요<br>편하게 이야기해요</h1>
       </section>
-      <form id="login-form" novalidate autocomplete="off">
+      <div class="login-controls"><form id="login-form" novalidate autocomplete="off">
         <div class="field">
           <label for="email">이메일</label>
           <div class="input-wrap"><input id="email" name="email" type="email" inputmode="email" autocomplete="username" autocapitalize="none" spellcheck="false" enterkeyhint="next" maxlength="254" placeholder="name@example.com" aria-describedby="email-error" required></div>
@@ -97,7 +118,7 @@ dialog{width:calc(100% - 36px);max-width:370px;max-height:calc(100dvh - 40px);pa
         </div>
         <button class="login-button" type="submit">로그인</button>
       </form>
-      <nav class="account-help" aria-label="계정 도움말"><button class="text-button" type="button" data-preview="reset">비밀번호 찾기</button><span class="help-divider" aria-hidden="true"></span><button class="text-button signup-button" type="button" data-preview="signup">이메일로 가입하기</button></nav>
+      <nav class="account-help" aria-label="계정 도움말"><button class="text-button" type="button" data-preview="reset">비밀번호 찾기</button><span class="help-divider" aria-hidden="true"></span><button class="text-button signup-button" type="button" data-preview="signup">이메일로 가입하기</button></nav></div>
       <noscript><p>입력 동작을 확인하려면 JavaScript를 켜 주세요</p></noscript>
     </main>
     <footer><p>화면 미리보기 · 입력 정보는 저장되지 않아요</p></footer>
